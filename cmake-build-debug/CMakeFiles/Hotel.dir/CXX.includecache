@@ -14,10 +14,6 @@
 
 /Users/josh/CLionProjects/Hotel/exception/InvalidEntryException.h
 
-/Users/josh/CLionProjects/Hotel/guestManager/GuestManager.cpp
-GuestManager.h
-/Users/josh/CLionProjects/Hotel/guestManager/GuestManager.h
-
 /Users/josh/CLionProjects/Hotel/guestManager/GuestManager.h
 ../ui/UI.h
 /Users/josh/CLionProjects/Hotel/ui/UI.h
@@ -56,17 +52,9 @@ fstream
 nlohmann/json.hpp
 -
 
-/Users/josh/CLionProjects/Hotel/guestManager/guest/CreditCardDetails.cpp
-CreditCardDetails.h
-/Users/josh/CLionProjects/Hotel/guestManager/guest/CreditCardDetails.h
-
 /Users/josh/CLionProjects/Hotel/guestManager/guest/CreditCardDetails.h
 iostream
 -
-
-/Users/josh/CLionProjects/Hotel/guestManager/guest/Guest.cpp
-Guest.h
-/Users/josh/CLionProjects/Hotel/guestManager/guest/Guest.h
 
 /Users/josh/CLionProjects/Hotel/guestManager/guest/Guest.h
 ../../interface/IVisitor.h
@@ -82,17 +70,9 @@ iomanip
 nlohmann/json.hpp
 /Users/josh/CLionProjects/Hotel/guestManager/guest/nlohmann/json.hpp
 
-/Users/josh/CLionProjects/Hotel/guestManager/guest/IdDetails.cpp
-IdDetails.h
-/Users/josh/CLionProjects/Hotel/guestManager/guest/IdDetails.h
-
 /Users/josh/CLionProjects/Hotel/guestManager/guest/IdDetails.h
 iostream
 -
-
-/Users/josh/CLionProjects/Hotel/hotelUtil/HotelUtil.cpp
-HotelUtil.h
-/Users/josh/CLionProjects/Hotel/hotelUtil/HotelUtil.h
 
 /Users/josh/CLionProjects/Hotel/hotelUtil/HotelUtil.h
 iostream
@@ -104,17 +84,9 @@ boost/date_time/gregorian/gregorian.hpp
 algorithm
 -
 
-/Users/josh/CLionProjects/Hotel/interface/IPrintable.cpp
-IPrintable.h
-/Users/josh/CLionProjects/Hotel/interface/IPrintable.h
-
 /Users/josh/CLionProjects/Hotel/interface/IPrintable.h
 iostream
 -
-
-/Users/josh/CLionProjects/Hotel/interface/IVisitor.cpp
-IVisitor.h
-/Users/josh/CLionProjects/Hotel/interface/IVisitor.h
 
 /Users/josh/CLionProjects/Hotel/interface/IVisitor.h
 iostream
@@ -123,10 +95,6 @@ iostream
 /Users/josh/CLionProjects/Hotel/guestManager/guest/CreditCardDetails.h
 ../guestManager/guest/IdDetails.h
 /Users/josh/CLionProjects/Hotel/guestManager/guest/IdDetails.h
-
-/Users/josh/CLionProjects/Hotel/ioManager/IoManager.cpp
-IoManager.h
-/Users/josh/CLionProjects/Hotel/ioManager/IoManager.h
 
 /Users/josh/CLionProjects/Hotel/ioManager/IoManager.h
 iostream
@@ -148,16 +116,6 @@ functional
 ../exception/InvalidEntryException.h
 /Users/josh/CLionProjects/Hotel/exception/InvalidEntryException.h
 
-/Users/josh/CLionProjects/Hotel/main.cpp
-iostream
--
-overallManager/OverallManager.h
-/Users/josh/CLionProjects/Hotel/overallManager/OverallManager.h
-
-/Users/josh/CLionProjects/Hotel/overallManager/OverallManager.cpp
-OverallManager.h
-/Users/josh/CLionProjects/Hotel/overallManager/OverallManager.h
-
 /Users/josh/CLionProjects/Hotel/overallManager/OverallManager.h
 ../ui/UI.h
 /Users/josh/CLionProjects/Hotel/ui/UI.h
@@ -168,21 +126,7 @@ OverallManager.h
 ../roomManager/RoomManager.h
 /Users/josh/CLionProjects/Hotel/roomManager/RoomManager.h
 
-/Users/josh/CLionProjects/Hotel/paymentManager/PaymentManager.cpp
-PaymentManager.h
 /Users/josh/CLionProjects/Hotel/paymentManager/PaymentManager.h
-
-/Users/josh/CLionProjects/Hotel/paymentManager/PaymentManager.h
-
-/Users/josh/CLionProjects/Hotel/paymentManager/Promotion.cpp
-Promotion.h
-/Users/josh/CLionProjects/Hotel/paymentManager/Promotion.h
-
-/Users/josh/CLionProjects/Hotel/paymentManager/Promotion.h
-string
--
-
-/Users/josh/CLionProjects/Hotel/paymentManager/payment/PaymentDetails.cpp
 
 /Users/josh/CLionProjects/Hotel/reservationManager/ReservationManager.cpp
 ReservationManager.h
@@ -200,10 +144,6 @@ reservation/Reservation.h
 ../paymentManager/PaymentManager.h
 /Users/josh/CLionProjects/Hotel/paymentManager/PaymentManager.h
 
-/Users/josh/CLionProjects/Hotel/reservationManager/reservation/Reservation.cpp
-Reservation.h
-/Users/josh/CLionProjects/Hotel/reservationManager/reservation/Reservation.h
-
 /Users/josh/CLionProjects/Hotel/reservationManager/reservation/Reservation.h
 ../../interface/IPrintable.h
 /Users/josh/CLionProjects/Hotel/interface/IPrintable.h
@@ -217,10 +157,6 @@ boost/uuid/uuid_generators.hpp
 -
 boost/uuid/uuid_io.hpp
 -
-
-/Users/josh/CLionProjects/Hotel/roomManager/RoomManager.cpp
-RoomManager.h
-/Users/josh/CLionProjects/Hotel/roomManager/RoomManager.h
 
 /Users/josh/CLionProjects/Hotel/roomManager/RoomManager.h
 ../ui/UI.h
@@ -252,10 +188,6 @@ algorithm
 iterator
 -
 
-/Users/josh/CLionProjects/Hotel/roomManager/room/Room.cpp
-Room.h
-/Users/josh/CLionProjects/Hotel/roomManager/room/Room.h
-
 /Users/josh/CLionProjects/Hotel/roomManager/room/Room.h
 iostream
 -
@@ -280,49 +212,25 @@ vector
 iomanip
 -
 
-/Users/josh/CLionProjects/Hotel/roomManager/roomType/RoomType.cpp
-RoomType.h
-/Users/josh/CLionProjects/Hotel/roomManager/roomType/RoomType.h
-
 /Users/josh/CLionProjects/Hotel/roomManager/roomType/RoomType.h
 iostream
 -
 
-/Users/josh/CLionProjects/Hotel/roomManager/roomType/RoomTypeDeluxe.cpp
-RoomTypeDeluxe.h
-/Users/josh/CLionProjects/Hotel/roomManager/roomType/RoomTypeDeluxe.h
-
 /Users/josh/CLionProjects/Hotel/roomManager/roomType/RoomTypeDeluxe.h
 RoomType.h
 /Users/josh/CLionProjects/Hotel/roomManager/roomType/RoomType.h
-
-/Users/josh/CLionProjects/Hotel/roomManager/roomType/RoomTypeDouble.cpp
-RoomTypeDouble.h
-/Users/josh/CLionProjects/Hotel/roomManager/roomType/RoomTypeDouble.h
 
 /Users/josh/CLionProjects/Hotel/roomManager/roomType/RoomTypeDouble.h
 RoomType.h
 /Users/josh/CLionProjects/Hotel/roomManager/roomType/RoomType.h
 
-/Users/josh/CLionProjects/Hotel/roomManager/roomType/RoomTypeSingle.cpp
-RoomTypeSingle.h
-/Users/josh/CLionProjects/Hotel/roomManager/roomType/RoomTypeSingle.h
-
 /Users/josh/CLionProjects/Hotel/roomManager/roomType/RoomTypeSingle.h
 RoomType.h
 /Users/josh/CLionProjects/Hotel/roomManager/roomType/RoomType.h
 
-/Users/josh/CLionProjects/Hotel/roomManager/roomType/RoomTypeVip.cpp
-RoomTypeVip.h
-/Users/josh/CLionProjects/Hotel/roomManager/roomType/RoomTypeVip.h
-
 /Users/josh/CLionProjects/Hotel/roomManager/roomType/RoomTypeVip.h
 RoomType.h
 /Users/josh/CLionProjects/Hotel/roomManager/roomType/RoomType.h
-
-/Users/josh/CLionProjects/Hotel/ui/UI.cpp
-UI.h
-/Users/josh/CLionProjects/Hotel/ui/UI.h
 
 /Users/josh/CLionProjects/Hotel/ui/UI.h
 iostream
