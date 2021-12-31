@@ -2,8 +2,8 @@
 DS_Store
 .AppleDouble
 .LSOverride
-.idea
-*.idea
+#.idea
+#*.idea
 ._*
 .DocumentRevisions-V100
 .fseventsd
@@ -21,9 +21,9 @@ Temporary Items
 .apdisk
 
 
-# CMake
-cmake-build-debug/
+## CMake
+#cmake-build-debug/
 
-## Build generated
-build/
-DerivedData/
+### Build generated
+#build/
+#DerivedData/
