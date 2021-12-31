@@ -24,6 +24,7 @@ Temporary Items
 
 # CMake
 cmake-build-debug/
+cmake-build-debug
 
 ## Build generated
 build/
