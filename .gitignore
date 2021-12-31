@@ -2,7 +2,8 @@
 DS_Store
 .AppleDouble
 .LSOverride
-
+.idea
+*.idea
 ._*
 .DocumentRevisions-V100
 .fseventsd
