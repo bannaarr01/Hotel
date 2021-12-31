@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.20)
 project(Hotel)
 
 set(CMAKE_CXX_STANDARD 17)
-#message(STATUS "start running cmake...")
+message(STATUS "start running cmake...")
 find_package(nlohmann_json 3.2.0 REQUIRED)
 find_package(Boost 1.76.0 COMPONENTS system filesystem REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
@@ -24,7 +24,14 @@ add_executable(Hotel main.cpp
         interface/IVisitor.cpp interface/IVisitor.h
         guestManager/guest/Guest.cpp guestManager/guest/Guest.h
         guestManager/guest/CreditCardDetails.cpp guestManager/guest/CreditCardDetails.h
-        guestManager/guest/IdDetails.cpp guestManager/guest/IdDetails.h overallManager/OverallManager.cpp overallManager/OverallManager.h interface/IPrintable.cpp interface/IPrintable.h paymentManager/payment/PaymentDetails.cpp paymentManager/payment/PaymentDetails.h paymentManager/Promotion.cpp paymentManager/Promotion.h exception/InvalidEntryException.h exception/AlreadyExistException.h exception/ErrorOpeningFileException.h exception/ErrorWritingToFileException.h ui/UI.cpp ui/UI.h hotelUtil/HotelUtil.cpp hotelUtil/HotelUtil.h)
+        guestManager/guest/IdDetails.cpp guestManager/guest/IdDetails.h
+        overallManager/OverallManager.cpp overallManager/OverallManager.h
+        interface/IPrintable.cpp interface/IPrintable.h paymentManager/payment/PaymentDetails.cpp
+        paymentManager/payment/PaymentDetails.h paymentManager/Promotion.cpp
+        paymentManager/Promotion.h exception/InvalidEntryException.h
+        exception/AlreadyExistException.h exception/ErrorOpeningFileException.h
+        exception/ErrorWritingToFileException.h ui/UI.cpp ui/UI.h hotelUtil/HotelUtil.cpp
+        hotelUtil/HotelUtil.h)
 
 target_link_libraries(Hotel PRIVATE nlohmann_json::nlohmann_json)
 target_link_libraries(Hotel PRIVATE ${Boost_LIBRARIES})
