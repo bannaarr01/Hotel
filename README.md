@@ -6,4 +6,4 @@
 
 ### However, the project is still in progress 🚧, although most features are done ✅
 
-##### *Don't forget to ⭐️⭐️⭐️ the project*. *Thanks*
+##### *Don't forget to leave a ⭐️*. *Thanks*
