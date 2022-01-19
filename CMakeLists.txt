@@ -9,12 +9,11 @@ include_directories(${Boost_INCLUDE_DIRS})
 
 add_executable(Hotel main.cpp
         guestManager/GuestManager.cpp guestManager/GuestManager.h
-        ioManager/IoManager.cpp ioManager/IoManager.h reservationManager/ReservationManager.cpp
+        ioManager/IoManager.cpp ioManager/IoManager.h
+        reservationManager/ReservationManager.cpp
         reservationManager/ReservationManager.h
         roomManager/RoomManager.cpp roomManager/RoomManager.h
         paymentManager/PaymentManager.cpp paymentManager/PaymentManager.h
-        reservationManager/reservation/Reservation.cpp
-        reservationManager/reservation/Reservation.h
         roomManager/room/Room.cpp roomManager/room/Room.h
         roomManager/roomType/RoomType.cpp roomManager/roomType/RoomType.h
         roomManager/roomType/RoomTypeSingle.cpp roomManager/roomType/RoomTypeSingle.h
@@ -31,7 +30,7 @@ add_executable(Hotel main.cpp
         paymentManager/Promotion.h exception/InvalidEntryException.h
         exception/AlreadyExistException.h exception/ErrorOpeningFileException.h
         exception/ErrorWritingToFileException.h ui/UI.cpp ui/UI.h hotelUtil/HotelUtil.cpp
-        hotelUtil/HotelUtil.h)
+        hotelUtil/HotelUtil.h reservationManager/reservation/Reservation.cpp reservationManager/reservation/Reservation.h)
 
 target_link_libraries(Hotel PRIVATE nlohmann_json::nlohmann_json)
 target_link_libraries(Hotel PRIVATE ${Boost_LIBRARIES})

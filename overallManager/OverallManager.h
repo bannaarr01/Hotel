@@ -5,6 +5,7 @@
 #include "../ioManager/IoManager.h"
 #include "../guestManager/GuestManager.h"
 #include "../roomManager/RoomManager.h"
+#include "../reservationManager/ReservationManager.h"
 
 
 class OverallManager {

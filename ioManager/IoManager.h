@@ -9,6 +9,7 @@
 #include "../ui/UI.h"
 #include "../guestManager/guest/Guest.h"
 #include "../roomManager/room/Room.h"
+#include "../reservationManager/reservation/Reservation.h"
 #include "../exception/InvalidEntryException.h"
 
 class IoManager {
@@ -20,6 +21,8 @@ public:
     Guest askInputToCreateNewGuest();
 
     Room askInputAndCreateNewRoom();
+
+    Reservation askInputToMakeReservation();
 };
 
 

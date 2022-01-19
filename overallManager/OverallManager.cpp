@@ -14,12 +14,30 @@ void OverallManager::mainMenu() {
             guestManager.guestMenu();
             break;
         }
+        case 2: {
+            //Initiate Reservation Manager
+            ReservationManager reservationManager;
+            reservationManager.createReservation();
+            break;
+        }
         case 3: {
             //Initiate Room Manager
             RoomManager roomManager;
             roomManager.roomMenu();
             break;
         }
+//        case 4: {
+//            //Check-In
+//            RoomManager roomManager;
+//            roomManager.roomMenu();
+//            break;
+//        }
+//        case 5: {
+//            //Check-Out
+//            RoomManager roomManager;
+//            roomManager.roomMenu();
+//            break;
+//        }
         case 6: {
             std::cout << "\033[1;31mQuitting. . .[0m️";
             break;

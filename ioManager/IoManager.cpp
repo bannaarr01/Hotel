@@ -46,7 +46,7 @@ Guest IoManager::askInputToCreateNewGuest() {
 }
 
 Room IoManager::askInputAndCreateNewRoom() {
-    //to be modify to input
+    //to be modify for input request
     double price{95.57};
     std::string roomNumber{"106"};
     bool isWifiEnabled{false};
@@ -59,6 +59,23 @@ Room IoManager::askInputAndCreateNewRoom() {
                                                            rrr);
 //    std::cout << *rm << std::endl;
     return std::move(*newRoom);
+}
+
+Reservation IoManager::askInputToMakeReservation() {
+    //to be modify for input request
+    std::shared_ptr<RoomType> rrr = std::make_shared<RoomTypeVip>(93.55);
+    Room rm{"123", Room::RoomAvailabilityStatus::VACANT, Room::BedType::MASTER, true,
+            rrr};
+    IdDetails id{IdDetails::IDType(1), "D2569090", "2025"};
+    CreditCardDetails cc{"John", "443567890324567890", "05/25", "455"};
+    std::unique_ptr<Guest> guest = std::make_unique<Guest>("John Doe", "12 Habebe str", "Kuala Lumpur", "Malaysia",
+                                                           "male",
+                                                           "0123994564", id, cc);
+
+    // std::vector<Reservation> reservation;
+    Reservation rsv{rm, "01/03/22", "01/05/22", 1, 1, *guest};
+
+    return rsv;
 }
 
 

@@ -3,7 +3,7 @@
 
 #include "../ui/UI.h"
 #include "../ioManager/IoManager.h"
-//#include "room/Room.h"
+#include "room/Room.h"
 #include "../hotelUtil/HotelUtil.h"
 #include "../exception/AlreadyExistException.h"
 #include "../exception/ErrorOpeningFileException.h"
@@ -25,6 +25,7 @@ class RoomManager {
     std::string fileName{"../data/rooms.csv"};
     std::vector<Room> roomsObjVec;
     std::set<Room> roomsObjSet;
+
 public:
     // void initRoomManager(Reservation);
 
@@ -44,7 +45,7 @@ public:
     void updateRoom();
 
     void findByRoomNumber();
-    
+
 
 };
 
