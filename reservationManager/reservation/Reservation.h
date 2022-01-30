@@ -13,7 +13,7 @@
 class Reservation : public IPrintable {
 public:
     enum ReservationStatus {
-        CONFIRMED, WAIT_LIST, CHECKED_IN, EXPIRED
+        WAIT_LIST = 1, CONFIRMED = 2, CHECKED_IN = 3, EXPIRED = 4
     };
 
     Reservation() {}
@@ -21,11 +21,18 @@ public:
     Reservation(Room &room, std::string checkInDate, std::string checkOutDate,
                 int adultCount, int childrenCount, Guest &guest);
 
+
+    Reservation(std::vector<Room> &rooms, std::string checkInDate, std::string checkOutDate,
+                int adultCount, int childrenCount, Guest &guest);
+
     std::string getReservationNumber() const;
 
     std::string getCheckInDate() const;
 
     Guest getGuestDetails() const;
+
+    ReservationStatus getReservationStatus() const;
+
 
     virtual void print(std::ostream &os) const override;
 

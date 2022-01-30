@@ -112,7 +112,7 @@ void GuestManager::updateMenu() {
 
 }
 
-void GuestManager::createGuess() {
+Guest GuestManager::createGuess() {
     //Request input to create new guest
     auto g = ioManager.askInputToCreateNewGuest();
     //Making the guest a unique Guest smart pointer
@@ -155,6 +155,8 @@ void GuestManager::createGuess() {
     //closing both files
     inFile.close();
     outFile.close();
+
+    return *guest;
 
 }
 

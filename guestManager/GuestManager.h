@@ -34,7 +34,7 @@ public:
 
     void searchMenu();
 
-    void createGuess();
+    Guest createGuess();
 
     std::vector<Guest> getGuessObjList() {
         return guestObjList;

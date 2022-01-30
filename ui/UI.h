@@ -28,6 +28,16 @@ public:
 
     //Display RoomUpdate Menu
     static void updateRoomMenuDisplay();
+
+    //Display Reservation Menu
+    static void reservationMenuDisplay();
+
+    //Display subMenu for Reservation
+    static void reservationSubMenuDisplay();
+
+    //Reservation Options
+    static void reservationOptionDisplay();
+
 };
 
 

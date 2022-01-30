@@ -26,6 +26,32 @@ int IoManager::inputValidation(const int rangeFrom, const int to, std::function<
 }
 
 
+int IoManager::inputValidationV2(const int rangeFrom, const int to) {
+    int selection{};
+    std::string entry{};
+    bool done{false};
+    do {
+        try {
+            std::cout << std::setw(30) << std::setfill('=') << "" << std::endl;
+            std::cout << std::setfill(' ');
+            std::cout << "Enter " << rangeFrom << "-" << to << " to select: ";
+            std::cin >> entry;
+            std::istringstream validator{entry};
+
+            if (validator >> selection && (selection >= rangeFrom && selection <= to))
+                done = true;
+            else
+                throw InvalidEntryException{};
+
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        } catch (InvalidEntryException ex) {
+            std::cout << ex.what() << std::endl;
+        }
+    } while (!done);
+
+    return selection; //return selection
+}
+
 Guest IoManager::askInputToCreateNewGuest() {
     std::string name{"Moe Curly"};
     std::string idNumber{"D2569093"};
@@ -77,5 +103,9 @@ Reservation IoManager::askInputToMakeReservation() {
 
     return rsv;
 }
+
+
+
+
 
 

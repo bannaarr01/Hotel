@@ -17,7 +17,7 @@ void OverallManager::mainMenu() {
         case 2: {
             //Initiate Reservation Manager
             ReservationManager reservationManager;
-            reservationManager.createReservation();
+            reservationManager.reservationMenu();
             break;
         }
         case 3: {

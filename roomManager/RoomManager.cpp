@@ -2,7 +2,7 @@
 
 void RoomManager::roomMenu() {
     roomsObjVec.clear();
-    copyCSVtoRoomObjVec();
+    copyCSVtoRoomObjVec(roomsObjVec);
     //Accept valid range and UI to display
     int selection = ioManager.inputValidation(1, 6, UI::roomMenuDisplay);
     //control the valid selection made
@@ -64,7 +64,7 @@ void RoomManager::roomMenu() {
 
 }
 
-void RoomManager::createRoom() {
+Room RoomManager::createRoom() {
     auto newRoom = ioManager.askInputAndCreateNewRoom();
     std::string searchRoomNumber{newRoom.getRoomNumber()};
     //File Handling
@@ -102,9 +102,11 @@ void RoomManager::createRoom() {
     //closing both files
     inFile.close();
     outFile.close();
+
+    return newRoom;
 }
 
-std::vector<Room> RoomManager::findBySearchTerm(std::string &searchTerm) {
+std::vector<Room> RoomManager::findBySearchTerm(std::string &searchTerm, std::vector<Room> &roomsObjVec) {
     std::vector<Room> result;
     //If found, copy the obj and insert into result vector
     std::copy_if(roomsObjVec.begin(), roomsObjVec.end(), std::back_inserter(result),
@@ -114,11 +116,12 @@ std::vector<Room> RoomManager::findBySearchTerm(std::string &searchTerm) {
     return result;
 }
 
+
 void RoomManager::updateRoom() {
     std::cout << "Enter Room Number: ";
     std::string roomNumber{};
     std::getline(std::cin, roomNumber);
-    auto result = findBySearchTerm(roomNumber);
+    auto result = findBySearchTerm(roomNumber, roomsObjVec);
     if (!std::empty(result)) {
         Room foundRoom;
         std::cout << "🟢 Found Room " << roomNumber << ". Make your Selection ☑️" << std::endl;
@@ -188,7 +191,7 @@ void RoomManager::findByRoomNumber() {
         std::cout << "Enter Room Number: ";
         std::string roomNumber{};
         std::getline(std::cin, roomNumber);
-        auto result = findBySearchTerm(roomNumber);
+        auto result = findBySearchTerm(roomNumber, roomsObjVec);
         if (!std::empty(result)) {
             Room foundRoom;
             std::cout << "🟢 Found Room " << std::endl;
@@ -225,7 +228,7 @@ auto RoomManager::obtainRoomType(std::string &roomTypeNameStr, double price) {
 }
 
 
-bool RoomManager::copyCSVtoRoomObjVec() {
+bool RoomManager::copyCSVtoRoomObjVec(std::vector<Room> &roomsObjVec) {
     std::ifstream inFile{fileName};//RoomList csv
     std::string line{};
     std::string word{};

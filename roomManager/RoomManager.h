@@ -31,16 +31,17 @@ public:
 
     void roomMenu();
 
-    void createRoom();
+    Room createRoom();
 
     auto obtainRoomType(std::string &roomTypeNameStr, double price);
 
     //  void setTodayRoomStatus(Reservation);
 
     //publish all rooms to room vec
-    bool copyCSVtoRoomObjVec();
+    bool copyCSVtoRoomObjVec(std::vector<Room> &);
 
-    std::vector<Room> findBySearchTerm(std::string &searchTerm);
+    std::vector<Room> findBySearchTerm(std::string &searchTerm, std::vector<Room> &roomsObjVec);
+
 
     void updateRoom();
 

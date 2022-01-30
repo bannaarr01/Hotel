@@ -25,7 +25,7 @@ void UI::header(const int totalWidth, const std::string title, const std::string
 
 void UI::Launch() {
     const int totalWidth{35};
-    std::vector<std::string> listsToDisplay{"MANAGE GUEST", "MANAGE RESERVATION", "ROOM MANAGEMENT", "CHECK-IN",
+    std::vector<std::string> listsToDisplay{"MANAGE GUEST", "RESERVATION", "ROOM MANAGEMENT", "CHECK-IN",
                                             "CHECK-OUT", "\033[1;31mEXIT ➡️[0m️"};
     header(totalWidth, "MAIN MENU", "1-6", listsToDisplay);
 }
@@ -53,15 +53,15 @@ void UI::guestSubMenuDisplay() {
 
 
 void UI::tabularDisplay(const std::vector<Room> &roomVec) {
-    const int total_width{70};
-    const int field1_width{10};          //Room No
-    const int field2_width{11};         //Room Type
+    const int total_width{70};             //Total width of ruler
+    const int field1_width{10};           //Room No
+    const int field2_width{11};          //Room Type
     const int field3_width{11};         //Bed Type
-    const int field4_width{16};       //Price
-    const int field5_width{7};     //wifi
-    const int field6_width{15};    //status
+    const int field4_width{16};        //Price
+    const int field5_width{7};        //wifi
+    const int field6_width{15};      //status
 
-    std::string title{"ALL ROOMS"};
+    std::string title{"ROOM(s) WITH PRICE PER NIGHT"};
     int title_length = title.length();
     std::cout << std::setw((total_width - title_length) / 2) << "" << "\033[1;36m" + title + "[0m️" << std::endl;
 
@@ -102,4 +102,35 @@ void UI::updateRoomMenuDisplay() {
                                             "\033[1;31mEXIT ➡️[0m️"};
     header(totalWidth, "UPDATE / DELETE ROOM", "1-4", listsToDisplay);
 }
+
+void UI::reservationMenuDisplay() {
+    const int totalWidth{35};
+    std::vector<std::string> listsToDisplay{"Make a New Reservation",
+                                            "Show all Reservations",
+                                            "Manage an Existing Reservation",
+                                            "\033[1;36mMAIN MENU[0m️ ⬅",
+                                            "\033[1;31mEXIT ➡️[0m️"};
+    header(totalWidth, "MANAGE RESERVATION", "1-4", listsToDisplay);
+}
+
+void UI::reservationSubMenuDisplay() {
+    const int totalWidth{30};
+    std::vector<std::string> listsToDisplay{"VIP Rooms", "DELUXE Rooms", "DOUBLE Rooms", "SINGLE Rooms",
+                                            "\033[1;36mRESERVATION MENU[0m️ ⬅",
+                                            "\033[1;36mMAIN MENU[0m️ ⬅",
+                                            "\033[1;31mEXIT ➡️[0m️"};
+    header(totalWidth, "CHOOSE ROOM TYPE", "1-7", listsToDisplay);
+
+}
+
+void UI::reservationOptionDisplay() {
+    const int totalWidth{35};
+    std::vector<std::string> listsToDisplay{"Update Reservation", "Delete Reservation",
+                                            "\033[1;36mRESERVATION MENU[0m️ ⬅",
+                                            "\033[1;36mMAIN MENU[0m️ ⬅",
+                                            "\033[1;31mEXIT ➡️[0m️"};
+    header(totalWidth, "OPTIONS", "1-5", listsToDisplay);
+}
+
+
 
