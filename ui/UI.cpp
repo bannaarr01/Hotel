@@ -125,7 +125,7 @@ void UI::reservationSubMenuDisplay() {
 
 void UI::reservationOptionDisplay() {
     const int totalWidth{35};
-    std::vector<std::string> listsToDisplay{"Update Reservation", "Delete Reservation",
+    std::vector<std::string> listsToDisplay{"Add More Rooms to your reservation", "Update",
                                             "\033[1;36mRESERVATION MENU[0m️ ⬅",
                                             "\033[1;36mMAIN MENU[0m️ ⬅",
                                             "\033[1;31mEXIT ➡️[0m️"};

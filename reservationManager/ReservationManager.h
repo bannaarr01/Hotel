@@ -7,6 +7,9 @@
 #include "reservation/Reservation.h"
 #include "../roomManager/RoomManager.h"
 #include "../paymentManager/PaymentManager.h"
+//#include "../exception/AlreadyExistException.h"
+//#include "../exception/ErrorOpeningFileException.h"
+//#include "../exception/ErrorWritingToFileException.h"
 #include <vector>
 #include <string>
 #include <stdarg.h>
@@ -16,10 +19,11 @@ class ReservationManager {
 private:
     IoManager ioManager;
     std::string fileName{"../data/reservations.csv"};
+    std::string fileName2{"../data/rooms.csv"};
     std::vector<Reservation> reservations;
     Reservation reservation;
     std::vector<Room> roomsObjVec;
-
+    std::vector<Room> result;
 
 public:
 
@@ -33,7 +37,14 @@ public:
     Room checkRoom(std::string &&roomType, std::string &&roomAvailability);
 
 
-    void createReservation(Room &room, Guest &guest);
+    Reservation createReservation(std::vector<Room> &rooms, std::vector<Guest> &guests);
+
+    void subUpdateRoom(Room &room, int n = 2);
+
+    void updateReservation(Reservation &reservation);
+
+
+
 
     //void create();
 

@@ -99,9 +99,9 @@ Reservation IoManager::askInputToMakeReservation() {
                                                            "0123994564", id, cc);
 
     // std::vector<Reservation> reservation;
-    Reservation rsv{rm, "01/03/22", "01/05/22", 1, 1, *guest};
+    //Reservation rsv{rm, "01/03/22", "01/05/22", 1, 1, *guest};
 
-    return rsv;
+    return Reservation();
 }
 
 

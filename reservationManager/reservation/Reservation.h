@@ -18,21 +18,26 @@ public:
 
     Reservation() {}
 
-    Reservation(Room &room, std::string checkInDate, std::string checkOutDate,
-                int adultCount, int childrenCount, Guest &guest);
+//    Reservation(Room &room, std::string checkInDate, std::string checkOutDate,
+//                int adultCount, int childrenCount, Guest &guest);
 
 
     Reservation(std::vector<Room> &rooms, std::string checkInDate, std::string checkOutDate,
-                int adultCount, int childrenCount, Guest &guest);
+                int adultCount, int childrenCount, std::vector<Guest> &guests);
 
     std::string getReservationNumber() const;
 
     std::string getCheckInDate() const;
 
-    Guest getGuestDetails() const;
+    std::vector<Guest> getGuests() const;
+
+    std::vector<Room> getRooms() const;
 
     ReservationStatus getReservationStatus() const;
 
+    void addRoom(Room &room);
+
+    bool operator==(const Reservation &rhs) const;
 
     virtual void print(std::ostream &os) const override;
 
@@ -50,8 +55,8 @@ private:
     bool hasPaid;
     std::vector<Guest> guests;
     std::vector<Room> rooms;
-    Guest guest;
-    Room room;
+//    Guest guest;
+//    Room room;
 };
 
 
