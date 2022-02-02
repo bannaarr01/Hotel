@@ -42,15 +42,15 @@ void GuestManager::updateMenu() {
     Guest guest;
     switch (selection) {
         case 1: {
-            std::string name{};
-            if (copyCSVtoGuestListVec()) {
+            std::string guestId{};
+            if (copyCSVtoGuestObjSet(guestObjSet)) {
                 std::cout << "🟢 Initiated Successfully...🚀" << std::endl;
                 std::cout << "Enter ID of Guest to update: ";
-                std::cin.ignore();
-                std::getline(std::cin, name);
-                auto result = findById(name);
-                if (!std::empty(result)) {
-                    guest = result[0];
+                std::cin >> guestId;
+                /// std::getline(std::cin, name);
+                auto result = findById(guestId);
+                if (!result.getId().getIdNumber().empty()) {
+                    guest = result;
                     auto it = guestObjSet.find(guest);
                     if (it != guestObjSet.end()) {
                         std::cout << "🟢 FOUND" << std::endl;
@@ -72,7 +72,7 @@ void GuestManager::updateMenu() {
                         auto changeGuestCCDetails = guest.changeGuestCcDetails();
                         changeGuestCCDetails(newHolderName, newCcNumber, newExpiryDate, newCVV);
                         guestObjSet.emplace(guest);
-                        std::ofstream outFile{"../data/guestLists.csv"};//std::ios::app
+                        std::ofstream outFile{filename};//std::ios::app
                         std::string line{};
                         if (!outFile) {
                             std::cerr << "Error Writing Guest data to file...🚨️" << std::endl;
@@ -160,62 +160,65 @@ Guest GuestManager::createGuess() {
 
 }
 
-void GuestManager::searchMenu() {
-    std::ifstream inFile{"../data/guestLists.csv"};
-    std::string line{};
-    std::string temp{};
-    std::string word{};
-
-    std::string name{}, address{}, country{}, nationality{}, gender{}, contact{};
-    std::string iDType{};
-    std::string idNumber{}, iDExpiryDate{}, ccHolderName{}, ccNumber{}, ccExpiryDate{}, ccCVV{};
-
-    if (!inFile) {
-        std::cerr << "Error Opening Guest file 🚨️" << std::endl;
-    }
-
-    while (std::getline(inFile, line)) {
-
-        std::stringstream s(line);
-        std::vector<std::string> guestStrVec;
-        std::string word;
-        while (std::getline(s, word, ',')) {
-            guestStrVec.push_back(word);
-        }
-//        std::cout << "Tokenized line: ";
-//        for (const auto &elem: words)
-//            std::cout << "[" << elem << "]";
-//        std::cout << std::endl;
-
-        name = guestStrVec[0], address = guestStrVec[1], country = guestStrVec[2],
-        nationality = guestStrVec[3], gender = guestStrVec[4], contact = guestStrVec[5],
-        idNumber = guestStrVec[7], iDExpiryDate = guestStrVec[8], ccHolderName = guestStrVec[9],
-        ccNumber = guestStrVec[10], ccExpiryDate = guestStrVec[11], ccCVV = guestStrVec[12];
-        int n{};
-        iDType = guestStrVec[6] == "Driving License" ? n = 2 : n = 1;
-
-        IdDetails id2{IdDetails::IDType(n), idNumber, iDExpiryDate};
-        CreditCardDetails c3{ccHolderName, ccNumber, ccExpiryDate, ccCVV};
-        std::unique_ptr<Guest> guest = std::make_unique<Guest>(name, address, country, nationality, gender, contact,
-                                                               id2, c3);
-
-        //guestObjList.push_back(*guest);
-        guestObjSet.emplace(*guest);
-    }
+Guest GuestManager::searchMenu() {
+    copyCSVtoGuestObjSet(guestObjSet);
+    Guest sResult;
+//    std::ifstream inFile{filename};
+//    std::vector<Guest> searchResult;
+//    std::string line{};
+//    std::string temp{};
+//    std::string word{};
+//
+//    std::string name{}, address{}, country{}, nationality{}, gender{}, contact{};
+//    std::string iDType{};
+//    std::string idNumber{}, iDExpiryDate{}, ccHolderName{}, ccNumber{}, ccExpiryDate{}, ccCVV{};
+//
+//    if (!inFile) {
+//        std::cerr << "Error Opening Guest file 🚨️" << std::endl;
+//    }
+//
+//    while (std::getline(inFile, line)) {
+//
+//        std::stringstream s(line);
+//        std::vector<std::string> guestStrVec;
+//        std::string word;
+//        while (std::getline(s, word, ',')) {
+//            guestStrVec.push_back(word);
+//        }
+////        std::cout << "Tokenized line: ";
+////        for (const auto &elem: words)
+////            std::cout << "[" << elem << "]";
+////        std::cout << std::endl;
+//
+//        name = guestStrVec[0], address = guestStrVec[1], country = guestStrVec[2],
+//        nationality = guestStrVec[3], gender = guestStrVec[4], contact = guestStrVec[5],
+//        idNumber = guestStrVec[7], iDExpiryDate = guestStrVec[8], ccHolderName = guestStrVec[9],
+//        ccNumber = guestStrVec[10], ccExpiryDate = guestStrVec[11], ccCVV = guestStrVec[12];
+//        int n{};
+//        iDType = guestStrVec[6] == "Driving License" ? n = 2 : n = 1;
+//
+//        IdDetails id2{IdDetails::IDType(n), idNumber, iDExpiryDate};
+//        CreditCardDetails c3{ccHolderName, ccNumber, ccExpiryDate, ccCVV};
+//        std::unique_ptr<Guest> guest = std::make_unique<Guest>(name, address, country, nationality, gender, contact,
+//                                                               id2, c3);
+//
+//        //guestObjList.push_back(*guest);
+//        guestObjSet.emplace(*guest);
+//    }
     std::cout << "✅ Search Initiated Successfully...🚀" << std::endl;
 
     bool done{false};
     do {
         char search{};
-        std::string name{};
-        std::cout << "Enter Name / Passport / Driving License of Guest to search: ";
-        std::cin.ignore();
-        std::getline(std::cin, name);
-        auto result = findById(name);
-        if (!std::empty(result)) {
+        std::string searchTerm{};
+        std::cout << "Enter Guest Passport / Driving License: ";
+        std::cin >> searchTerm;
+        //std::getline(std::cin, searchTerm);
+        sResult = findById(searchTerm);
+        if (!sResult.getId().getIdNumber().empty()) {
             std::cout << "🟢 Found" << std::endl;
-            for (auto &res: result)
-                std::cout << res << std::endl;
+            //for (auto &res: searchResult)
+            std::cout << sResult << std::endl;
         } else
             std::cout << "🔴 Record NOT Found" << std::endl;
         std::cout << "Search Again? Enter (Y or N): ";
@@ -227,22 +230,24 @@ void GuestManager::searchMenu() {
         }
     } while (!done);
 
+    return sResult;
 }
 
 
-std::vector<Guest> GuestManager::findById(std::string searchTerm) {
+Guest GuestManager::findById(std::string searchTerm) {
     std::vector<Guest> result;
     //If found, copy the obj and insert into result vector
+
     std::copy_if(guestObjSet.begin(), guestObjSet.end(), std::back_inserter(result),
                  [searchTerm](const Guest &g) {
                      return (g.getId().getIdNumber() == searchTerm || g.getName() == searchTerm);
                  });
-    return result;
+    return result.at(0);
 }
 
 
-bool GuestManager::copyCSVtoGuestListVec() {
-    std::ifstream inFile{"../data/guestLists.csv"};
+bool GuestManager::copyCSVtoGuestObjSet(std::set<Guest> &guestObjSet) {
+    std::ifstream inFile{filename};
     std::string line{};
     std::string temp{};
     std::string word{};

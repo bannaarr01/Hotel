@@ -33,7 +33,7 @@ public:
 
     Room createRoom();
 
-    auto obtainRoomType(std::string &roomTypeNameStr, double price);
+    std::shared_ptr<RoomType> obtainRoomType(std::string &roomTypeNameStr, double price);
 
     //  void setTodayRoomStatus(Reservation);
 

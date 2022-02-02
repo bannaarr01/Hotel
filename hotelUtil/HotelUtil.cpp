@@ -10,7 +10,7 @@ int reservationDiffDatesInDays(std::string const &s1, std::string const &s2) {
     // Get the Duration between 2 Dates
     boost::gregorian::date_duration dur = checkOutDate - checkInDate;
     int duration = dur.days();
-    
+
     return duration;
 }
 
@@ -54,6 +54,7 @@ int obtainRoomAvailabilityStatus(std::string &roomAvailabilityStatusStr) {
     return result;
 }
 
+
 //Get Int value of BedType Enum
 int obtainBedType(std::string &bedTypeStr) {
     int result{};
@@ -63,5 +64,22 @@ int obtainBedType(std::string &bedTypeStr) {
         result = 2;
     else if (bedTypeStr == "Master")
         result = 3;
+
+    return result;
+}
+
+
+//Get Int value of ReservationStatus Enum
+int obtainReservationStatus(std::string &reservationStatusStr) {
+    int result{};
+    if (reservationStatusStr == "Wait List")
+        result = 1;
+    else if (reservationStatusStr == "Confirmed")
+        result = 2;
+    else if (reservationStatusStr == "Checked In")
+        result = 3;
+    else if (reservationStatusStr == "Expired")
+        result = 4;
+
     return result;
 }

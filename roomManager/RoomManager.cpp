@@ -213,7 +213,7 @@ void RoomManager::findByRoomNumber() {
 
 
 //Get Room type Name by returning a shared pointer to the room type
-auto RoomManager::obtainRoomType(std::string &roomTypeNameStr, double price) {
+std::shared_ptr<RoomType> RoomManager::obtainRoomType(std::string &roomTypeNameStr, double price) {
     std::shared_ptr<RoomType> roomType;
     if (roomTypeNameStr == "VIP")
         roomType = std::make_shared<RoomTypeVip>(price);

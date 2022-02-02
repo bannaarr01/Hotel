@@ -38,6 +38,8 @@ public:
     //Reservation Options
     static void reservationOptionDisplay();
 
+    //Existing Guest?
+    static void existingGuestDisplay();
 };
 
 

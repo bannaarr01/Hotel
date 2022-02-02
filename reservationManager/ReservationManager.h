@@ -13,6 +13,7 @@
 #include <vector>
 #include <string>
 #include <stdarg.h>
+#include <set>
 
 
 class ReservationManager {
@@ -21,9 +22,11 @@ private:
     std::string fileName{"../data/reservations.csv"};
     std::string fileName2{"../data/rooms.csv"};
     std::vector<Reservation> reservations;
+    std::set<Reservation> reservationsObjSet;
     Reservation reservation;
     std::vector<Room> roomsObjVec;
     std::vector<Room> result;
+    std::set<Guest> guestObjSet;
 
 public:
 
@@ -37,19 +40,20 @@ public:
     Room checkRoom(std::string &&roomType, std::string &&roomAvailability);
 
 
-    Reservation createReservation(std::vector<Room> &rooms, std::vector<Guest> &guests);
+    Reservation createReservation(Room &room, Guest &guest);
 
-    void subUpdateRoom(Room &room, int n = 2);
+    void subUpdateRoom(Room &room, int n = 3);
 
     void updateReservation(Reservation &reservation);
 
+    Guest existingGuest();
 
-
+    bool copyCsvToReservationsObjSet(std::set<Reservation> &reservationsObjSet);
 
     //void create();
 
 
-    std::vector<Reservation> getReservation() const;
+    // std::vector<Reservation> getReservation() const;
 //    void initReservationManager(RoomManager, GuestManager);
 //
 //    std::vector<Reservation> getReservations() const;

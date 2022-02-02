@@ -132,5 +132,14 @@ void UI::reservationOptionDisplay() {
     header(totalWidth, "OPTIONS", "1-5", listsToDisplay);
 }
 
+void UI::existingGuestDisplay() {
+    const int totalWidth{35};
+    std::vector<std::string> listsToDisplay{"Yes - Existing Guest", "No - New Guest",
+                                            "\033[1;36mRESERVATION MENU[0m️ ⬅",
+                                            "\033[1;36mMAIN MENU[0m️ ⬅",
+                                            "\033[1;31mEXIT ➡️[0m️"};
+    header(totalWidth, "EXISTING GUEST ?", "1-5", listsToDisplay);
+}
+
 
 

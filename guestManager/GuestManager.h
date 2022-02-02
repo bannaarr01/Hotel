@@ -19,11 +19,13 @@
 #include <string>
 #include <fstream>
 #include <nlohmann/json.hpp>
+#include <functional>
 
 
 class GuestManager {
 private:
     IoManager ioManager;
+    std::string filename{"../data/guestLists.csv"};
     std::vector<Guest> guestObjList;
     std::set<Guest> guestObjSet;
 public:
@@ -32,7 +34,7 @@ public:
 
     void updateMenu();
 
-    void searchMenu();
+    Guest searchMenu();
 
     Guest createGuess();
 
@@ -40,7 +42,7 @@ public:
         return guestObjList;
     }
 
-    std::vector<Guest> findById(std::string searchTerm);
+    Guest findById(std::string searchTerm);
 
 //    bool numberOfTimes(const std::string &searchName, const std::string &searchId, const std::string &line);
 //
@@ -48,7 +50,7 @@ public:
 
 //    Guest &operator++();
 
-    bool copyCSVtoGuestListVec();
+    bool copyCSVtoGuestObjSet(std::set<Guest> &guestObjSet);
 
 };
 

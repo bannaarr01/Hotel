@@ -28,5 +28,7 @@ int obtainRoomAvailabilityStatus(std::string &roomAvailabilityStatusStr);
 //Get Int value of BedType Enum
 int obtainBedType(std::string &bedTypeStr);
 
+//Get Int value of ReservationStatus Enum
+int obtainReservationStatus(std::string &reservationStatusStr);
 
 #endif //HOTEL_HOTELUTIL_H
