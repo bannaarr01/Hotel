@@ -86,7 +86,8 @@ Room RoomManager::createRoom() {
         }
         if (result) {
             //if exist throw an exception
-            throw AlreadyExistException{};
+            throw AlreadyExistException{
+                    "\033[1;31m 💥 Could Not save 🧨\n🔴 Room Already Exists in the system 🚨\033[0m"};
         } else {
             //if not, dereference the pointer and insert the details
             outFile << newRoom << std::endl;

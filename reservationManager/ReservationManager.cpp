@@ -6,7 +6,7 @@ Reservation ReservationManager::createReservation(Room &room, Guest &guest) {
     // Room room = checkRoom()
     //  std::vector<Room> rooms;
 
-    Reservation newReservation{room, "02/04/22", "01/05/22", 1, 1, guest};
+    Reservation newReservation{room, "2022/04/21", "2022/05/02", 1, 1, guest};
     // va_end(args);
 
 
@@ -57,6 +57,8 @@ Reservation ReservationManager::createReservation(Room &room, Guest &guest) {
 //}
 
 void ReservationManager::reservationMenu() {
+    reservationsObjSet.clear();
+    copyCsvToReservationsObjSet(reservationsObjSet);
     //Accept valid range and UI to display
     int selection = ioManager.inputValidation(1, 6, UI::reservationMenuDisplay);
 
@@ -68,7 +70,8 @@ void ReservationManager::reservationMenu() {
         }
         case 2: {
             std::cout << std::string(2, '\n');
-            copyCsvToReservationsObjSet(reservationsObjSet);
+            UI::reservationTabularDisplay(reservationsObjSet);
+            //copyCsvToReservationsObjSet(reservationsObjSet);
             break;
         }
         case 3: {
@@ -83,7 +86,7 @@ void ReservationManager::reservationMenu() {
         }
         case 5: {
             std::cout << std::string(2, '\n');
-            OverallManager::mainMenu();
+            std::cout << "\033[1;31mQuitting. . .[0m️";
             break;
         }
 
@@ -99,136 +102,70 @@ void ReservationManager::chooseAndDisplayRooms() {
     RoomManager roomManager;
     roomManager.copyCSVtoRoomObjVec(roomsObjVec);
     if (!(roomsObjVec.empty())) {
-        GuestManager gm;
-        Reservation newReservation;
-        Reservation rsv;
-//        std::vector<Room> rooms;
-        Room room;
-        // std::vector<Guest> guests;
-        Guest guest;
-        int pos{0};
-//      std::string reservationNumber{};
-        //Accept valid range and UI to display
-        int selection = ioManager.inputValidation(1, 7, UI::reservationSubMenuDisplay);
-        switch (selection) {
-            case 1: {
-                guest = existingGuest();
-                size_t numOfRooms{0};
-                //guests = existingGuest();
-                //since checkRoom func is returning a room, it's then insert to rooms vec directly
-                room = checkRoom("VIP", "Vacant");
-                if (!(room.getRoomNumber().empty())) {
-                    //check it the guest exists
-//                    (guest.getId().getIdNumber()).empty() ? guests.emplace_back(
-//                            gm.createGuess()) : guests.emplace_back(guest);
-                    (guest.getId().getIdNumber()).empty() ? guest = gm.createGuess() : guest;
-//                    if (numOfRooms != 3) {
-//                        std::cout << std::string(2, '\n');
-//                        std::cout
-//                                << "\033[1;31mSorry! Cannot add room. Reservation limit has been reached....[0m"
-//                                << std::endl;
-//                        reservationMenu();
-//                    }
-                    newReservation = createReservation(room, guest);
-                    reservations.emplace_back(newReservation);
-                    std::cout << "🟢 Reservation Created Successfully ✅" << std::endl;
-                    //update and override file
-                    subUpdateRoom(room);
-//                    reservationMenu();
+        bool done{false};
+        do {
+            int numOfRooms{0};
+            char more{};
+            Room room;
+            Guest guest;
+            //Accept valid range and UI to display
+            int selection = ioManager.inputValidation(1, 7, UI::reservationSubMenuDisplay);
+            switch (selection) {
+                case 1: {
+                    guest = existingGuest();
+                    //since checkRoom func is returning a room, it's then assign to room directly
+                    room = checkRoom("VIP", "Vacant");
+                    //create room of this type 👆🏻, passed-in guest, if exists, manage no of room Reserved, bool 2 stop if...
+                    createReservation(room, guest, numOfRooms, done);
+                    break;//end of case 1 of selection
                 }
-                //TO ADD MORE ROOMS TO JUST MADE RESERVATION
-                /*
-                 *
-//                bool done{false};
-//                do {
-//                    while (numOfRooms < 4) {
-//                        int option = ioManager.inputValidation(1, 5, UI::reservationOptionDisplay);
-////                        if (numOfRooms == 3) {
-////                            std::cout << std::string(2, '\n');
-////                            std::cout
-////                                    << "\033[1;31mSorry! Cannot add room. Reservation limit has been reached....[0m"
-////                                    << std::endl;
-////                            reservationMenu();
-////                        }
-//                        switch (option) {
-//                            case 1: {
-//                                ++pos;
-//                                //if user select add more rooms, then add ds and check the position if not Empty n create reservation
-//                                rooms.emplace_back(checkRoom("VIP", "Vacant"));
-//                                //if no available room, then don't create reservation nor guest
-//                                if (!(rooms.at(pos).getRoomNumber().empty())) {
-//                                    // guests.emplace_back(gm.createGuess());
-////                            createReservation(rooms, guests);
-//                                    // subUpdateRoom(rooms.at(pos));
-//                                    newReservation.addRoom(rooms.at(pos));
-//                                    std::cout << "🟢 " << newReservation << " ✅" << std::endl;
-//                                    rsv = newReservation;
-//                                    subUpdateRoom(rooms.at(pos));
-//                                    updateReservation(rsv);
-//                                    numOfRooms = rsv.getRooms().size();
-//                                }
-//                                break;
-//                            }
-//                            case 2: {
-//                                std::cout << std::string(2, '\n');
-//                            }
-//                        }
-//                    }
-//                    done = true;
-//                } while (!done);
-                 */
-                // if (!(newReservation.getReservationNumber().empty()))
-//                    std::cout << "🟢 Reservation Created Successfully ✅" << std::endl;
-                break;//end of case 1 of selection
-            }
-            case 2: {
-                std::cout << std::string(2, '\n');
-//                existingGuest();
-//                rooms.emplace_back(checkRoom("DELUXE", "Vacant"));
-//                if (!(rooms.at(0).getRoomNumber().empty())) {
-//                    guests.emplace_back(gm.createGuess());
-//                    createReservation(rooms, guests);
-//                }
-                break;
+                case 2: {
+                    std::cout << std::string(2, '\n');
+                    guest = existingGuest();
+                    room = checkRoom("DELUXE", "Vacant");
+                    createReservation(room, guest, numOfRooms, done);
+                    break;
 
+                }
+                case 3: {
+                    std::cout << std::endl;
+                    guest = existingGuest();
+                    room = checkRoom("DOUBLE", "Vacant");
+                    createReservation(room, guest, numOfRooms, done);
+                    break;
+                }
+                case 4: {
+                    std::cout << std::string(2, '\n');
+                    guest = existingGuest();
+                    room = checkRoom("SINGLE", "Vacant");
+                    createReservation(room, guest, numOfRooms, done);
+                    break;
+                }
+                case 5: {
+                    std::cout << std::string(2, '\n');
+                    reservationMenu();
+                    break;
+                }
+                case 6: {
+                    std::cout << std::string(2, '\n');
+                    OverallManager::mainMenu();
+                    break;
+                }
+                case 7: {
+                    std::cout << std::endl;
+                    std::cout << "\033[1;31mQuitting. . .[0m️";
+                    break;
+                }
             }
-            case 3: {
-                std::cout << std::endl;
-//                rooms.emplace_back(checkRoom("DOUBLE", "Vacant"));
-//                if (!(rooms.at(0).getRoomNumber().empty())) {
-//                    guests.emplace_back(gm.createGuess());
-//                    createReservation(rooms, guests);
-//                }
-                break;
-            }
-            case 4: {
-                std::cout << std::string(2, '\n');
-//                rooms.emplace_back(checkRoom("SINGLE", "Vacant"));
-//                if (!(rooms.at(0).getRoomNumber().empty())) {
-//                    guests.emplace_back(gm.createGuess());
-//                    createReservation(rooms, guests);
-//                }
-                break;
-            }
-            case 5: {
-                std::cout << std::string(2, '\n');
+            std::cout << "\nAdd More Reservation? Enter (Y or N): ";
+            std::cin >> more;
+            if (more == 'N' || more == 'n') {
+                done = true;
                 reservationMenu();
-                break;
             }
-            case 6: {
-                std::cout << std::string(2, '\n');
-                OverallManager::mainMenu();
-                break;
-            }
-            case 7: {
-                std::cout << std::endl;
-                std::cout << "\033[1;31mQuitting. . .[0m️";
-                break;
-            }
-
-        }
+        } while (!done);
     } else {
-        std::cout << "\033[1;31m🚨 Sorry, Room Reservation is unAvailable...Please Try again later.[0m️" << std::endl;
+        std::cout << "\033[1;31m🚨 Sorry, Room Reservation is Unavailable...Please Try again later.[0m️" << std::endl;
         reservationMenu();
     }
 }
@@ -355,7 +292,6 @@ void ReservationManager::updateReservation(Reservation &reservation) {
         }
     } catch (ErrorWritingToFileException ex) {
         // std::cout << ex.what() << std::endl;
-//        roomMenu();
     }
 
 }
@@ -375,17 +311,15 @@ Guest ReservationManager::existingGuest() {
                     std::string searchTerm{};
                     std::cout << "Enter Guest Passport / Driving License: ";
                     std::cin >> searchTerm;
+                    std::transform(searchTerm.begin(), searchTerm.end(), searchTerm.begin(), ::toupper);
                     std::copy_if(guestObjSet.begin(), guestObjSet.end(), std::back_inserter(result),
                                  [searchTerm](const Guest &g) {
                                      return (g.getId().getIdNumber() == searchTerm);
                                  });
                     if (!std::empty(result)) {
                         guest = result.at(0);
-                        // guest = gm.findById(searchTerm);
-                        // if (guest.getId().getIdNumber() == searchTerm)
                         std::cout << "🟢 Found" << std::endl;
-                        //   std::cout << sResult << std::endl;
-                        // return guest;
+                        //   std::cout << result << std::endl;
                     } else
                         std::cout << "🔴 Record NOT Found. 💥 SELECT N to enter guest details or Y to search again"
                                   << std::endl;
@@ -443,7 +377,7 @@ bool ReservationManager::copyCsvToReservationsObjSet(std::set<Reservation> &rese
             reservationStrVec.push_back(word);
         }
 
-        int idTypeNo{}, adultCountInt{}, childrenCountInt{};
+        int idTypeNo{};
         reservationNumber = reservationStrVec[0], roomNumber = reservationStrVec[1],
         roomAvailabilityStatus = reservationStrVec[2], bedType = reservationStrVec[3],
         isWifiEnabled = reservationStrVec[4] == "Yes", roomTypeName = reservationStrVec[5],
@@ -481,20 +415,112 @@ bool ReservationManager::copyCsvToReservationsObjSet(std::set<Reservation> &rese
 
         Reservation obtainedReservation{*obtainedRoom, checkInDate, checkOutDate, adultCount, childrenCount, *guest,
                                         isCreditCardBilled, hasPaid, reserveStatus, reservationNumber};
-
+        //Store each of the reservation in reservationsObjSet
         reservationsObjSet.emplace(obtainedReservation);
     }
 
-    for (const auto r: reservationsObjSet)
-        std::cout << r << std::endl;
-    
-
     return true;
+}
+
+std::set<Reservation>
+ReservationManager::getGuestReservation(Guest &guest, std::set<Reservation> &reservationsObjSet) {
+    std::set<Reservation> res;
+
+    std::copy_if(reservationsObjSet.begin(), reservationsObjSet.end(), std::inserter(res, res.end()),
+                 [&](const Reservation &r) {
+                     return (r.getGuest() == guest);//this compare d guest ID as defined in guest class with overload==
+                 });
+    return res;
+}
+
+void ReservationManager::createReservation(Room &room, Guest &guest, int &numOfRooms, bool &done) {
+    GuestManager gm;
+    Reservation newReservation;
+    //don't bother to create guest nor reservation if no available room for this room type
+    if (!(room.getRoomNumber().empty())) {
+        //If the guest exists, use the guest info in d system to create reservation : else input guest info
+        (guest.getId().getIdNumber()).empty() ? guest = gm.createGuess() : guest;
+        //
+        //Even though err was made with selection of Exist guest or Not, this checking will still capture
+        if (!(guest.getId().getIdNumber()).empty()) {
+            auto rs = getGuestReservation(guest, reservationsObjSet);
+            if (!std::empty(rs)) {
+                for (const auto &r: rs) {
+                    //If checking date yyyy-mm-dd minus today's date is > 1, increment d room number
+                    if (differenceDatesInDays(r.getCheckInDate()) >= 1) {
+                        numOfRooms += 1;
+                    }
+                }
+            }
+        }//check the guest reservation record for reserved room that has not been checked-In Yet
+        //
+        if (numOfRooms > 2) {
+            std::cout << std::string(2, '\n');
+            std::cout
+                    << "\033[1;31mSorry! Unable to complete operation. Reservation limit has been reached....[0m"
+                    << std::endl;
+            done = true;
+            reservationMenu();
+        }
+        //create a new reservation
+        newReservation = createReservation(room, guest);
+        if (!(newReservation.getReservationNumber().empty())) {
+            //Update the reservation Set, In case of further reservation while new CopyFromCsv Not Updated Yet
+            reservationsObjSet.emplace(newReservation);
+            std::cout << "🟢 Reservation Created Successfully ✅" << std::endl;
+            //update and override Room file
+            subUpdateRoom(room);
+        } else
+            std::cerr << "Sorry! Your Reservation could not be completed ! Try again later..."
+                      << std::endl;
+    }
 }
 
 
 
 
+
+//TO ADD MORE ROOMS TO JUST MADE RESERVATION
+/*
+ *
+//                bool done{false};
+//                do {
+//                    while (numOfRooms < 4) {
+//                        int option = ioManager.inputValidation(1, 5, UI::reservationOptionDisplay);
+////                        if (numOfRooms == 3) {
+////                            std::cout << std::string(2, '\n');
+////                            std::cout
+////                                    << "\033[1;31mSorry! Cannot add room. Reservation limit has been reached....[0m"
+////                                    << std::endl;
+////                            reservationMenu();
+////                        }
+//                        switch (option) {
+//                            case 1: {
+//                                ++pos;
+//                                //if user select add more rooms, then add ds and check the position if not Empty n create reservation
+//                                rooms.emplace_back(checkRoom("VIP", "Vacant"));
+//                                //if no available room, then don't create reservation nor guest
+//                                if (!(rooms.at(pos).getRoomNumber().empty())) {
+//                                    // guests.emplace_back(gm.createGuess());
+////                            createReservation(rooms, guests);
+//                                    // subUpdateRoom(rooms.at(pos));
+//                                    newReservation.addRoom(rooms.at(pos));
+//                                    std::cout << "🟢 " << newReservation << " ✅" << std::endl;
+//                                    rsv = newReservation;
+//                                    subUpdateRoom(rooms.at(pos));
+//                                    updateReservation(rsv);
+//                                    numOfRooms = rsv.getRooms().size();
+//                                }
+//                                break;
+//                            }
+//                            case 2: {
+//                                std::cout << std::string(2, '\n');
+//                            }
+//                        }
+//                    }
+//                    done = true;
+//                } while (!done);
+ */
 
 
 

@@ -3,12 +3,11 @@
 
 Reservation::Reservation(Room &room, std::string checkInDate, std::string checkOutDate,
                          int adultCount, int childrenCount, Guest &guest, bool isCreditCardBilled,
-                         bool hasPaid, ReservationStatus reservationStatus, std::string reservationNumber)
+                         bool hasPaid, ReservationStatus reservationStatus, const std::string &reservationNumber)
         : room{room}, checkInDate{checkInDate}, checkOutDate{checkOutDate}, adultCount{adultCount},
           childrenCount{childrenCount}, guest{guest}, isCreditCardBilled{isCreditCardBilled},
-          hasPaid{hasPaid}, reservationStatus{reservationStatus}, reservationNumber{reservationNumber} {
+          hasPaid{hasPaid}, reservationStatus{reservationStatus}, reservationNumber{boost::uuids::to_string(u)} {
     //reservationNumber = boost::uuids::to_string(u); //auto generate uuid for new reservation
-    //  reservationStatus = Reservation::ReservationStatus::WAIT_LIST;
 }
 
 //Reservation::Reservation(std::vector<Room> &rooms, std::string checkInDate, std::string checkOutDate,
@@ -98,11 +97,27 @@ void Reservation::addRoom(Room &room) {
 }
 
 bool Reservation::operator==(const Reservation &rhs) const {
-    return this->reservationNumber == rhs.reservationNumber;
+    return this->guest == rhs.guest;
 }
 
 bool Reservation::operator<(const Reservation &rhs) const {
     return this->reservationNumber < rhs.reservationNumber;
+}
+
+std::string Reservation::getCheckOutDate() const {
+    return checkOutDate;
+}
+
+bool Reservation::getHasPaid() const {
+    return hasPaid;
+}
+
+int Reservation::getAdultCount() const {
+    return adultCount;
+}
+
+int Reservation::getChildrenCount() const {
+    return childrenCount;
 }
 
 

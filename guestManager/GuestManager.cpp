@@ -10,6 +10,7 @@ void GuestManager::guestMenu() {
         case 1: {
             std::cout << std::string(2, '\n');
             createGuess();
+            guestMenu();
             break;
         }
         case 2: {
@@ -49,8 +50,8 @@ void GuestManager::updateMenu() {
                 std::cin >> guestId;
                 /// std::getline(std::cin, name);
                 auto result = findById(guestId);
-                if (!result.getId().getIdNumber().empty()) {
-                    guest = result;
+                if (!result.empty()) {
+                    guest = result.at(0);
                     auto it = guestObjSet.find(guest);
                     if (it != guestObjSet.end()) {
                         std::cout << "🟢 FOUND" << std::endl;
@@ -139,7 +140,8 @@ Guest GuestManager::createGuess() {
         }
         if (result) {
             //if exist throw an exception
-            throw AlreadyExistException{};
+            throw AlreadyExistException{
+                    "\033[1;31m 💥 Could Not save 🧨\n🔴 Guest Already Exists in the system 🚨\033[0m"};
         } else {
             //if not, dereference the pointer and insert the details
             outFile << *guest << std::endl;
@@ -162,7 +164,8 @@ Guest GuestManager::createGuess() {
 
 Guest GuestManager::searchMenu() {
     copyCSVtoGuestObjSet(guestObjSet);
-    Guest sResult;
+    std::vector<Guest> searchResult;
+    Guest guest;
 //    std::ifstream inFile{filename};
 //    std::vector<Guest> searchResult;
 //    std::string line{};
@@ -214,11 +217,13 @@ Guest GuestManager::searchMenu() {
         std::cout << "Enter Guest Passport / Driving License: ";
         std::cin >> searchTerm;
         //std::getline(std::cin, searchTerm);
-        sResult = findById(searchTerm);
-        if (!sResult.getId().getIdNumber().empty()) {
+        std::transform(searchTerm.begin(), searchTerm.end(), searchTerm.begin(), ::toupper);
+        searchResult = findById(searchTerm);
+        if (!searchResult.empty()) {
+            guest = searchResult.at(0);
             std::cout << "🟢 Found" << std::endl;
             //for (auto &res: searchResult)
-            std::cout << sResult << std::endl;
+            std::cout << guest << std::endl;
         } else
             std::cout << "🔴 Record NOT Found" << std::endl;
         std::cout << "Search Again? Enter (Y or N): ";
@@ -230,11 +235,11 @@ Guest GuestManager::searchMenu() {
         }
     } while (!done);
 
-    return sResult;
+    return guest;
 }
 
 
-Guest GuestManager::findById(std::string searchTerm) {
+std::vector<Guest> GuestManager::findById(std::string &searchTerm) {
     std::vector<Guest> result;
     //If found, copy the obj and insert into result vector
 
@@ -242,7 +247,8 @@ Guest GuestManager::findById(std::string searchTerm) {
                  [searchTerm](const Guest &g) {
                      return (g.getId().getIdNumber() == searchTerm || g.getName() == searchTerm);
                  });
-    return result.at(0);
+
+    return result;
 }
 
 

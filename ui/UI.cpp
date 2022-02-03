@@ -141,5 +141,64 @@ void UI::existingGuestDisplay() {
     header(totalWidth, "EXISTING GUEST ?", "1-5", listsToDisplay);
 }
 
+void UI::reservationTabularDisplay(const std::set<Reservation> &reservationSet) {
+    const int total_width{80};             //Total width of ruler
+    const int field1_width{40};           //Reservation No
+    const int field2_width{9};           //Room #
+    const int field3_width{11};         //Room Type
+    const int field4_width{11};        //Guest ID
+    const int field5_width{9};        //Status
+    //==============================================
+    const int field6_width{37};     //Check-In Date
+    const int field7_width{20};    //Check-Out Date
+    //==============================================
+    const int field8_width{34};
+    const int field9_width{22};
+
+
+    std::string title{"RESERVATION(s)"};
+    int title_length = title.length();
+    std::cout << std::setw((total_width - title_length) / 2) << "" << "\033[1;36m" + title + "[0m️" << std::endl;
+
+    std::cout << std::setw(total_width) << std::setfill('-') << "" << std::endl;   // display total_width dashes
+    std::cout << std::setfill(' '); // reset set-fill to blank spaces
+
+    std::cout << std::setw(field1_width) << std::left << "Reservation No."
+              << std::setw(field2_width) << std::left << "Room #"
+              << std::setw(field3_width) << std::left << "Room Type"
+              << std::setw(field4_width) << std::left << "Guest ID"
+              << std::setw(field5_width) << std::left << "Rs Status"
+              << std::endl;
+
+    std::cout << std::setw(total_width) << std::setfill('-') << "" << std::endl;
+    std::cout << std::setfill(' ');
+    std::cout << std::setprecision(2) << std::fixed; // for displaying the price with 2 decimal digits
+    for (const Reservation &reservation: reservationSet) {
+        std::cout << std::setw(field1_width) << std::left << reservation.getReservationNumber()
+                  << std::setw(field2_width) << std::left << reservation.getRoom().getRoomNumber()
+                  << std::setw(field3_width) << std::left << reservation.getRoom().getRoomType()->getRoomTypeName()
+                  << std::setw(field4_width) << std::left << reservation.getGuest().getId().getIdNumber()
+                  << std::setw(field5_width) << std::left
+                  << reservation.reservationStatusToString(reservation.getReservationStatus())
+                  << std::endl;
+        std::cout << std::setw(field6_width) << std::left << "\033[1;36mCheck-In Date: [0m"
+                  << std::setw(field8_width) << std::left << reservation.getCheckInDate()
+                  << std::setw(field7_width) << std::left << "\033[1;32mTotal $: [0m"
+                  << std::setw(field5_width) << std::left
+                  << "[1;36m" << reservation.getRoom().getRoomType()->getPrice() << "[0m"
+                  << std::endl;
+        std::cout << std::setw(field6_width) << std::left << "\033[1;32mCheck-Out Date: [0m"
+                  << std::setw(field8_width) << std::left << reservation.getCheckOutDate()
+                  << std::setw(field9_width) << std::left << "\033[1;36mPaid ?[0m"
+                  << std::setw(field5_width) << std::left
+                  << (reservation.getHasPaid() == 0 ? "\033[1;31mNOT YET[0m" : "\033[1;32mPAID ✅[0m")
+                  << std::endl << std::endl;
+    }//For Each Reservation
+
+    std::cout << std::setw(total_width) << std::setfill('-') << "" << std::endl;
+    std::cout << std::setfill(' ');
+    std::cout << std::endl << std::endl;
+}
+
 
 

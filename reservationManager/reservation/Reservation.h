@@ -10,7 +10,7 @@
 #include <boost/uuid/uuid_io.hpp>
 #include <string>
 
-static boost::uuids::uuid u = boost::uuids::random_generator()();
+//static boost::uuids::uuid u = boost::uuids::random_generator()();
 
 class Reservation : public IPrintable {
 public:
@@ -23,7 +23,7 @@ public:
     Reservation(Room &room, std::string checkInDate, std::string checkOutDate,
                 int adultCount, int childrenCount, Guest &guest, bool isCreditCardBilled = false,
                 bool hasPaid = false, ReservationStatus reservationStatus = Reservation::ReservationStatus::WAIT_LIST,
-                std::string reservationNumber = boost::uuids::to_string(u));
+                const std::string &reservationNumber = "None");
 
 
 //    Reservation(std::vector<Room> &rooms, std::string checkInDate, std::string checkOutDate,
@@ -32,6 +32,8 @@ public:
     std::string getReservationNumber() const;
 
     std::string getCheckInDate() const;
+
+    std::string getCheckOutDate() const;
 
 //    std::vector<Guest> getGuests() const;
     Guest getGuest() const;
@@ -45,6 +47,12 @@ public:
 
     std::string reservationStatusToString(Reservation::ReservationStatus reservationStatus) const;
 
+    bool getHasPaid() const;
+
+    int getChildrenCount() const;
+
+    int getAdultCount() const;
+
     bool operator==(const Reservation &rhs) const;
 
     virtual void print(std::ostream &os) const override;
@@ -54,6 +62,7 @@ public:
     virtual ~Reservation() = default;
 
 private:
+    boost::uuids::uuid u = boost::uuids::random_generator()();
     std::string reservationNumber;
     std::string checkInDate;
     std::string checkOutDate;

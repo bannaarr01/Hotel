@@ -61,7 +61,7 @@ Guest IoManager::askInputToCreateNewGuest() {
     std::string gender{"male"};
     std::string contact{"1234556950"};
     int iDType{2};
-    std::transform(name.begin(), name.end(), name.begin(), ::toupper);
+    // std::transform(name.begin(), name.end(), name.begin(), ::toupper);
     std::transform(idNumber.begin(), idNumber.end(), idNumber.begin(), ::toupper);
     CreditCardDetails c{"Frank", "374245455400126", "2025", "567"};
     IdDetails id{IdDetails::IDType(iDType), idNumber, "9999"};

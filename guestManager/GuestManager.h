@@ -42,7 +42,7 @@ public:
         return guestObjList;
     }
 
-    Guest findById(std::string searchTerm);
+    std::vector<Guest> findById(std::string &searchTerm);
 
 //    bool numberOfTimes(const std::string &searchName, const std::string &searchId, const std::string &line);
 //

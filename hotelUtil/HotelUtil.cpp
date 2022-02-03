@@ -17,7 +17,8 @@ int reservationDiffDatesInDays(std::string const &s1, std::string const &s2) {
 //Accept date formatted as ("yyyy-mm-day") and subtract it from today's date, return int
 int differenceDatesInDays(std::string const &s) {
     using namespace boost::gregorian;
-    return (day_clock::local_day() - from_string(s)).days();
+    //return (day_clock::local_day() - from_string(s)).days();
+    return (from_string(s) - day_clock::local_day()).days();
 }
 
 

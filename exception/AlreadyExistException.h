@@ -4,13 +4,22 @@
 
 class AlreadyExistException : public std::exception {
 public:
-    AlreadyExistException() noexcept = default;
+    explicit AlreadyExistException(const char *message) noexcept: msg{message} {}
 
-    ~AlreadyExistException() = default;
+    //copy constructor
+    //  AlreadyExistException(AlreadyExistException const &) noexcept = default;
 
-    virtual const char *what() const noexcept {
-        return "\033[1;31m 💥 Could Not save 🧨\n🔴 ID Already Exists in the system 🚨\033[0m";
+    //copy assignment
+    //   AlreadyExistException &operator=(AlreadyExistException const &) noexcept = default;
+
+    ~AlreadyExistException() override = default;
+
+    virtual const char *what() const noexcept override {
+        return msg;
     }
+
+private:
+    const char *msg;
 };
 
 

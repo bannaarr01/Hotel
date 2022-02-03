@@ -14,6 +14,9 @@
 #include <string>
 #include <stdarg.h>
 #include <set>
+#include <iterator>
+#include <algorithm>
+#include <boost/range/adaptors.hpp>
 
 
 class ReservationManager {
@@ -48,7 +51,12 @@ public:
 
     Guest existingGuest();
 
+    std::set<Reservation>
+    getGuestReservation(Guest &guest, std::set<Reservation> &reservationsObjSet);
+
     bool copyCsvToReservationsObjSet(std::set<Reservation> &reservationsObjSet);
+
+    void createReservation(Room &room, Guest &guest, int &numOfRooms, bool &done);
 
     //void create();
 

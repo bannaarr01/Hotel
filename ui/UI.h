@@ -4,7 +4,9 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
+#include <set>
 #include "../roomManager/room/Room.h"
+#include "../reservationManager/reservation/Reservation.h"
 
 class UI {
 public:
@@ -40,6 +42,9 @@ public:
 
     //Existing Guest?
     static void existingGuestDisplay();
+
+    //Display Rooms in tabular format
+    static void reservationTabularDisplay(const std::set<Reservation> &reservationSet);
 };
 
 
