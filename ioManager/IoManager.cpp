@@ -104,6 +104,33 @@ Reservation IoManager::askInputToMakeReservation() {
     return Reservation();
 }
 
+std::string IoManager::validateDate(const std::string &title) {
+    std::string validDateStr;
+    std::string userInputDate;
+    bool done{false};
+    do {
+        try {
+            std::cout << "\033[1;35mEnter " << title << " format ex: "
+                      << to_iso_extended_string(boost::gregorian::day_clock::universal_day()) << " (YYYY-MM-DD): [0m️";
+            std::cin >> userInputDate;
+            userInputDate.erase(remove(userInputDate.begin(), userInputDate.end(), '-'), userInputDate.end());
+            boost::gregorian::date dateObj(boost::gregorian::from_undelimited_string(userInputDate));
+//            if (differenceDatesInDays(userInputDate) < 0) {
+            if ((dateObj - boost::gregorian::day_clock::universal_day()).days() < 0) {
+                std::cout << "\033[1;31mDate cannot be in the past. Enter valid date[0m" << std::endl;
+            } else {
+                done = true;
+                validDateStr = userInputDate;
+                std::cout << "✅  ✅  ✅" << std::endl;
+            }
+        } catch (...) {
+            std::cout << "\033[1;31mInvalid Date Entry. Follow the format given (YYYY-MM-DD) with valid Date[0m️"
+                      << std::endl;
+        }
+    } while (!done);
+    return validDateStr;
+}
+
 
 
 

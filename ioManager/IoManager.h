@@ -9,8 +9,11 @@
 #include "../ui/UI.h"
 #include "../guestManager/guest/Guest.h"
 #include "../roomManager/room/Room.h"
+//#include "../hotelUtil/HotelUtil.h"
 #include "../reservationManager/reservation/Reservation.h"
 #include "../exception/InvalidEntryException.h"
+#include <boost/date_time/gregorian/gregorian.hpp>
+
 
 class IoManager {
 //All input and Output method will be here
@@ -23,6 +26,8 @@ public:
     Guest askInputToCreateNewGuest();
 
     Room askInputAndCreateNewRoom();
+
+    std::string validateDate(const std::string &title);
 
     Reservation askInputToMakeReservation();
 };

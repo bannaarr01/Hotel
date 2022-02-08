@@ -21,6 +21,7 @@
 //#include <memory>
 
 class RoomManager {
+private:
     IoManager ioManager;
     std::string fileName{"../data/rooms.csv"};
     std::vector<Room> roomsObjVec;

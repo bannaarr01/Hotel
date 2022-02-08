@@ -81,9 +81,15 @@ void ReservationManager::chooseAndDisplayRooms() {
             int selection = ioManager.inputValidation(1, 7, UI::reservationSubMenuDisplay);
             switch (selection) {
                 case 1: {
-                    guest = existingGuest();
                     //since checkRoom func is returning a room, it's then assign to room directly
                     room = checkRoom("VIP", "Vacant");
+                    std::cout << "\033[1;4;34mCheck Room #" << room.getRoomNumber()
+                              << " Availability[0m" << std::endl;
+
+                    std::string checkInDate = ioManager.validateDate("CheckIn-Date");
+                    std::string checkOutDate = ioManager.validateDate("CheckOut-Date");
+                    std::cout << checkInDate << " - " << checkOutDate << std::endl;
+                    guest = existingGuest();
                     //create room of this type 👆🏻, passed-in guest, if exists, manage no of room Reserved, bool 2 stop if...
                     createReservation(room, guest, numOfRooms, done);
                     break;//end of case 1 of selection

@@ -18,7 +18,10 @@ int reservationDiffDatesInDays(std::string const &s1, std::string const &s2) {
 int differenceDatesInDays(std::string const &s) {
     using namespace boost::gregorian;
     //return (day_clock::local_day() - from_string(s)).days();
-    return (from_string(s) - day_clock::local_day()).days();
+    //from_undelimited_string
+    //from_string(s)
+    //day_clock::universal_day()
+    return (from_undelimited_string(s) - day_clock::universal_day()).days();
 }
 
 
