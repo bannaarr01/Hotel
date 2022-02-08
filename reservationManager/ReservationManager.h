@@ -6,6 +6,7 @@
 #include "../ioManager/IoManager.h"
 #include "reservation/Reservation.h"
 #include "../roomManager/RoomManager.h"
+#include "ManageOverlap.h"
 #include "../paymentManager/PaymentManager.h"
 //#include "../exception/AlreadyExistException.h"
 //#include "../exception/ErrorOpeningFileException.h"
@@ -47,9 +48,9 @@ public:
 
     void subUpdateRoom(Room &room, int n = 3);
 
-    void updateReservation(Reservation &reservation);
-
     Guest existingGuest();
+
+    void checkOverlap();
 
     std::set<Reservation>
     getGuestReservation(Guest &guest, std::set<Reservation> &reservationsObjSet);
@@ -58,28 +59,27 @@ public:
 
     void createReservation(Room &room, Guest &guest, int &numOfRooms, bool &done);
 
-    //void create();
+    void manageReservation();
+
+    void confirmReservationStatus();
+
+    void changeReservationPaymentStatus();
+
+    void updateReservation(Reservation &reservation);
 
 
-    // std::vector<Reservation> getReservation() const;
-//    void initReservationManager(RoomManager, GuestManager);
-//
-//    std::vector<Reservation> getReservations() const;
-//
-//    void setReservations(std::vector<Reservation>);
-//
+    void updateReservationCreditCard();
+
+    void updateReservationRoom();
+
+    void updateReservationGuestInfo();
+
 //    void reservationCheckIn(); //check in
 //    void reservationCheckOut(); //check out
-//
-//    void changeReservationCreditCard();
-//
-//    void removeRoomFromReservation();
-//
-//    void removeGuestFromReservation();
 
-    // printReservation// call reservation to tabular UI
+    void pintExpiredReservations() const;
 
-
+    void printReservations() const;
 
 
 };

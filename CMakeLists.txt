@@ -26,11 +26,11 @@ add_executable(Hotel main.cpp
         guestManager/guest/IdDetails.cpp guestManager/guest/IdDetails.h
         overallManager/OverallManager.cpp overallManager/OverallManager.h
         interface/IPrintable.cpp interface/IPrintable.h paymentManager/payment/PaymentDetails.cpp
-        paymentManager/payment/PaymentDetails.h paymentManager/Promotion.cpp
-        paymentManager/Promotion.h exception/InvalidEntryException.h
+        paymentManager/payment/PaymentDetails.h paymentManager/payment/Promotion.cpp
+        paymentManager/payment/Promotion.h exception/InvalidEntryException.h
         exception/AlreadyExistException.h exception/ErrorOpeningFileException.h
         exception/ErrorWritingToFileException.h ui/UI.cpp ui/UI.h hotelUtil/HotelUtil.cpp
-        hotelUtil/HotelUtil.h reservationManager/reservation/Reservation.cpp reservationManager/reservation/Reservation.h)
+        hotelUtil/HotelUtil.h reservationManager/reservation/Reservation.cpp reservationManager/reservation/Reservation.h reservationManager/ManageOverlap.cpp reservationManager/ManageOverlap.h)
 
 target_link_libraries(Hotel PRIVATE nlohmann_json::nlohmann_json)
 target_link_libraries(Hotel PRIVATE ${Boost_LIBRARIES})

@@ -15,7 +15,7 @@
 class Reservation : public IPrintable {
 public:
     enum ReservationStatus {
-        WAIT_LIST = 1, CONFIRMED = 2, CHECKED_IN = 3, EXPIRED = 4
+        WAIT_LIST = 1, CONFIRMED = 2, CHECKED_IN = 3, CHECKED_OUT = 4
     };
 
     Reservation() = default;

@@ -48,8 +48,8 @@ std::string Reservation::reservationStatusToString(Reservation::ReservationStatu
         case Reservation::ReservationStatus::CONFIRMED:
             result = "Confirmed";
             break;
-        case Reservation::ReservationStatus::EXPIRED:
-            result = "Expired";
+        case Reservation::ReservationStatus::CHECKED_OUT:
+            result = "Checked Out";
             break;
     }
     return result;
@@ -58,7 +58,8 @@ std::string Reservation::reservationStatusToString(Reservation::ReservationStatu
 void Reservation::print(std::ostream &os) const {
     os << reservationNumber << "," << room << ","
        << checkInDate << "," << checkOutDate << "," << reservationStatusToString(reservationStatus)
-       << "," << adultCount << "," << childrenCount << "," << guest << "," << isCreditCardBilled << "," << hasPaid;
+       << "," << adultCount << "," << childrenCount << "," << guest << "," << isCreditCardBilled << "," << hasPaid
+       << std::endl;
 }
 
 std::string Reservation::getReservationNumber() const {

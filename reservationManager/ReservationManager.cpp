@@ -2,59 +2,24 @@
 
 Reservation ReservationManager::createReservation(Room &room, Guest &guest) {
 //    auto newReservation = ioManager.askInputToMakeReservation();
-//    reservations.push_back(newReservation);
-    // Room room = checkRoom()
-    //  std::vector<Room> rooms;
-
     Reservation newReservation{room, "2022/04/21", "2022/05/02", 1, 1, guest};
-    // va_end(args);
 
-
-    // std::cout << newReservation << std::endl;
-//    std::string searchGuestId{newReservation.getGuest().getId().getIdNumber()};
-//    std::string searchCheckInDate{newReservation.getCheckInDate()};
-
-    std::ifstream inFile{fileName, std::ios::in};
     std::ofstream outFile{fileName, std::ios::app};
     std::string line{};
-    // bool result{false};
     try {
-        if (!inFile) {
-            throw ErrorOpeningFileException{};
-        }
         if (!outFile) {
             throw ErrorWritingToFileException{};
         }
-//        while (inFile >> line) {
-//            //check if the name and id exist
-//            if (numberOfTimes(searchCheckInDate, searchGuestId, line))
-//                result = true;
-//        }
-//        if (result) {
-//            //if exist throw an exception
-//            throw AlreadyExistException{};
-//        } else {
-        //if not, dereference the pointer and insert the details
-        outFile << newReservation << std::endl;
-        //  std::cout << "🟢 Reservation successfully created ✅" << std::endl;
-        //  }
-//    } catch (const AlreadyExistException ex) {
-//        std::cout << ex.what() << std::endl;
-    } catch (const ErrorOpeningFileException ex) {
-        std::cout << ex.what() << std::endl;
+        outFile << newReservation;
     } catch (const ErrorWritingToFileException ex) {
         std::cout << ex.what() << std::endl;
     }
-    //closing both files
-    inFile.close();
+
     outFile.close();
 
     return newReservation;
 }
 
-//std::vector<Reservation> ReservationManager::getReservation() const {
-//    return reservations;
-//}
 
 void ReservationManager::reservationMenu() {
     reservationsObjSet.clear();
@@ -65,27 +30,31 @@ void ReservationManager::reservationMenu() {
     switch (selection) {
         case 1: {
             std::cout << std::string(2, '\n');
+            //Choose and Display Rooms and Additionally make a reservation
             chooseAndDisplayRooms();
             break;
         }
         case 2: {
             std::cout << std::string(2, '\n');
-            UI::reservationTabularDisplay(reservationsObjSet);
-            //copyCsvToReservationsObjSet(reservationsObjSet);
+            //Display all active reservations in tabular form
+            printReservations();
             break;
         }
         case 3: {
             std::cout << std::endl;
-            //   searchMenu();
+            //Manage Existing Reservation
+            manageReservation();
             break;
         }
         case 4: {
             std::cout << std::string(2, '\n');
+            //Go back to Main Menu
             OverallManager::mainMenu();
             break;
         }
         case 5: {
             std::cout << std::string(2, '\n');
+            //Stop and Exit the System
             std::cout << "\033[1;31mQuitting. . .[0m️";
             break;
         }
@@ -143,7 +112,8 @@ void ReservationManager::chooseAndDisplayRooms() {
                 }
                 case 5: {
                     std::cout << std::string(2, '\n');
-                    reservationMenu();
+                    // reservationMenu();
+                    checkOverlap();
                     break;
                 }
                 case 6: {
@@ -255,7 +225,6 @@ void ReservationManager::subUpdateRoom(Room &room, int n) {
                     outFile << elem << std::endl;
                 outFile.close();
                 //  std::cout << "🟢 Room updated successfully ✅" << std::endl;
-//                roomMenu();
             } else
                 iterator++; //only increment the iterator if not erased
         }
@@ -266,35 +235,25 @@ void ReservationManager::subUpdateRoom(Room &room, int n) {
 
 }
 
+void ReservationManager::checkOverlap() {
+    long d = std::stod("20220207");
+    long d2 = std::stod("20220214");
 
-void ReservationManager::updateReservation(Reservation &reservation) {
-    try {
-        std::ofstream outFile{fileName, std::ios::trunc};
-        std::string line{};
+    long d3 = std::stod("20220215");
+    long d4 = std::stod("20220217");
 
-        auto iterator = reservations.begin();
-        while (iterator != reservations.end()) {
-            if (*iterator == reservation) {
-                reservations.erase(iterator);
-                //reservations.push_back(reservation);
-                reservations.emplace_back(reservation);
-                // std::sort(begin(reservations), end(reservations));
-                if (!outFile) {
-                    throw ErrorWritingToFileException{};
-                }
-                for (const auto &elem: reservations)
-                    outFile << elem << std::endl;
-                outFile.close();
-                //  std::cout << "🟢 Room updated successfully ✅" << std::endl;
-//                roomMenu();
-            } else
-                iterator++; //only increment the iterator if not erased
-        }
-    } catch (ErrorWritingToFileException ex) {
-        // std::cout << ex.what() << std::endl;
-    }
+    long d5 = std::stod("20220213");
+    long d6 = std::stod("20220220");
+    std::vector<Interval> reservedDates{
+            {d,  d2},
+            {d3, d4},
+            {d5, d6}
+    };
+    std::cout << "Following are conflicting intervals\n";
+    displayConflicting(reservedDates);
 
 }
+
 
 Guest ReservationManager::existingGuest() {
     GuestManager gm;
@@ -318,11 +277,12 @@ Guest ReservationManager::existingGuest() {
                                  });
                     if (!std::empty(result)) {
                         guest = result.at(0);
-                        std::cout << "🟢 Found" << std::endl;
+                        std::cout << "🟢 Guest Record Found" << std::endl;
                         //   std::cout << result << std::endl;
                     } else
-                        std::cout << "🔴 Record NOT Found. 💥 SELECT N to enter guest details or Y to search again"
-                                  << std::endl;
+                        std::cout
+                                << "\033[1;31m🔴 Record NOT Found. \n💥 Enter N to INPUT new guest details or Y to search again[0m"
+                                << std::endl;
                     std::cout << "\nSearch Again? Enter (Y or N): ";
                     std::cin >> search;
                     if (search == 'N' || search == 'n') {
@@ -475,6 +435,70 @@ void ReservationManager::createReservation(Room &room, Guest &guest, int &numOfR
                       << std::endl;
     }
 }
+
+void ReservationManager::manageReservation() {
+
+}
+
+void ReservationManager::updateReservation(Reservation &reservation) {
+    try {
+        std::ofstream outFile{fileName, std::ios::trunc};
+        std::string line{};
+
+        auto iterator = reservations.begin();
+        while (iterator != reservations.end()) {
+            if (*iterator == reservation) {
+                reservations.erase(iterator);
+                //reservations.push_back(reservation);
+                reservations.emplace_back(reservation);
+                // std::sort(begin(reservations), end(reservations));
+                if (!outFile) {
+                    throw ErrorWritingToFileException{};
+                }
+                for (const auto &elem: reservations)
+                    outFile << elem << std::endl;
+                outFile.close();
+                //  std::cout << "🟢 Room updated successfully ✅" << std::endl;
+//                roomMenu();
+            } else
+                iterator++; //only increment the iterator if not erased
+        }
+    } catch (ErrorWritingToFileException ex) {
+        // std::cout << ex.what() << std::endl;
+    }
+
+}
+
+void ReservationManager::printReservations() const {
+    UI::reservationTabularDisplay(reservationsObjSet);
+}
+
+void ReservationManager::updateReservationCreditCard() {
+
+}
+
+void ReservationManager::updateReservationRoom() {
+
+}
+
+void ReservationManager::updateReservationGuestInfo() {
+
+}
+
+void ReservationManager::pintExpiredReservations() const {
+
+}
+
+void ReservationManager::confirmReservationStatus() {
+
+}
+
+void ReservationManager::changeReservationPaymentStatus() {
+
+}
+
+
+
 
 
 

@@ -79,7 +79,7 @@ int obtainReservationStatus(std::string &reservationStatusStr) {
         result = 2;
     else if (reservationStatusStr == "Checked In")
         result = 3;
-    else if (reservationStatusStr == "Expired")
+    else if (reservationStatusStr == "Checked Out")
         result = 4;
 
     return result;

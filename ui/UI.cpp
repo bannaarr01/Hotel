@@ -1,5 +1,6 @@
 #include "UI.h"
 
+//=======================UI HEADER========================================================================
 //Header - DRY [Don't repeat yourself]
 //Accept width of == displayed, title of the menu and list of menu to display
 void UI::header(const int totalWidth, const std::string title, const std::string range,
@@ -22,26 +23,28 @@ void UI::header(const int totalWidth, const std::string title, const std::string
     //display the range passed-in
     std::cout << "Enter " + range + " to select: ";
 }
+//========================END OF UI HEADER=================================================================
 
+
+
+//========================MAIN MENU UI=====================================================================
 void UI::Launch() {
     const int totalWidth{35};
     std::vector<std::string> listsToDisplay{"MANAGE GUEST", "RESERVATION", "ROOM MANAGEMENT", "CHECK-IN",
                                             "CHECK-OUT", "\033[1;31mEXIT ➡️[0m️"};
     header(totalWidth, "MAIN MENU", "1-6", listsToDisplay);
 }
+//========================END OF MAIN MENU UI==============================================================
 
+
+
+
+//========================GUEST UI=========================================================================
 void UI::guestMenuDisplay() {
     const int totalWidth{30};
     std::vector<std::string> listsToDisplay{"Create Guest", "Update Guest", "Search Guest", "Delete Guest",
                                             "\033[1;36mMAIN MENU[0m️ ⬅"};
     header(totalWidth, "GUEST MENU", "1-5", listsToDisplay);
-}
-
-void UI::roomMenuDisplay() {
-    const int totalWidth{30};
-    std::vector<std::string> listsToDisplay{"Create Room", "Find a Room", "Show All Rooms", "Update Room",
-                                            "\033[1;36mMAIN MENU[0m️ ⬅", "\033[1;31mEXIT ➡️[0m️"};
-    header(totalWidth, "ROOM MENU", "1-6", listsToDisplay);
 }
 
 void UI::guestSubMenuDisplay() {
@@ -50,7 +53,25 @@ void UI::guestSubMenuDisplay() {
                                             "\033[1;36mGUEST MENU[0m️ ⬅", "\033[1;36mMAIN MENU[0m️ ⬅"};
     header(totalWidth, "UPDATE GUEST INFORMATION", "1-5", listsToDisplay);
 }
+//========================END OF GUEST UI==================================================================
 
+
+
+//========================ROOM UI==========================================================================
+void UI::roomMenuDisplay() {
+    const int totalWidth{30};
+    std::vector<std::string> listsToDisplay{"Create Room", "Find a Room", "Show All Rooms", "Update Room",
+                                            "\033[1;36mMAIN MENU[0m️ ⬅", "\033[1;31mEXIT ➡️[0m️"};
+    header(totalWidth, "ROOM MENU", "1-6", listsToDisplay);
+}
+
+void UI::updateRoomMenuDisplay() {
+    const int totalWidth{30};
+    std::vector<std::string> listsToDisplay{"Update Room Details and Status",
+                                            "\033[1;36mROOM MENU[0m️ ⬅", "\033[1;36mMAIN MENU[0m️ ⬅",
+                                            "\033[1;31mEXIT ➡️[0m️"};
+    header(totalWidth, "UPDATE / DELETE ROOM", "1-4", listsToDisplay);
+}
 
 void UI::tabularDisplay(const std::vector<Room> &roomVec) {
     const int total_width{70};             //Total width of ruler
@@ -94,23 +115,30 @@ void UI::tabularDisplay(const std::vector<Room> &roomVec) {
     std::cout << std::endl << std::endl;
 
 }
+//========================END OF ROOM UI===================================================================
 
-void UI::updateRoomMenuDisplay() {
-    const int totalWidth{30};
-    std::vector<std::string> listsToDisplay{"Update Room Details and Status",
-                                            "\033[1;36mROOM MENU[0m️ ⬅", "\033[1;36mMAIN MENU[0m️ ⬅",
-                                            "\033[1;31mEXIT ➡️[0m️"};
-    header(totalWidth, "UPDATE / DELETE ROOM", "1-4", listsToDisplay);
-}
 
+
+//========================RESERVATION UI===================================================================
 void UI::reservationMenuDisplay() {
     const int totalWidth{35};
     std::vector<std::string> listsToDisplay{"Make a New Reservation",
                                             "Show all Reservations",
-                                            "Manage an Existing Reservation",
+                                            "Manage Existing Reservation",
                                             "\033[1;36mMAIN MENU[0m️ ⬅",
                                             "\033[1;31mEXIT ➡️[0m️"};
     header(totalWidth, "MANAGE RESERVATION", "1-4", listsToDisplay);
+}
+
+void UI::reservationManagementDisplay() {
+    const int totalWidth{35};
+    std::vector<std::string> listsToDisplay{"Search Guest Active Reservations",
+                                            "Update A Reservation",
+                                            "Delete Reservation",
+                                            "\033[1;36mRESERVATION MENU[0m️ ⬅",
+                                            "\033[1;36mMAIN MENU[0m️ ⬅",
+                                            "\033[1;31mEXIT ➡️[0m️"};
+    header(totalWidth, "MANAGE EXISTING RESERVATION", "1-7", listsToDisplay);
 }
 
 void UI::reservationSubMenuDisplay() {
@@ -123,18 +151,9 @@ void UI::reservationSubMenuDisplay() {
 
 }
 
-void UI::reservationOptionDisplay() {
-    const int totalWidth{35};
-    std::vector<std::string> listsToDisplay{"Add More Rooms to your reservation", "Update",
-                                            "\033[1;36mRESERVATION MENU[0m️ ⬅",
-                                            "\033[1;36mMAIN MENU[0m️ ⬅",
-                                            "\033[1;31mEXIT ➡️[0m️"};
-    header(totalWidth, "OPTIONS", "1-5", listsToDisplay);
-}
-
 void UI::existingGuestDisplay() {
     const int totalWidth{35};
-    std::vector<std::string> listsToDisplay{"Yes - Existing Guest", "No - New Guest",
+    std::vector<std::string> listsToDisplay{"YES - Existing Guest", "NO - New Guest",
                                             "\033[1;36mRESERVATION MENU[0m️ ⬅",
                                             "\033[1;36mMAIN MENU[0m️ ⬅",
                                             "\033[1;31mEXIT ➡️[0m️"};
@@ -148,12 +167,13 @@ void UI::reservationTabularDisplay(const std::set<Reservation> &reservationSet) 
     const int field3_width{11};         //Room Type
     const int field4_width{11};        //Guest ID
     const int field5_width{9};        //Status
-    //==============================================
-    const int field6_width{37};     //Check-In Date
-    const int field7_width{20};    //Check-Out Date
-    //==============================================
-    const int field8_width{34};
-    const int field9_width{22};
+    //===============================//
+    const int field6_width{37};     //
+    const int field7_width{20};    //
+    //============================//
+    const int field8_width{34};  //
+    const int field9_width{22}; //
+    //======================== //
 
 
     std::string title{"RESERVATION(s)"};
@@ -200,5 +220,6 @@ void UI::reservationTabularDisplay(const std::set<Reservation> &reservationSet) 
     std::cout << std::endl << std::endl;
 }
 
+//========================END OF RESERVATION UI============================================================
 
 
