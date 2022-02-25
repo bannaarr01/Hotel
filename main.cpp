@@ -9,5 +9,4 @@
 int main() {
     OverallManager::mainMenu();
 
-    return 0;
 }

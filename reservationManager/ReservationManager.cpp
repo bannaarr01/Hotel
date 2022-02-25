@@ -1,68 +1,80 @@
 #include "ReservationManager.h"
 
-Reservation ReservationManager::createReservation(Room &room, Guest &guest) {
-//    auto newReservation = ioManager.askInputToMakeReservation();
-    Reservation newReservation{room, "2022/04/21", "2022/05/02", 1, 1, guest};
+//Reservation
+//ReservationManager::initReservation(Room &room, Guest &guest, std::string &checkInDate, std::string &checkOutDate,
+//                                    int &adultCount, int &childrenCount) {
+////    auto newReservation =ioManager.iskInputToMakeReservation();
+//    Reservation newReservation{room, checkInDate, checkInDate, adultCount, childrenCount, guest};
+//
+//    std::ofstream outFile{fileName, std::ios::app};
+//    std::string line{};
+//    try {
+//        if (!outFile) {
+//            throw ErrorWritingToFileException{};
+//        }
+//        outFile << newReservation;
+//    } catch (const ErrorWritingToFileException &ex) {
+//        std::cout << ex.what() << std::endl;
+//    }
+//
+//    outFile.close();
+//
+//    return newReservation;
+//}
 
-    std::ofstream outFile{fileName, std::ios::app};
-    std::string line{};
-    try {
-        if (!outFile) {
-            throw ErrorWritingToFileException{};
-        }
-        outFile << newReservation;
-    } catch (const ErrorWritingToFileException ex) {
-        std::cout << ex.what() << std::endl;
-    }
 
-    outFile.close();
-
-    return newReservation;
-}
-
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "misc-no-recursion"
 
 void ReservationManager::reservationMenu() {
     reservationsObjSet.clear();
     copyCsvToReservationsObjSet(reservationsObjSet);
-    //Accept valid range and UI to display
-    int selection = ioManager.inputValidation(1, 6, UI::reservationMenuDisplay);
+    int selection;
+    try {
+        //Accept valid range and UI to display
+        selection = ioManager.inputValidation(1, 6, UI::reservationMenuDisplay);
 
-    switch (selection) {
-        case 1: {
-            std::cout << std::string(2, '\n');
-            //Choose and Display Rooms and Additionally make a reservation
-            chooseAndDisplayRooms();
-            break;
+        switch (selection) {
+            case 1: {
+                std::cout << std::string(2, '\n');
+                //Choose and Display Rooms and Additionally make a reservation
+                chooseAndDisplayRooms();
+                break;
+            }
+            case 2: {
+                std::cout << std::string(2, '\n');
+                //Display all active reservations in tabular form
+                printReservations();
+                break;
+            }
+            case 3: {
+                std::cout << std::endl;
+                //Manage Existing Reservation
+                manageReservation();
+                break;
+            }
+            case 4: {
+                std::cout << std::string(2, '\n');
+                //Go back to Main Menu
+                OverallManager::mainMenu();
+                break;
+            }
+            case 5: {
+                std::cout << std::string(2, '\n');
+                //Stop and Exit the System
+                std::cout << "\033[1;31mQuitting. . .[0m️";
+                break;
+            }
         }
-        case 2: {
-            std::cout << std::string(2, '\n');
-            //Display all active reservations in tabular form
-            printReservations();
-            break;
-        }
-        case 3: {
-            std::cout << std::endl;
-            //Manage Existing Reservation
-            manageReservation();
-            break;
-        }
-        case 4: {
-            std::cout << std::string(2, '\n');
-            //Go back to Main Menu
-            OverallManager::mainMenu();
-            break;
-        }
-        case 5: {
-            std::cout << std::string(2, '\n');
-            //Stop and Exit the System
-            std::cout << "\033[1;31mQuitting. . .[0m️";
-            break;
-        }
+    } catch (std::exception &ex) {
 
     }
 
-
 }
+
+
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "misc-no-recursion"
 
 void ReservationManager::chooseAndDisplayRooms() {
     //when out of scope and func is recalled, clear to avoid duplicate data
@@ -85,20 +97,38 @@ void ReservationManager::chooseAndDisplayRooms() {
                     room = checkRoom("VIP", "Vacant");
                     std::cout << "\033[1;4;34mCheck Room #" << room.getRoomNumber()
                               << " Availability[0m" << std::endl;
+                    std::string checkInDate{}, checkOutDate{};
+                    bool doneWithDate{false};
+                    do {
+                        checkInDate = ioManager.validateDate("CheckIn-Date");
+                        checkOutDate = ioManager.validateDate("CheckOut-Date");
+                        // std::cout << checkInDate << " - " << checkOutDate << std::endl;
+                        if (checkOverlap(room, checkInDate, checkOutDate))
+                            doneWithDate = true;
+                        else
+                            std::cout
+                                    << "\nTherefore, the selected room is \033[1;31mUNAVAILABLE[0m on the chosen Date. Check another Date"
+                                    << std::endl << std::endl << std::endl;
+                    } while (!doneWithDate);
+                    subUpdateRoom(room, checkInDate, checkOutDate);
+//                    std::for_each(roomsObjVec.begin(), roomsObjVec.end(),
+//                                  [](auto x) { std::cout << x << ""; });
+                    for (auto &r: roomsObjVec) {
+                        std::cout << r << std::endl;
+                    }
 
-                    std::string checkInDate = ioManager.validateDate("CheckIn-Date");
-                    std::string checkOutDate = ioManager.validateDate("CheckOut-Date");
-                    std::cout << checkInDate << " - " << checkOutDate << std::endl;
                     guest = existingGuest();
+                    int adultCount{1}, childrenCount{1};
                     //create room of this type 👆🏻, passed-in guest, if exists, manage no of room Reserved, bool 2 stop if...
-                    createReservation(room, guest, numOfRooms, done);
+                    createReservation(room, guest, numOfRooms, checkInDate, checkOutDate, adultCount, childrenCount,
+                                      done);
                     break;//end of case 1 of selection
                 }
                 case 2: {
                     std::cout << std::string(2, '\n');
                     guest = existingGuest();
                     room = checkRoom("DELUXE", "Vacant");
-                    createReservation(room, guest, numOfRooms, done);
+//                    createReservation(room, guest, numOfRooms, checkInDate, checkOutDate, adultCount, childrenCount, done);
                     break;
 
                 }
@@ -106,20 +136,20 @@ void ReservationManager::chooseAndDisplayRooms() {
                     std::cout << std::endl;
                     guest = existingGuest();
                     room = checkRoom("DOUBLE", "Vacant");
-                    createReservation(room, guest, numOfRooms, done);
+//                    createReservation(room, guest, numOfRooms, checkInDate, checkOutDate, adultCount, childrenCount, done);
                     break;
                 }
                 case 4: {
                     std::cout << std::string(2, '\n');
                     guest = existingGuest();
                     room = checkRoom("SINGLE", "Vacant");
-                    createReservation(room, guest, numOfRooms, done);
+//                    createReservation(room, guest, numOfRooms, checkInDate, checkOutDate, adultCount, childrenCount, done);
                     break;
                 }
                 case 5: {
                     std::cout << std::string(2, '\n');
-                    // reservationMenu();
-                    checkOverlap();
+                    reservationMenu();
+                    //checkOverlap();
                     break;
                 }
                 case 6: {
@@ -133,6 +163,7 @@ void ReservationManager::chooseAndDisplayRooms() {
                     break;
                 }
             }
+
             std::cout << "\nAdd More Reservation? Enter (Y or N): ";
             std::cin >> more;
             if (more == 'N' || more == 'n') {
@@ -148,14 +179,14 @@ void ReservationManager::chooseAndDisplayRooms() {
 
 
 std::vector<Room> ReservationManager::findAvailableRoom(std::string &roomType, std::string &roomAvailability) {
-    std::vector<Room> result;
+    std::vector<Room> resultRm;
     //If found, copy the obj and insert into result vector
-    std::copy_if(roomsObjVec.begin(), roomsObjVec.end(), std::back_inserter(result),
+    std::copy_if(roomsObjVec.begin(), roomsObjVec.end(), std::back_inserter(resultRm),
                  [&](const Room &room) {
                      return (room.getRoomType()->getRoomTypeName() == roomType &&
                              room.roomAvailabilityStatusToString(room.getRoomAvailabilityStatus()) == roomAvailability);
                  });
-    return result;
+    return resultRm;
 }
 
 Room ReservationManager::checkRoom(std::string &&roomType, std::string &&roomAvailability) {
@@ -211,17 +242,20 @@ Room ReservationManager::checkRoom(std::string &&roomType, std::string &&roomAva
 }
 
 
-void ReservationManager::subUpdateRoom(Room &room, int n) {
+void ReservationManager::subUpdateRoom(Room &room, std::string &checkInDate, std::string &checkOutDate) {
     try {
         std::ofstream outFile{fileName2, std::ios::trunc};
         std::string line{};
-        Room::RoomAvailabilityStatus roomAvailabilityStatus = Room::RoomAvailabilityStatus(n);
-
         auto iterator = roomsObjVec.begin();
         while (iterator != roomsObjVec.end()) {
             if (*iterator == room) {
+                auto oldRsDates = room.getReservedDates();
                 roomsObjVec.erase(iterator);
-                room.setRoomAvailabilityStatus(roomAvailabilityStatus);
+                //room.setReservedDates(checkInDate, checkOutDate);
+                rsd::ReservedDate rsv{checkInDate, checkOutDate};
+                oldRsDates.emplace_back(rsv);
+                auto update = room.updateReservationDate();
+                update(oldRsDates);
                 roomsObjVec.push_back(room);
                 std::sort(roomsObjVec.begin(), roomsObjVec.end());
                 if (!outFile) {
@@ -230,34 +264,42 @@ void ReservationManager::subUpdateRoom(Room &room, int n) {
                 for (const auto &elem: roomsObjVec)
                     outFile << elem << std::endl;
                 outFile.close();
-                //  std::cout << "🟢 Room updated successfully ✅" << std::endl;
-            } else
-                iterator++; //only increment the iterator if not erased
+                iterator = roomsObjVec.end();
+            } else {
+                iterator++; //only increment the iterator if...
+            }
+
         }
-    } catch (ErrorWritingToFileException ex) {
+    } catch (ErrorWritingToFileException &ex) {
         // std::cout << ex.what() << std::endl;
 //        roomMenu();
     }
 
+
 }
 
-void ReservationManager::checkOverlap() {
-    long d = std::stod("20220207");
-    long d2 = std::stod("20220214");
 
-    long d3 = std::stod("20220215");
-    long d4 = std::stod("20220217");
+bool ReservationManager::checkOverlap(Room &room, std::string &checkInDate, std::string &checkOutDate) {
+    std::vector<mlp::Interval> reservedDates;
+    double cInDate;
+    double cOutDate;
+    auto theSelectedRoomReservedDates = room.getReservedDates();
+    if (!(theSelectedRoomReservedDates.empty())) {
+        for (auto &rsvD: theSelectedRoomReservedDates) {
+            cInDate = std::stod(rsvD.checkInDate);
+            cOutDate = std::stod(rsvD.checkOutDate);
+            reservedDates.emplace_back(mlp::Interval{static_cast<long>(cInDate), static_cast<long>(cOutDate)});
+        }
+    }
+    cInDate = std::stod(checkInDate);
+    cOutDate = std::stod(checkOutDate);
+    reservedDates.emplace_back(mlp::Interval{static_cast<long>(cInDate), static_cast<long>(cOutDate)});
+    //Display Conflicting
+    if (!(mlp::displayConflicting(reservedDates))) {
+        return true;
+    }
 
-    long d5 = std::stod("20220213");
-    long d6 = std::stod("20220220");
-    std::vector<Interval> reservedDates{
-            {d,  d2},
-            {d3, d4},
-            {d5, d6}
-    };
-    std::cout << "Following are conflicting intervals\n";
-    displayConflicting(reservedDates);
-
+    return false;
 }
 
 
@@ -271,18 +313,19 @@ Guest ReservationManager::existingGuest() {
                 std::cout << "✅ Search Initiated Successfully...🚀" << std::endl;
                 bool done{false};
                 do {
-                    std::vector<Guest> result;
+                    std::vector<Guest> resultGs;
                     char search{};
                     std::string searchTerm{};
                     std::cout << "Enter Guest Passport / Driving License: ";
                     std::cin >> searchTerm;
                     std::transform(searchTerm.begin(), searchTerm.end(), searchTerm.begin(), ::toupper);
-                    std::copy_if(guestObjSet.begin(), guestObjSet.end(), std::back_inserter(result),
+                    std::copy_if(guestObjSet.begin(), guestObjSet.end(), std::back_inserter(resultGs),
                                  [searchTerm](const Guest &g) {
                                      return (g.getId().getIdNumber() == searchTerm);
                                  });
-                    if (!std::empty(result)) {
-                        guest = result.at(0);
+                    if (!std::empty(resultGs)) {
+                        auto dGuest = resultGs.at(0);
+                        guest = dGuest;
                         std::cout << "🟢 Guest Record Found" << std::endl;
                         //   std::cout << result << std::endl;
                     } else
@@ -305,11 +348,33 @@ Guest ReservationManager::existingGuest() {
             }
             break;
         }
+        case 2: {
+            // std::cout << "\033[1;31mQuitting. . .[0m️" << std::endl;
+            // return 0;
+            break;
+        }
+        case 3: {
+            //Go back to Main Menu
+            reservationMenu();
+            break;
+        }
+        case 4: {
+            //Go back to Main Menu
+            OverallManager::mainMenu();
+            break;
+        }
+        case 5: {
+            std::cout << "\033[1;31mQuitting. . .[0m️" << std::endl;
+            break;
+        }
+//        default:
+//            std::cout << "\033[1;31mQuitting. . .[0m️" << std::endl;
+//            break;
     }
     return guest;
 }
 
-bool ReservationManager::copyCsvToReservationsObjSet(std::set<Reservation> &reservationsObjSet) {
+bool ReservationManager::copyCsvToReservationsObjSet(std::set<Reservation> &reservationsObjSt) {
     std::ifstream inFile{fileName};
     std::string line{};
     std::string temp{};
@@ -317,7 +382,7 @@ bool ReservationManager::copyCsvToReservationsObjSet(std::set<Reservation> &rese
 
     //For Reservation
     std::string reservationNumber{}, checkInDate{}, checkOutDate{}, reservationStatus{};
-    int adultCount{}, childrenCount{};
+    double adultCount{}, childrenCount{};
     bool isCreditCardBilled{}, hasPaid{};
 
     //For Guest
@@ -354,13 +419,14 @@ bool ReservationManager::copyCsvToReservationsObjSet(std::set<Reservation> &rese
 
         name = reservationStrVec[12], address = reservationStrVec[13], country = reservationStrVec[14],
         nationality = reservationStrVec[15], gender = reservationStrVec[16], contact = reservationStrVec[17],
-        iDType = reservationStrVec[18] == "Driving License" ? idTypeNo = 2 : idTypeNo = 1,
+        iDType = reservationStrVec[18],
         idNumber = reservationStrVec[19], iDExpiryDate = reservationStrVec[20],
         ccHolderName = reservationStrVec[21], ccNumber = reservationStrVec[22], ccExpiryDate = reservationStrVec[23],
         ccCVV = reservationStrVec[24], isCreditCardBilled = reservationStrVec[25] == "1",
         hasPaid = reservationStrVec[26] == "1";
 
 
+        iDType == "Driving License" ? idTypeNo = 2 : idTypeNo = 1;
         IdDetails id2{IdDetails::IDType(idTypeNo), idNumber, iDExpiryDate};
         CreditCardDetails c3{ccHolderName, ccNumber, ccExpiryDate, ccCVV};
         std::unique_ptr<Guest> guest = std::make_unique<Guest>(name, address, country, nationality, gender, contact,
@@ -368,40 +434,46 @@ bool ReservationManager::copyCsvToReservationsObjSet(std::set<Reservation> &rese
         //Obtain the integer value of both enum specified
         int num1 = obtainRoomAvailabilityStatus(roomAvailabilityStatus);
         int num2 = obtainBedType(bedType);
-        Room::RoomAvailabilityStatus roomAvailStatus = Room::RoomAvailabilityStatus(num1);
-        Room::BedType bedType = Room::BedType(num2);
+        auto roomAvailStatus = Room::RoomAvailabilityStatus(num1);
+        auto bedTyp = Room::BedType(num2);
         //Retrieving a shared Pointer to RoomType
-        RoomManager rm;
-        std::shared_ptr<RoomType> roomType = rm.obtainRoomType(roomTypeName, price);
-        std::unique_ptr<Room> obtainedRoom = std::make_unique<Room>(roomNumber, roomAvailStatus, bedType,
+        // RoomManager rm;
+        std::shared_ptr<RoomType> roomType = RoomManager::obtainRoomType(roomTypeName, price);
+        std::unique_ptr<Room> obtainedRoom = std::make_unique<Room>(roomNumber, roomAvailStatus, bedTyp,
                                                                     isWifiEnabled, roomType);
         //
         int num3 = obtainReservationStatus(reservationStatus);
-        Reservation::ReservationStatus reserveStatus = Reservation::ReservationStatus(num3);
+        auto reserveStatus = Reservation::ReservationStatus(num3);
 
-        Reservation obtainedReservation{*obtainedRoom, checkInDate, checkOutDate, adultCount, childrenCount, *guest,
+        Reservation obtainedReservation{*obtainedRoom, checkInDate, checkOutDate, static_cast<int>(adultCount),
+                                        static_cast<int>(childrenCount), *guest,
                                         isCreditCardBilled, hasPaid, reserveStatus, reservationNumber};
         //Store each of the reservation in reservationsObjSet
-        reservationsObjSet.emplace(obtainedReservation);
+        reservationsObjSt.emplace(obtainedReservation);
     }
 
     return true;
 }
 
 std::set<Reservation>
-ReservationManager::getGuestReservation(Guest &guest, std::set<Reservation> &reservationsObjSet) {
+ReservationManager::getGuestReservation(Guest &guest, std::set<Reservation> &reservationsObjSt) {
     std::set<Reservation> res;
 
-    std::copy_if(reservationsObjSet.begin(), reservationsObjSet.end(), std::inserter(res, res.end()),
+    std::copy_if(reservationsObjSt.begin(), reservationsObjSt.end(), std::inserter(res, res.end()),
                  [&](const Reservation &r) {
                      return (r.getGuest() == guest);//this compare d guest ID as defined in guest class with overload==
                  });
     return res;
 }
 
-void ReservationManager::createReservation(Room &room, Guest &guest, int &numOfRooms, bool &done) {
+void ReservationManager::createReservation(Room &room, Guest &guest, int &numOfRooms, std::string &checkInDate,
+                                           std::string &checkOutDate,
+                                           int &adultCount, int &childrenCount, bool &done) {
+
+    std::ofstream outFile{fileName, std::ios::app};
+    std::string line{};
     GuestManager gm;
-    Reservation newReservation;
+    //Reservation newReservation;
     //don't bother to create guest nor reservation if no available room for this room type
     if (!(room.getRoomNumber().empty())) {
         //If the guest exists, use the guest info in d system to create reservation : else input guest info
@@ -429,13 +501,28 @@ void ReservationManager::createReservation(Room &room, Guest &guest, int &numOfR
             reservationMenu();
         }
         //create a new reservation
-        newReservation = createReservation(room, guest);
+        // newReservation = initReservation(room, guest, checkInDate, checkOutDate, adultCount, childrenCount);
+
+        Reservation newReservation{room, checkInDate, checkInDate, adultCount, childrenCount, guest};
+
+
         if (!(newReservation.getReservationNumber().empty())) {
-            //Update the reservation Set, In case of further reservation while new CopyFromCsv Not Updated Yet
-            reservationsObjSet.emplace(newReservation);
-            std::cout << "🟢 Reservation Created Successfully ✅" << std::endl;
+            try {
+                if (!outFile) {
+                    throw ErrorWritingToFileException{};
+                }
+                //Update the reservation Set, In case of further reservation while new CopyFromCsv Not Updated Yet
+                reservationsObjSet.emplace(newReservation);
+                std::cout << "🟢 Reservation Created Successfully ✅" << std::endl;
+                outFile << newReservation;
+            } catch (const ErrorWritingToFileException &ex) {
+                std::cout << ex.what() << std::endl;
+            }
+            outFile.close();
+
             //update and override Room file
-            subUpdateRoom(room);
+            //UPDATE ROOM
+            //  subUpdateRoom(room);
         } else
             std::cerr << "Sorry! Your Reservation could not be completed ! Try again later..."
                       << std::endl;
@@ -469,7 +556,7 @@ void ReservationManager::updateReservation(Reservation &reservation) {
             } else
                 iterator++; //only increment the iterator if not erased
         }
-    } catch (ErrorWritingToFileException ex) {
+    } catch (ErrorWritingToFileException &ex) {
         // std::cout << ex.what() << std::endl;
     }
 
@@ -516,7 +603,7 @@ void ReservationManager::changeReservationPaymentStatus() {
 //                bool done{false};
 //                do {
 //                    while (numOfRooms < 4) {
-//                        int option = ioManager.inputValidation(1, 5, UI::reservationOptionDisplay);
+//                        int option =ioManager.inputValidation(1, 5, UI::reservationOptionDisplay);
 ////                        if (numOfRooms == 3) {
 ////                            std::cout << std::string(2, '\n');
 ////                            std::cout

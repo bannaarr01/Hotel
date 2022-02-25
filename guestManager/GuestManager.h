@@ -20,12 +20,14 @@
 #include <fstream>
 #include <nlohmann/json.hpp>
 #include <functional>
-
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
 
 class GuestManager {
 private:
     IoManager ioManager;
     std::string filename{"../data/guestLists.csv"};
+    const char *filenameX{"../data/guestListsX.csv"};
     std::vector<Guest> guestObjList;
     std::set<Guest> guestObjSet;
 public:
@@ -37,6 +39,8 @@ public:
     Guest searchMenu();
 
     Guest createGuess();
+
+    void showGuests();
 
     std::vector<Guest> getGuessObjList() {
         return guestObjList;

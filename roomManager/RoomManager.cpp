@@ -198,6 +198,7 @@ void RoomManager::findByRoomNumber() {
             std::cout << "🟢 Found Room " << std::endl;
             foundRoom = result.at(0);
             std::cout << foundRoom.convertToJsonFormat() << std::endl;
+//            std::cout << foundRoom.convertReservedDateToJsonFormat() << std::endl;
         } else
             std::cout << "🔴 Room NOT Found!" << std::endl;
         std::cout << "Search Again? Enter (Y or N): ";
@@ -232,10 +233,11 @@ std::shared_ptr<RoomType> RoomManager::obtainRoomType(std::string &roomTypeNameS
 bool RoomManager::copyCSVtoRoomObjVec(std::vector<Room> &roomsObjVec) {
     std::ifstream inFile{fileName};//RoomList csv
     std::string line{};
-    std::string word{};
+    // std::string word{};
 
     std::string roomNumber{}, roomTypeName{}, roomAvailabilityStatus{}, bedType{}, isWifiEnabled{};
     std::string price{};
+    std::string packedDates;
 
     if (!inFile) {
         return false;
@@ -243,15 +245,29 @@ bool RoomManager::copyCSVtoRoomObjVec(std::vector<Room> &roomsObjVec) {
     //while reading line by line
     while (std::getline(inFile, line)) {
         std::stringstream s(line);
-        //getting each word after comma ,and insert into the vector
+        //getting each word after | ,and insert each into the vector
         std::vector<std::string> roomStrVec;
         std::string word;
-        while (std::getline(s, word, ',')) {
+        //============================================
+        rsd::ReservedDate rsv;
+        std::vector<rsd::ReservedDate> reservedDates;
+        //============================================
+        while (std::getline(s, word, '|')) {
             roomStrVec.push_back(word);
         }
         //retrieving each line columns
         roomNumber = roomStrVec[0], roomAvailabilityStatus = roomStrVec[1], bedType = roomStrVec[2],
-        isWifiEnabled = roomStrVec[3], roomTypeName = roomStrVec[4], price = roomStrVec[5];
+        isWifiEnabled = roomStrVec[3], roomTypeName = roomStrVec[4], price = roomStrVec[5], packedDates = roomStrVec[6];
+
+        //parse d array of json string to json
+        auto json = json::parse(packedDates);
+        //Get Reserved date obj from the json on each iteration n insert to reserved date vec if not NULL
+        for (auto j: json) {
+            if (j != nullptr) {
+                rsvDates.from_json(j, rsv);
+                reservedDates.emplace_back(rsv);
+            }
+        }
 
         //Obtain the integer value of both enum specified
         int num1 = obtainRoomAvailabilityStatus(roomAvailabilityStatus);
@@ -260,8 +276,8 @@ bool RoomManager::copyCSVtoRoomObjVec(std::vector<Room> &roomsObjVec) {
         //set wi-fi obtained string to bool
         isWifiEnabled == "Yes" ? setWifi = true : setWifi = false;
 
-        Room::RoomAvailabilityStatus roomAvailabilityStatus = Room::RoomAvailabilityStatus(num1);
-        Room::BedType bedType = Room::BedType(num2);
+        auto roomAvailStatus = Room::RoomAvailabilityStatus(num1);
+        auto bedTyp = Room::BedType(num2);
 
         //convert string to double
         double valueOfPrice = std::stod(price);
@@ -269,11 +285,10 @@ bool RoomManager::copyCSVtoRoomObjVec(std::vector<Room> &roomsObjVec) {
         //Retrieving a shared Pointer to RoomType
         auto roomType = obtainRoomType(roomTypeName, valueOfPrice);
 
-        //Creating Capturing each room into a unique pointer
-        std::unique_ptr<Room> newRoom = std::make_unique<Room>(roomNumber, roomAvailabilityStatus, bedType,
-                                                               setWifi, roomType);
+        std::unique_ptr<Room> newRoom = std::make_unique<Room>(roomNumber, roomAvailStatus, bedTyp,
+                                                               setWifi, roomType, reservedDates);
 
-        //Insert into vector of Room Object
+        //Insert into vector of "Room Object"
         roomsObjVec.emplace_back(std::move(*newRoom));
     }//destroy when out of scope, restart until end of all line
     return true;

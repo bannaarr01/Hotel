@@ -5,39 +5,40 @@
 #include <boost/date_time/gregorian/gregorian.hpp>
 #include <string>
 
+namespace mlp {
 // Structure to represent an interval
-struct Interval {
-    long int low, high;
-};
+    struct Interval {
+        long low, high;
+    };
 
 // Structure to represent a node in Interval Search Tree
-struct IntervalNode {
-    Interval *value;
-    long int max;
-    IntervalNode *left, *right;
-};
+    struct IntervalNode {
+        Interval *value;
+        long int max;
+        IntervalNode *left, *right;
+    };
 
 // To create a new Interval Search Tree Node
-IntervalNode *newNode(Interval value);
+    IntervalNode *newNode(Interval value);
 
 // To insert a new Interval Search Tree
 // Node - similar to BST Insert. Here the low value of interval is used to maintain BST property
-IntervalNode *insert(IntervalNode *root, Interval value);
+    IntervalNode *insert(IntervalNode *root, Interval value);
 
 
 // To check if two given intervals overlap
-bool doIntervalOVerLap(Interval firstInterval, Interval secondInterval);
+    bool doIntervalOVerLap(Interval firstInterval, Interval secondInterval);
 
-// The main function that searches a given interval intValue
-// in a given Interval Tree.
-Interval *overlapSearch(IntervalNode *root, Interval intValue);
+
+// The main function that searches a given interval intValue in a given Interval Tree.
+    Interval *overlapSearch(IntervalNode *root, Interval intValue);
 
 
 //Display all conflicting reservation dates in a given vector of reserved dates.
-void displayConflicting(std::vector<Interval> reservedDates);
+    bool displayConflicting(std::vector<Interval> reservedDates);
 
 
-std::string toString(long int n);
+    std::string toString(long &n);
 
-
+}
 #endif //HOTEL_MANAGEOVERLAP_H

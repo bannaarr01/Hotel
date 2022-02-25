@@ -19,9 +19,9 @@ class IoManager {
 //All input and Output method will be here
 public:
     //Accept range of valid input and also accept a void function (UI) to display and return valid selection made
-    int inputValidation(const int rangeFrom, const int to, std::function<void()> func);
+    int inputValidation(const int &rangeFrom, const int &to, const std::function<void()> &func);
 
-    int inputValidationV2(const int rangeFrom, const int to);
+    int inputValidationV2(const int &rangeFrom, const int &to);
 
     Guest askInputToCreateNewGuest();
 

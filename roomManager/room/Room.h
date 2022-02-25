@@ -8,10 +8,14 @@
 #include "../roomType/RoomTypeDouble.h"
 #include "../roomType/RoomTypeDeluxe.h"
 #include "../roomType/RoomTypeVip.h"
-#include "nlohmann/json.hpp"
+//#include "nlohmann/json.hpp"
+#include "ReservedDate.h"
 #include <memory>
 #include <vector>
+#include <map>
 #include <iomanip>
+//ReservedDate
+//using namespace rsd;
 
 class Room : public IPrintable {
 public:
@@ -28,7 +32,8 @@ public:
     }
 
     Room(std::string roomNumber, RoomAvailabilityStatus roomAvailabilityStatus, BedType bedType,
-         bool isWifiEnabled, std::shared_ptr<RoomType> &roomTypePtr);
+         bool isWifiEnabled, std::shared_ptr<RoomType> &roomTypePtr,
+         std::vector<rsd::ReservedDate>  = std::vector<rsd::ReservedDate>());
 
     std::string getRoomNumber() const;
 
@@ -61,6 +66,11 @@ public:
 
     std::string bedTypeToString(BedType bedType) const;
 
+    void setReservedDates(rsd::ReservedDate &rsvDate);
+
+    void addRoomsRsvDates(std::vector<rsd::ReservedDate> &rsvDates);
+
+    std::vector<rsd::ReservedDate> getReservedDates() const;
 
     auto updateRoomDetails() {
         return [this](RoomAvailabilityStatus newRoomAvailabilityStatus, double price,
@@ -71,7 +81,14 @@ public:
         };
     }
 
+    auto updateReservationDate() {
+        return [this](std::vector<rsd::ReservedDate> newReservedDates) {
+            reservedDates = newReservedDates;
+        };
+    }
+
     virtual void print(std::ostream &os) const override;
+
 
     auto convertToJsonFormat() const {
         nlohmann::json j;
@@ -84,6 +101,37 @@ public:
 
         return j.dump(4);
     }
+//
+//    auto convertReservedDateToJsonFormat() const {
+//        int n;
+//        nlohmann::json json;
+//        //  json["ReservedDate"];
+//        for (auto rsd: reservedDates) {
+//            json["ReservedDate"] = {
+//
+//                    {"checkInDate",  rsd.first},
+//                    {"checkOutDate", rsd.second},};
+//        };
+//
+//        return json.dump(4);
+//    }
+
+//    template<typename T>
+//    std::map<std::string, typename T::mapped_type> to_string_keyed_map(T const &input) const;
+//=========
+// Move variant
+//    template <typename T>
+//    std::map<std::string, typename T::mapped_type> to_string_keyed_map(T && input) {
+//        std::map<std::string, typename T::mapped_type> output;
+//
+//        for (auto & pair : input) {
+//            output.emplace(std::to_string(pair.first), std::move(pair.second));
+//        }
+//
+//        return output;
+//    }
+
+    static void printJsonDate(const std::map<std::string, std::string> &rv);
 
     bool operator==(const Room &rhs) const;
 
@@ -97,6 +145,8 @@ private:
     BedType bedType;
     bool isWifiEnabled;
     std::shared_ptr<RoomType> roomTypePtr;
+    //std::map<std::string, std::string> reservedDates;
+    std::vector<rsd::ReservedDate> reservedDates;
 };
 
 

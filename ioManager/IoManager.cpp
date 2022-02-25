@@ -1,7 +1,7 @@
 #include "IoManager.h"
 
 //Accept range of valid input and also accept a void function (UI) to display and return valid selection made
-int IoManager::inputValidation(const int rangeFrom, const int to, std::function<void()> func) {
+int IoManager::inputValidation(const int &rangeFrom, const int &to, const std::function<void()> &func) {
     int selection{};
     std::string entry{};
     bool done{false};
@@ -17,7 +17,7 @@ int IoManager::inputValidation(const int rangeFrom, const int to, std::function<
                 throw InvalidEntryException{};
 
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        } catch (InvalidEntryException ex) {
+        } catch (InvalidEntryException &ex) {
             std::cout << ex.what() << std::endl;
         }
     } while (!done);
@@ -26,7 +26,7 @@ int IoManager::inputValidation(const int rangeFrom, const int to, std::function<
 }
 
 
-int IoManager::inputValidationV2(const int rangeFrom, const int to) {
+int IoManager::inputValidationV2(const int &rangeFrom, const int &to) {
     int selection{};
     std::string entry{};
     bool done{false};
@@ -44,7 +44,7 @@ int IoManager::inputValidationV2(const int rangeFrom, const int to) {
                 throw InvalidEntryException{};
 
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        } catch (InvalidEntryException ex) {
+        } catch (InvalidEntryException &ex) {
             std::cout << ex.what() << std::endl;
         }
     } while (!done);
@@ -54,7 +54,7 @@ int IoManager::inputValidationV2(const int rangeFrom, const int to) {
 
 Guest IoManager::askInputToCreateNewGuest() {
     std::string name{"Moe Curly"};
-    std::string idNumber{"D2569093"};
+    std::string idNumber{"D2569094"};
     std::string address{"301 Royal street"};
     std::string country{"London"};
     std::string nationality{"English"};

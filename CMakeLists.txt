@@ -2,10 +2,14 @@ cmake_minimum_required(VERSION 3.20)
 project(Hotel)
 
 set(CMAKE_CXX_STANDARD 17)
-message(STATUS "start running cmake...")
+#message(STATUS "start running cmake...")
 find_package(nlohmann_json 3.2.0 REQUIRED)
-find_package(Boost 1.76.0 COMPONENTS system filesystem REQUIRED)
+set(Boost_USE_STATIC_LIBS OFF)
+find_package(Boost REQUIRED COMPONENTS system filesystem REQUIRED)
+find_package(Boost 1.76.0 REQUIRED serialization)
 include_directories(${Boost_INCLUDE_DIRS})
+#find_package(Boost 1.76.0 COMPONENTS system filesystem REQUIRED)
+
 
 add_executable(Hotel main.cpp
         guestManager/GuestManager.cpp guestManager/GuestManager.h
@@ -30,7 +34,12 @@ add_executable(Hotel main.cpp
         paymentManager/payment/Promotion.h exception/InvalidEntryException.h
         exception/AlreadyExistException.h exception/ErrorOpeningFileException.h
         exception/ErrorWritingToFileException.h ui/UI.cpp ui/UI.h hotelUtil/HotelUtil.cpp
-        hotelUtil/HotelUtil.h reservationManager/reservation/Reservation.cpp reservationManager/reservation/Reservation.h reservationManager/ManageOverlap.cpp reservationManager/ManageOverlap.h)
+        hotelUtil/HotelUtil.h reservationManager/reservation/Reservation.cpp
+        reservationManager/reservation/Reservation.h reservationManager/ManageOverlap.cpp
+        reservationManager/ManageOverlap.h roomManager/room/ReservedDate.cpp
+        roomManager/room/ReservedDate.h)
 
 target_link_libraries(Hotel PRIVATE nlohmann_json::nlohmann_json)
 target_link_libraries(Hotel PRIVATE ${Boost_LIBRARIES})
+target_link_libraries(Hotel PRIVATE Boost::serialization)
+#target_link_libraries(Hotel PRIVATE ${Boost_LIBRARIES})

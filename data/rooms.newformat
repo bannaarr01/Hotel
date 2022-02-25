@@ -1,0 +1,18 @@
+100|Vacant|Master|Yes|VIP|115.55|[{"checkInDate":"20220303","checkOutDate":"20220404"},{"checkInDate":"20240303","checkOutDate":"20240404"},{"checkInDate":"20221010","checkOutDate":"20221111"}]|
+101|Reserved|Double|Yes|DOUBLE|65.57|[]|
+102|Reserved|Double|No|DELUXE|101.35|[]|
+103|Reserved|Master|No|VIP|101.35|[]|
+104|Vacant|Master|No|VIP|95.35|[]|
+105|Vacant|Master|No|VIP|101.35|[{"checkInDate":"20220506","checkOutDate":"20220606"}]|
+106|Under Maintenance|Master|No|VIP|95.57|[]|
+107|Reserved|Single|No|SINGLE|56.11|[]|
+108|Vacant|Master|Yes|DOUBLE|65.59|[]|
+109|Reserved|Master|Yes|DELUXE|98.39|[]|
+110|Vacant|Master|Yes|VIP|115.55|[]|
+111|Vacant|Master|Yes|VIP|115.55|[{"checkInDate":"20221010","checkOutDate":"20221111"}]|
+112|Vacant|Master|Yes|VIP|115.55|[]|
+113|Vacant|Master|Yes|VIP|115.55|[]|
+114|Vacant|Master|Yes|VIP|115.55|[]|
+115|Vacant|Master|Yes|VIP|115.55|[{"checkInDate":"20220606","checkOutDate":"20220707"}]|
+116|Vacant|Master|Yes|VIP|115.55|[{"checkInDate":"20221010","checkOutDate":"20221111"}]|
+117|Reserved|Master|Yes|VIP|115.55|[]|

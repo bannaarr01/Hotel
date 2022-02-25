@@ -4,6 +4,7 @@
 
 #include "../guestManager/GuestManager.h"
 #include "../ioManager/IoManager.h"
+#include "../ui/UI.h"
 #include "reservation/Reservation.h"
 #include "../roomManager/RoomManager.h"
 #include "ManageOverlap.h"
@@ -23,8 +24,10 @@
 class ReservationManager {
 private:
     IoManager ioManager;
+    //UI ui;
+    rsd::ReservedDate rsvDates;
     std::string fileName{"../data/reservations.csv"};
-    std::string fileName2{"../data/rooms.csv"};
+    std::string fileName2{"../data/rooms.newformat"};
     std::vector<Reservation> reservations;
     std::set<Reservation> reservationsObjSet;
     Reservation reservation;
@@ -44,20 +47,23 @@ public:
     Room checkRoom(std::string &&roomType, std::string &&roomAvailability);
 
 
-    Reservation createReservation(Room &room, Guest &guest);
+//    Reservation initReservation(Room &room, Guest &guest, std::string &checkInDate, std::string &checkOutDate,
+//                                int &adultCount, int &childrenCount);
 
-    void subUpdateRoom(Room &room, int n = 3);
+    void subUpdateRoom(Room &room, std::string &checkInDate, std::string &checkOutDate);
 
     Guest existingGuest();
 
-    void checkOverlap();
+    bool checkOverlap(Room &room, std::string &checkInDate, std::string &checkOutDate);
 
     std::set<Reservation>
-    getGuestReservation(Guest &guest, std::set<Reservation> &reservationsObjSet);
+    getGuestReservation(Guest &guest, std::set<Reservation> &reservationsObjSt);
 
-    bool copyCsvToReservationsObjSet(std::set<Reservation> &reservationsObjSet);
+    bool copyCsvToReservationsObjSet(std::set<Reservation> &reservationsObjSt);
 
-    void createReservation(Room &room, Guest &guest, int &numOfRooms, bool &done);
+    void createReservation(Room &room, Guest &guest, int &numOfRooms, std::string &checkInDate,
+                           std::string &checkOutDate,
+                           int &adultCount, int &childrenCount, bool &done);
 
     void manageReservation();
 

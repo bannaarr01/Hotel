@@ -1,9 +1,10 @@
 #include "Room.h"
 
 Room::Room(std::string roomNumber, Room::RoomAvailabilityStatus roomAvailabilityStatus, Room::BedType bedType,
-           bool isWifiEnabled, std::shared_ptr<RoomType> &roomTypePtr)
+           bool isWifiEnabled, std::shared_ptr<RoomType> &roomTypePtr,
+           std::vector<rsd::ReservedDate> reservedDates)
         : roomNumber{roomNumber}, roomAvailabilityStatus{roomAvailabilityStatus}, bedType{bedType},
-          isWifiEnabled{isWifiEnabled}, roomTypePtr{roomTypePtr} {
+          isWifiEnabled{isWifiEnabled}, roomTypePtr{roomTypePtr}, reservedDates{reservedDates} {
 
 }
 
@@ -101,10 +102,44 @@ std::string Room::bedTypeToString(Room::BedType bedType) const {
 
 
 void Room::print(std::ostream &os) const {
-    os << roomNumber << ","
+//    int n{1};
+//    os << roomNumber << ","
+//       << roomAvailabilityStatusToString(roomAvailabilityStatus)
+//       << "," << bedTypeToString(bedType) << "," << ((isWifiEnabled == 0) ? "No" : "Yes")
+//       << "," << roomTypePtr->getRoomTypeName() << "," << roomTypePtr->getPrice() << "," << "{";
+//    for (auto rsd: reservedDates) {
+//        os << "chIn" << n << ":" << rsd.first << "," << "chOut" << n << ":" << rsd.second << ",";
+//        ++n;
+//    }
+
+    json j;
+    std::vector<json> jVec;
+
+    //rsd::ReservedDate rsv;
+    os << roomNumber << "|"
        << roomAvailabilityStatusToString(roomAvailabilityStatus)
-       << "," << bedTypeToString(bedType) << "," << ((isWifiEnabled == 0) ? "No" : "Yes")
-       << "," << roomTypePtr->getRoomTypeName() << "," << roomTypePtr->getPrice();
+       << "|" << bedTypeToString(bedType) << "|" << ((isWifiEnabled == 0) ? "No" : "Yes")
+       << "|" << roomTypePtr->getRoomTypeName() << "|" << roomTypePtr->getPrice() << "|" << "[";
+    for (auto &rsv: reservedDates) {
+        j["checkInDate"] = rsv.checkInDate;
+        j["checkOutDate"] = rsv.checkOutDate;
+        jVec.push_back(j);
+    }
+//    for (auto &js: jVec) {
+//        os << js;
+//        os << ",";
+//    }
+    auto it = jVec.begin();
+    while (it != jVec.end()) {
+        os << *it;
+        it++;
+        if (!(it == jVec.end()))
+            os << ",";
+    }
+    // os << jVec;
+    os << "]" << "|";
+
+
 }
 
 bool Room::operator==(const Room &rhs) const {
@@ -114,6 +149,54 @@ bool Room::operator==(const Room &rhs) const {
 bool Room::operator<(const Room &rhs) const {
     return this->roomNumber < rhs.roomNumber;
 }
+
+std::vector<rsd::ReservedDate> Room::getReservedDates() const {
+    return reservedDates;
+}
+
+void Room::setReservedDates(rsd::ReservedDate &rsvDate) {
+//    std::map<std::string, std::string> m;
+//    rsd::ReservedDate rsv{checkInDate, checkOutDate};
+//    json j;
+//    j["checkInDate"] = rsv.checkInDate;
+//    j["checkOutDate"] = rsv.checkOutDate;
+    reservedDates.emplace_back(rsvDate);
+    // reservedDates.insert(std::make_pair(j["checkInDate"], j["checkOutDate"]));
+
+//    reservedDates.emplace_back(m);
+}
+
+void Room::printJsonDate(const std::map<std::string, std::string> &rv) {
+    int n;
+    nlohmann::json json;
+
+
+    json["reservedDates"] = {
+            {rv}
+    };
+    json.dump(4);
+}
+
+void Room::addRoomsRsvDates(std::vector<rsd::ReservedDate> &rsvDates) {
+    reservedDates.clear();
+    reservedDates = rsvDates;
+
+}
+
+//template<typename T>
+//std::map<std::string, typename T::mapped_type> Room::to_string_keyed_map(const T &input) const {
+//
+//    std::map<std::string, typename T::mapped_type> output;
+//
+//    for (auto const &pair: input) {
+//        output.emplace(std::to_string(pair.first), pair.second);
+//    }
+//
+//    return output;
+//
+//}
+
+
 
 
 

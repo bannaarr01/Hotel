@@ -23,7 +23,8 @@
 class RoomManager {
 private:
     IoManager ioManager;
-    std::string fileName{"../data/rooms.csv"};
+    rsd::ReservedDate rsvDates;
+    std::string fileName{"../data/rooms.newformat"};
     std::vector<Room> roomsObjVec;
     std::set<Room> roomsObjSet;
 
@@ -34,7 +35,7 @@ public:
 
     Room createRoom();
 
-    std::shared_ptr<RoomType> obtainRoomType(std::string &roomTypeNameStr, double price);
+    static std::shared_ptr<RoomType> obtainRoomType(std::string &roomTypeNameStr, double price);
 
     //  void setTodayRoomStatus(Reservation);
 
