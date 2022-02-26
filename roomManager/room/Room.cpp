@@ -183,6 +183,19 @@ void Room::addRoomsRsvDates(std::vector<rsd::ReservedDate> &rsvDates) {
 
 }
 
+//std::ostream operator<<(std::ostream &os, const Room &r) {
+//    nlohmann::json j;
+//    os << r.roomNumber << ","
+//       << r.roomAvailabilityStatusToString(r.roomAvailabilityStatus)
+//       << "," << r.bedTypeToString(r.bedType) << "," << ((r.isWifiEnabled == 0) ? "No" : "Yes")
+//       << "," << r.roomTypePtr->getRoomTypeName() << "," << r.roomTypePtr->getPrice() << ",";
+//    for (auto &rsv: r.reservedDates) {
+//        j["checkInDate"] = rsv.checkInDate;
+//        j["checkOutDate"] = rsv.checkOutDate;
+//    }
+//    os << ",";
+//}
+
 //template<typename T>
 //std::map<std::string, typename T::mapped_type> Room::to_string_keyed_map(const T &input) const {
 //

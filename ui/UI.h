@@ -7,6 +7,7 @@
 #include <set>
 #include "../roomManager/room/Room.h"
 #include "../reservationManager/reservation/Reservation.h"
+#include <boost/date_time/gregorian/gregorian.hpp>
 
 class UI {
 public:

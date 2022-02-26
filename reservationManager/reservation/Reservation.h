@@ -9,6 +9,7 @@
 #include <boost/uuid/uuid_generators.hpp> // generators
 #include <boost/uuid/uuid_io.hpp>
 #include <string>
+#include <functional>
 
 //static boost::uuids::uuid u = boost::uuids::random_generator()();
 
@@ -24,7 +25,6 @@ public:
                 int adultCount, int childrenCount, Guest &guest, bool isCreditCardBilled = false,
                 bool hasPaid = false, ReservationStatus reservationStatus = Reservation::ReservationStatus::WAIT_LIST,
                 const std::string &reservationNumber = "None");
-
 
 //    Reservation(std::vector<Room> &rooms, std::string checkInDate, std::string checkOutDate,
 //                int adultCount, int childrenCount, std::vector<Guest> &guests);
@@ -75,6 +75,7 @@ private:
 //    std::vector<Room> rooms;
     Guest guest;
     Room room;
+    std::function<void()> func;
 };
 
 

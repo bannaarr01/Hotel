@@ -1,9 +1,9 @@
-# Hotel Reservation System with Payment {C++17}
+# Hotel Reservation & Payment System Using {C++17} 🏨
 
 ## CLI application with data persistence
 
-### Object Oriented Programming and Design Principle
+#### *- - - Designed for hotel management - - -*
 
-### However, the project is still in progress 🚧, although most features are done ✅
+### Object-Oriented Programming and Design Principles
 
-##### *Don't forget to ⭐️⭐️⭐️ the project*. *Thanks*
+##### *Don't forget to ⭐️️ the project if you like it*. *Thanks*.

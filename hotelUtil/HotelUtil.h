@@ -2,15 +2,15 @@
 #define HOTEL_HOTELUTIL_H
 
 #include <iostream>
-#include <boost/date_time/gregorian/gregorian.hpp> //calculate days difference
+#include <boost/date_time/gregorian/gregorian.hpp>
 #include "../roomManager/RoomManager.h"
 #include <algorithm>
 
 //GLOBAL
 //Utility helper functions for Hotel
 
-//Accept reservation Date (checkIn - CheckOut) to get stay Duration
-int reservationDiffDatesInDays(std::string const &s1, std::string const &s2);
+//Accept reservation Date (CheckOut- checkIn) to get stay Duration
+int reservationDiffDatesInDays(std::string const &cInDate, std::string const &cOutDate);
 
 //Accept date formatted as ("yyyy-mm-day") and subtract it from today's date, return int
 int differenceDatesInDays(std::string const &s);

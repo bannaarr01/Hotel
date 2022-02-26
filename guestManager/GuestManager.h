@@ -20,8 +20,6 @@
 #include <fstream>
 #include <nlohmann/json.hpp>
 #include <functional>
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
 
 class GuestManager {
 private:
@@ -48,11 +46,6 @@ public:
 
     std::vector<Guest> findById(std::string &searchTerm);
 
-//    bool numberOfTimes(const std::string &searchName, const std::string &searchId, const std::string &line);
-//
-
-
-//    Guest &operator++();
 
     bool copyCSVtoGuestObjSet(std::set<Guest> &guestObjSet);
 

@@ -2,11 +2,8 @@
 #include "GuestManager.h"
 
 void GuestManager::guestMenu() {
-    int num{};
-    UI::guestMenuDisplay();
-    std::cin >> num;
-
-    switch (num) {
+    int selection = ioManager.inputValidation(1, 7, UI::guestMenuDisplay);
+    switch (selection) {
         case 1: {
             std::cout << std::string(2, '\n');
             createGuess();
@@ -31,10 +28,19 @@ void GuestManager::guestMenu() {
         case 5: {
             std::cout << std::string(2, '\n');
             showGuests();
-            //  OverallManager::mainMenu();
             break;
         }
 
+        case 6: {
+            std::cout << std::string(2, '\n');
+            OverallManager::mainMenu();
+            break;
+        }
+        case 7: {
+            std::cout << std::endl << std::endl;
+            std::cout << "\033[1;31mQuitting. . .[0m️";
+            break;
+        }
     }
 }
 
@@ -123,41 +129,41 @@ Guest GuestManager::createGuess() {
     std::string searchId{guest->getId().getIdNumber()};
     //  g.save(*guest, filenameX);
     //File Handling
-//    std::ifstream inFile{"../data/guestLists.csv", std::ios::in};
-//    std::ofstream outFile{"../data/guestLists.csv", std::ios::app};
-//    std::string line{};
-//    bool result{false};
-//    try {
-//        if (!inFile) {
-//            throw ErrorOpeningFileException{};
-//        }
-//        if (!outFile) {
-//            throw ErrorWritingToFileException{};
-//        }
-//        while (inFile >> line) {
-//            //check if the name and id exist
-//            if (numberOfTimes(searchName, searchId, line))
-//                result = true;
-//        }
-//        if (result) {
-//            //if exist throw an exception
-//            throw AlreadyExistException{
-//                    "\033[1;31m 💥 Could Not save 🧨\n🔴 Guest Already Exists in the system 🚨\033[0m"};
-//        } else {
-//            //if not, dereference the pointer and insert the details
-//            outFile << *guest << std::endl;
-//            std::cout << "🟢 Guest successfully created ✅" << std::endl;
-//        }
-//    } catch (const AlreadyExistException ex) {
-//        std::cout << ex.what() << std::endl;
-//    } catch (const ErrorOpeningFileException ex) {
-//        std::cout << ex.what() << std::endl;
-//    } catch (const ErrorWritingToFileException ex) {
-//        std::cout << ex.what() << std::endl;
-//    }
-//    //closing both files
-//    inFile.close();
-//    outFile.close();
+    std::ifstream inFile{"../data/guestLists.csv", std::ios::in};
+    std::ofstream outFile{"../data/guestLists.csv", std::ios::app};
+    std::string line{};
+    bool result{false};
+    try {
+        if (!inFile) {
+            throw ErrorOpeningFileException{};
+        }
+        if (!outFile) {
+            throw ErrorWritingToFileException{};
+        }
+        while (inFile >> line) {
+            //check if the name and id exist
+            if (numberOfTimes(searchName, searchId, line))
+                result = true;
+        }
+        if (result) {
+            //if exist throw an exception
+            throw AlreadyExistException{
+                    "\033[1;31m 💥 Could Not save 🧨\n🔴 Guest Already Exists in the system 🚨\033[0m"};
+        } else {
+            //if not, dereference the pointer and insert the details
+            outFile << *guest << std::endl;
+            std::cout << "🟢 Guest successfully created ✅" << std::endl;
+        }
+    } catch (const AlreadyExistException ex) {
+        std::cout << ex.what() << std::endl;
+    } catch (const ErrorOpeningFileException ex) {
+        std::cout << ex.what() << std::endl;
+    } catch (const ErrorWritingToFileException ex) {
+        std::cout << ex.what() << std::endl;
+    }
+    //closing both files
+    inFile.close();
+    outFile.close();
 
     return *guest;
 

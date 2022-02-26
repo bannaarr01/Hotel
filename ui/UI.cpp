@@ -43,8 +43,9 @@ void UI::Launch() {
 void UI::guestMenuDisplay() {
     const int totalWidth{30};
     std::vector<std::string> listsToDisplay{"Create Guest", "Update Guest", "Search Guest", "Delete Guest",
-                                            "\033[1;36mMAIN MENU[0m️ ⬅"};
-    header(totalWidth, "GUEST MENU", "1-5", listsToDisplay);
+                                            "Show All Guests",
+                                            "\033[1;36mMAIN MENU[0m️ ⬅", "\033[1;31mEXIT ➡️[0m️"};
+    header(totalWidth, "GUEST MENU", "1-7", listsToDisplay);
 }
 
 void UI::guestSubMenuDisplay() {
@@ -127,7 +128,7 @@ void UI::reservationMenuDisplay() {
                                             "Manage Existing Reservation",
                                             "\033[1;36mMAIN MENU[0m️ ⬅",
                                             "\033[1;31mEXIT ➡️[0m️"};
-    header(totalWidth, "MANAGE RESERVATION", "1-4", listsToDisplay);
+    header(totalWidth, "MANAGE RESERVATION", "1-5", listsToDisplay);
 }
 
 void UI::reservationManagementDisplay() {
@@ -161,6 +162,7 @@ void UI::existingGuestDisplay() {
 }
 
 void UI::reservationTabularDisplay(const std::set<Reservation> &reservationSet) {
+    using namespace boost::gregorian;       //To Display Date in date format
     const int total_width{80};             //Total width of ruler
     const int field1_width{40};           //Reservation No
     const int field2_width{9};           //Room #
@@ -168,11 +170,11 @@ void UI::reservationTabularDisplay(const std::set<Reservation> &reservationSet) 
     const int field4_width{11};        //Guest ID
     const int field5_width{9};        //Status
     //===============================//
-    const int field6_width{37};     //
-    const int field7_width{20};    //
+    const int field6_width{36};     //
+    const int field7_width{44};    //
     //============================//
-    const int field8_width{34};  //
-    const int field9_width{22}; //
+    const int field8_width{41};  //
+    const int field9_width{23}; //
     //======================== //
 
 
@@ -202,15 +204,16 @@ void UI::reservationTabularDisplay(const std::set<Reservation> &reservationSet) 
                   << reservation.reservationStatusToString(reservation.getReservationStatus())
                   << std::endl;
         std::cout << std::setw(field6_width) << std::left << "\033[1;36mCheck-In Date: [0m"
-                  << std::setw(field8_width) << std::left << reservation.getCheckInDate()
-                  << std::setw(field7_width) << std::left << "\033[1;32mTotal $: [0m"
+                  // << std::setw(field8_width) << std::left
+                  << from_undelimited_string(reservation.getCheckInDate())
+                  << std::setw(field7_width) << std::right << "\033[1;32mTotal $: [0m"
                   << std::setw(field5_width) << std::left
                   << "[1;36m" << reservation.getRoom().getRoomType()->getPrice() << "[0m"
                   << std::endl;
         std::cout << std::setw(field6_width) << std::left << "\033[1;32mCheck-Out Date: [0m"
-                  << std::setw(field8_width) << std::left << reservation.getCheckOutDate()
-                  << std::setw(field9_width) << std::left << "\033[1;36mPaid ?[0m"
-                  << std::setw(field5_width) << std::left
+                  << from_undelimited_string(reservation.getCheckOutDate())
+                  << std::setw(field8_width) << std::right << "\033[1;36mPaid ?[0m"
+                  << std::setw(field9_width) << std::right
                   << (reservation.getHasPaid() == 0 ? "\033[1;31mNOT YET[0m" : "\033[1;32mPAID ✅[0m")
                   << std::endl << std::endl;
     }//For Each Reservation

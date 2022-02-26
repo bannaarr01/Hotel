@@ -18,6 +18,7 @@
 //using namespace rsd;
 
 class Room : public IPrintable {
+    // friend std::ostream operator<<(std::ostream &os, const Room &r);
 public:
     enum RoomAvailabilityStatus {
         VACANT = 1, OCCUPIED = 2, RESERVED = 3, UNDER_MAINTENANCE = 4
@@ -101,19 +102,25 @@ public:
 
         return j.dump(4);
     }
+
+//    auto toCsv() {
 //
-//    auto convertReservedDateToJsonFormat() const {
-//        int n;
-//        nlohmann::json json;
-//        //  json["ReservedDate"];
-//        for (auto rsd: reservedDates) {
-//            json["ReservedDate"] = {
+//        return [this]() {
+//            nlohmann::json j;
+//            Room r;
+//            std::cout << r.roomNumber = roomNumber << ","
+//               << r.roomAvailabilityStatus = roomAvailabilityStatusToString(roomAvailabilityStatus)
+//               << "," << bedTypeToString(bedType) << "," << ((isWifiEnabled == 0) ? "No" : "Yes")
+//               << "," << roomTypePtr->getRoomTypeName() << "," << roomTypePtr->getPrice() << ",";
+//            for (auto &rsv: reservedDates) {
+//                j["checkInDate"] = rsv.checkInDate;
+//                j["checkOutDate"] = rsv.checkOutDate;
+//            }
+//            os << ",";
+//    return
 //
-//                    {"checkInDate",  rsd.first},
-//                    {"checkOutDate", rsd.second},};
 //        };
 //
-//        return json.dump(4);
 //    }
 
 //    template<typename T>

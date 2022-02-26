@@ -10,6 +10,8 @@ Reservation::Reservation(Room &room, std::string checkInDate, std::string checkO
     //reservationNumber = boost::uuids::to_string(u); //auto generate uuid for new reservation
 }
 
+
+
 //Reservation::Reservation(std::vector<Room> &rooms, std::string checkInDate, std::string checkOutDate,
 //                         int adultCount, int childrenCount, std::vector<Guest> &guests)
 //        : rooms{rooms}, checkInDate{checkInDate}, checkOutDate{checkOutDate}, adultCount{adultCount},
@@ -55,8 +57,20 @@ std::string Reservation::reservationStatusToString(Reservation::ReservationStatu
     return result;
 }
 
+////            std::cout << r.roomNumber = roomNumber << ","
+////               << r.roomAvailabilityStatus = roomAvailabilityStatusToString(roomAvailabilityStatus)
+////               << "," << bedTypeToString(bedType) << "," << ((isWifiEnabled == 0) ? "No" : "Yes")
+////               << "," << roomTypePtr->getRoomTypeName() << "," << roomTypePtr->getPrice() << ",";
+////            for (auto &rsv: reservedDates) {
+////                j["checkInDate"] = rsv.checkInDate;
+////                j["checkOutDate"] = rsv.checkOutDate;
+////            }
+////            os << ",";
 void Reservation::print(std::ostream &os) const {
-    os << reservationNumber << "," << room << ","
+    os << reservationNumber << "," << room.getRoomNumber() << ","
+       << room.roomAvailabilityStatusToString(room.getRoomAvailabilityStatus()) << ","
+       << room.bedTypeToString(room.getBedType()) << "," << ((room.getWifiEnabled() == 0) ? "No" : "Yes") << ","
+       << room.getRoomType()->getRoomTypeName() << "," << room.getRoomType()->getPrice() << ","
        << checkInDate << "," << checkOutDate << "," << reservationStatusToString(reservationStatus)
        << "," << adultCount << "," << childrenCount << "," << guest << "," << isCreditCardBilled << "," << hasPaid
        << std::endl;

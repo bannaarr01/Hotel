@@ -1,7 +1,5 @@
 #include "Guest.h"
 
-//int Guest::guestId{0};
-
 Guest::Guest(std::string name, std::string address, std::string country,
              std::string nationality, std::string gender,
              std::string contact, IdDetails id, CreditCardDetails creditCard) :
@@ -103,44 +101,12 @@ bool Guest::operator==(const Guest &rhs) const {
     return this->id.getIdNumber() == rhs.id.getIdNumber();
 }
 
-//auto Guest::convertToJsonFormat() const {
-//    return [this]() {
-//        nlohmann::json j{
-//                {"name",    name},
-//                {"address", address},
-//                {
-//                 "id",      {"idType",   getIdTypeStr(
-//                        id.getIdType()),                             "idNumber", id.getIdNumber(),         "idExpiryDate", id.getExpiryDate()}
-//                },
-//                {
-//                 "cc",      {"ccHolder", creditCard.getHolderName(), "ccNumber", creditCard.getCcNumber(), "ccExpiryDate",
-//                                                                                                                           creditCard.getExpiryDate(), "ccCVV", creditCard.getCVV()}
-//                }
-//        };
-//        // return j.dump();
-//    }
-//}
 
 void Guest::print(std::ostream &os) const {
-//    os << "Name: " << name << " " << "Address: " << address << " " << "Country: "
-//       << country << " "
-//       << "Nationality: " << nationality << " " << "Gender: " << gender << " " << "Contact: " << contact << " "
-//       << "ID Type: " << getIdTypeStr(id.getIdType()) << " " << "ID Number: " << id.getIdNumber() << " "
-//       << "ID Expiry Date: " << id.getExpiryDate() << " " << "CC Holder Name: " << creditCard.getHolderName() << " "
-//       << "CC Number: " << creditCard.getCcNumber() << " " << "CC Expiry Date: " << creditCard.getExpiryDate() << " "
-//       << "CC CVV: " << creditCard.getCVV();
-//    os << name << " " << address << " " << country << " " << nationality << " " << gender << " " << contact << " "
-//       << getIdTypeStr(id.getIdType()) << " " << id.getIdNumber() << id.getExpiryDate() << " "
-//       << creditCard.getHolderName() << " " << creditCard.getCcNumber() << " " << creditCard.getExpiryDate() << " "
-//       << creditCard.getCVV();
-//    os << convertToJsonFormat();
-
     os << name << "," << address << "," << country << "," << nationality << "," << gender << "," << contact << ","
        << getIdTypeStr(id.getIdType()) << "," << id.getIdNumber() << "," << id.getExpiryDate() << ","
        << creditCard.getHolderName() << "," << creditCard.getCcNumber() << "," << creditCard.getExpiryDate() << ","
        << creditCard.getCVV();
-
-
 }
 
 

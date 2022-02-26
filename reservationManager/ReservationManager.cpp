@@ -27,54 +27,90 @@
 #pragma ide diagnostic ignored "misc-no-recursion"
 
 void ReservationManager::reservationMenu() {
-    reservationsObjSet.clear();
-    copyCsvToReservationsObjSet(reservationsObjSet);
-    int selection;
-    try {
-        //Accept valid range and UI to display
-        selection = ioManager.inputValidation(1, 6, UI::reservationMenuDisplay);
-
-        switch (selection) {
-            case 1: {
-                std::cout << std::string(2, '\n');
-                //Choose and Display Rooms and Additionally make a reservation
-                chooseAndDisplayRooms();
-                break;
-            }
-            case 2: {
-                std::cout << std::string(2, '\n');
-                //Display all active reservations in tabular form
-                printReservations();
-                break;
-            }
-            case 3: {
-                std::cout << std::endl;
-                //Manage Existing Reservation
-                manageReservation();
-                break;
-            }
-            case 4: {
-                std::cout << std::string(2, '\n');
-                //Go back to Main Menu
-                OverallManager::mainMenu();
-                break;
-            }
-            case 5: {
-                std::cout << std::string(2, '\n');
-                //Stop and Exit the System
-                std::cout << "\033[1;31mQuitting. . .[0m️";
-                break;
-            }
-        }
-    } catch (std::exception &ex) {
-
+    if (!copyCsvToReservationsObjSet(reservationsObjSet)) {
+        std::cout << "\033[1;31m🚨 An error has occurred...Please Try again later.[0m️" << std::endl;
+        OverallManager::mainMenu();
     }
+    //Accept valid range and UI to display
+    int selection = ioManager.inputValidation(1, 5, UI::reservationMenuDisplay);
+
+    switch (selection) {
+        case 1: {
+            std::cout << std::string(2, '\n');
+            //Choose and Display Rooms and Additionally make a reservation
+            chooseAndDisplayRooms();
+            break;
+        }
+        case 2: {
+            std::cout << std::string(2, '\n');
+            //Display all active reservations in tabular form
+            printReservations();
+            break;
+        }
+        case 3: {
+            std::cout << std::endl;
+            //Manage Existing Reservation
+            manageReservation();
+            break;
+        }
+        case 4: {
+            std::cout << std::string(2, '\n');
+            //Go back to Main Menu
+            OverallManager::mainMenu();
+            break;
+        }
+        case 5: {
+            std::cout << std::endl << std::endl;
+            //Stop and Exit the System
+            std::cout << "\033[1;31mQuitting. . .[0m️";
+            break;
+        }
+    }
+
 
 }
 
 
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "misc-no-recursion"
+
+std::map<std::string, std::string> ReservationManager::checkRoomDates(Room &room) {
+    std::map<std::string, std::string> dates;
+    std::string checkInDate, checkOutDate;
+    bool doneWithDate{false};
+    do {
+        checkInDate = ioManager.validateDate("CheckIn-Date");
+        bool doneWithCOutDate{false};
+        do {
+            checkOutDate = ioManager.validateDate("CheckOut-Date");
+            int diff = reservationDiffDatesInDays(checkInDate, checkOutDate);
+            if (diff > 30)
+                std::cout
+                        << "\n\033[1;31mYou can only reserve a room for maximum 30 days. Enter another check out date"
+                        << std::endl;
+            else if (diff >= 1)
+                doneWithCOutDate = true;
+            else
+                std::cout
+                        << "\n\033[1;31mYour reservation must be for at one (1) Night. Enter another check out date"
+                        << std::endl;
+            std::cout << diff << " days" << std::endl;
+        } while (!doneWithCOutDate);
+
+        //If NOT overlap with any reserved date for the Room then insert d dates to the map
+        if (checkOverlap(room, checkInDate, checkOutDate)) {
+            doneWithDate = true;
+            dates.insert(std::make_pair("checkInDate", checkInDate));
+            dates.insert(std::make_pair("checkOutDate", checkOutDate));
+        } else
+            std::cout
+                    << "\nTherefore, the selected room is \033[1;31mUNAVAILABLE[0m on the chosen Date. Check another Date"
+                    << std::endl << std::endl << std::endl;
+    } while (!doneWithDate);
+
+
+    return dates;
+}
 
 void ReservationManager::chooseAndDisplayRooms() {
     //when out of scope and func is recalled, clear to avoid duplicate data
@@ -95,33 +131,21 @@ void ReservationManager::chooseAndDisplayRooms() {
                 case 1: {
                     //since checkRoom func is returning a room, it's then assign to room directly
                     room = checkRoom("VIP", "Vacant");
-                    std::cout << "\033[1;4;34mCheck Room #" << room.getRoomNumber()
-                              << " Availability[0m" << std::endl;
-                    std::string checkInDate{}, checkOutDate{};
-                    bool doneWithDate{false};
-                    do {
-                        checkInDate = ioManager.validateDate("CheckIn-Date");
-                        checkOutDate = ioManager.validateDate("CheckOut-Date");
-                        // std::cout << checkInDate << " - " << checkOutDate << std::endl;
-                        if (checkOverlap(room, checkInDate, checkOutDate))
-                            doneWithDate = true;
-                        else
-                            std::cout
-                                    << "\nTherefore, the selected room is \033[1;31mUNAVAILABLE[0m on the chosen Date. Check another Date"
-                                    << std::endl << std::endl << std::endl;
-                    } while (!doneWithDate);
-                    subUpdateRoom(room, checkInDate, checkOutDate);
-//                    std::for_each(roomsObjVec.begin(), roomsObjVec.end(),
-//                                  [](auto x) { std::cout << x << ""; });
-                    for (auto &r: roomsObjVec) {
-                        std::cout << r << std::endl;
-                    }
+                    std::cout << "\033[1;36mENTER DATE BELOW TO CHECK ROOM #" << room.getRoomNumber()
+                              << " AVAILABILITY[0m \n" << std::endl;
+
+                    auto checkedRoomDates = checkRoomDates(room);
+                    std::string checkInDate = checkedRoomDates["checkInDate"];
+                    std::string checkOutDate = checkedRoomDates["checkOutDate"];
 
                     guest = existingGuest();
                     int adultCount{1}, childrenCount{1};
                     //create room of this type 👆🏻, passed-in guest, if exists, manage no of room Reserved, bool 2 stop if...
+                    subUpdateRoom(room, checkInDate, checkOutDate);
                     createReservation(room, guest, numOfRooms, checkInDate, checkOutDate, adultCount, childrenCount,
                                       done);
+
+
                     break;//end of case 1 of selection
                 }
                 case 2: {
@@ -503,7 +527,8 @@ void ReservationManager::createReservation(Room &room, Guest &guest, int &numOfR
         //create a new reservation
         // newReservation = initReservation(room, guest, checkInDate, checkOutDate, adultCount, childrenCount);
 
-        Reservation newReservation{room, checkInDate, checkInDate, adultCount, childrenCount, guest};
+        //  Reservation newReservation{room, checkInDate, checkInDate, adultCount, childrenCount, guest};
+        Reservation newReservation{room, checkInDate, checkOutDate, adultCount, childrenCount, guest};
 
 
         if (!(newReservation.getReservationNumber().empty())) {
@@ -597,7 +622,7 @@ void ReservationManager::changeReservationPaymentStatus() {
 
 
 
-//TO ADD MORE ROOMS TO JUST MADE RESERVATION
+//TO ADD MORE ROOMS TO JUST MADE RESERVATION INSTEAD OF ONE RESERVATION AT A TIME
 /*
  *
 //                bool done{false};

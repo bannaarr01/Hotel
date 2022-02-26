@@ -2,13 +2,14 @@
 
 
 //Accept reservation Date (checkIn - CheckOut) to get stay Duration
-int reservationDiffDatesInDays(std::string const &s1, std::string const &s2) {
+int reservationDiffDatesInDays(std::string const &cInDate, std::string const &cOutDate) {
+    using namespace boost::gregorian;
     //creating 2 date Objects
-    boost::gregorian::date checkInDate{boost::gregorian::from_string(s1)};
-    boost::gregorian::date checkOutDate{boost::gregorian::from_string(s2)};
+    date chkInDate{from_undelimited_string(cInDate)};
+    date chkOutDate{from_undelimited_string(cOutDate)};
 
     // Get the Duration between 2 Dates
-    boost::gregorian::date_duration dur = checkOutDate - checkInDate;
+    date_duration dur = chkOutDate - chkInDate;
     int duration = static_cast<int>(dur.days());
 
     return duration;
@@ -17,10 +18,7 @@ int reservationDiffDatesInDays(std::string const &s1, std::string const &s2) {
 //Accept date formatted as ("yyyy-mm-day") and subtract it from today's date, return int
 int differenceDatesInDays(std::string const &s) {
     using namespace boost::gregorian;
-    //return (day_clock::local_day() - from_string(s)).days();
-    //from_undelimited_string
-    //from_string(s)
-    //day_clock::universal_day()
+    //day_clock::universal_day()//from_string(s)//day_clock::local_day()
     auto diff = (from_undelimited_string(s) - day_clock::universal_day()).days();
 
     return static_cast<int>(diff);

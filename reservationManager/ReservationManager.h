@@ -18,7 +18,7 @@
 #include <set>
 #include <iterator>
 #include <algorithm>
-#include <boost/range/adaptors.hpp>
+#include <map>
 
 
 class ReservationManager {
@@ -38,6 +38,8 @@ private:
 public:
 
     void reservationMenu();
+
+    std::map<std::string, std::string> checkRoomDates(Room &room);
 
     void chooseAndDisplayRooms();
 

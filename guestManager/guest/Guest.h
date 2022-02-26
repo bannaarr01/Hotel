@@ -3,8 +3,6 @@
 
 #include "../../interface/IVisitor.h"
 #include "../../interface/IPrintable.h"
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
 #include <algorithm>
 #include <memory>
 #include "iomanip"
@@ -12,26 +10,6 @@
 #include "nlohmann/json.hpp"
 
 class Guest : public IVisitor, public IPrintable {
-    friend class boost::serialization::access;
-
-    template<class Archive>
-    void serialize(Archive &ar, const unsigned int version) {
-        ar & name;
-        ar & address;
-        ar & country;
-        ar & nationality;
-        ar & gender;
-        ar & contact;
-        ar & contact;
-        ar & getIdTypeStr(id.getIdType());
-        ar & id.getIdNumber();
-        ar & id.getExpiryDate();
-        ar & creditCard.getHolderName();
-        ar & creditCard.getCcNumber();
-        ar & creditCard.getExpiryDate();
-        ar & creditCard.getCVV();
-    }
-
 private:
 //    static int guestId;
     std::string name;
@@ -51,8 +29,6 @@ public:
 
     Guest(std::vector<Guest> &g) {
     }
-
-//    static int getGuestId();
 
     virtual std::string getName() const override;
 
@@ -131,22 +107,6 @@ public:
         };
     }
 
-    void save(const Guest &g, const char *filename) {
-        // make an archive
-        std::ofstream ofs(filename);
-        boost::archive::text_oarchive oa(ofs);
-        oa << g;
-    }
-
-    template<class Archive>
-    void restore(Archive &ar, const Guest &g, const char *filename) {
-        // open the archive
-        std::ifstream ifs(filename);
-        ar(ifs);
-
-        // restore the schedule from the archive
-        ar >> g;
-    }
 
     bool operator<(const Guest &rhs) const;
 
