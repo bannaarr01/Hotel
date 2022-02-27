@@ -31,6 +31,7 @@ void ReservationManager::reservationMenu() {
         std::cout << "\033[1;31m🚨 An error has occurred...Please Try again later.[0m️" << std::endl;
         OverallManager::mainMenu();
     }
+
     //Accept valid range and UI to display
     int selection = ioManager.inputValidation(1, 5, UI::reservationMenuDisplay);
 
@@ -55,11 +56,18 @@ void ReservationManager::reservationMenu() {
         }
         case 4: {
             std::cout << std::string(2, '\n');
+            //Payment Menu
+            PaymentManager pm;
+            pm.paymentMenu();
+            break;
+        }
+        case 5: {
+            std::cout << std::string(2, '\n');
             //Go back to Main Menu
             OverallManager::mainMenu();
             break;
         }
-        case 5: {
+        case 6: {
             std::cout << std::endl << std::endl;
             //Stop and Exit the System
             std::cout << "\033[1;31mQuitting. . .[0m️";
@@ -94,7 +102,7 @@ std::map<std::string, std::string> ReservationManager::checkRoomDates(Room &room
                 std::cout
                         << "\n\033[1;31mYour reservation must be for at one (1) Night. Enter another check out date"
                         << std::endl;
-            std::cout << diff << " days" << std::endl;
+            //std::cout << diff << " days" << std::endl;
         } while (!doneWithCOutDate);
 
         //If NOT overlap with any reserved date for the Room then insert d dates to the map
@@ -102,10 +110,22 @@ std::map<std::string, std::string> ReservationManager::checkRoomDates(Room &room
             doneWithDate = true;
             dates.insert(std::make_pair("checkInDate", checkInDate));
             dates.insert(std::make_pair("checkOutDate", checkOutDate));
-        } else
+        } else {
             std::cout
-                    << "\nTherefore, the selected room is \033[1;31mUNAVAILABLE[0m on the chosen Date. Check another Date"
+                    << "\nTherefore, the selected room is \033[1;31mUNAVAILABLE[0m on the chosen Date."
                     << std::endl << std::endl << std::endl;
+
+            std::cout << "[1;36mMAKE A SELECTION[0m" << std::endl;
+            std::cout << "1. Check Another Date For This Room" << std::endl;
+            std::cout << "2. Go Back to Check Another Room" << std::endl;
+            int selection = ioManager.inputValidationV2(1, 2);
+            if (selection == 2) {
+                chooseAndDisplayRooms();
+            }
+
+
+        }
+
     } while (!doneWithDate);
 
 
@@ -144,7 +164,6 @@ void ReservationManager::chooseAndDisplayRooms() {
                     subUpdateRoom(room, checkInDate, checkOutDate);
                     createReservation(room, guest, numOfRooms, checkInDate, checkOutDate, adultCount, childrenCount,
                                       done);
-
 
                     break;//end of case 1 of selection
                 }
@@ -468,10 +487,9 @@ bool ReservationManager::copyCsvToReservationsObjSet(std::set<Reservation> &rese
         //
         int num3 = obtainReservationStatus(reservationStatus);
         auto reserveStatus = Reservation::ReservationStatus(num3);
-
         Reservation obtainedReservation{*obtainedRoom, checkInDate, checkOutDate, static_cast<int>(adultCount),
-                                        static_cast<int>(childrenCount), *guest,
-                                        isCreditCardBilled, hasPaid, reserveStatus, reservationNumber};
+                                        static_cast<int>(childrenCount), *guest, reservationNumber,
+                                        isCreditCardBilled, hasPaid, reserveStatus};
         //Store each of the reservation in reservationsObjSet
         reservationsObjSt.emplace(obtainedReservation);
     }
@@ -528,7 +546,10 @@ void ReservationManager::createReservation(Room &room, Guest &guest, int &numOfR
         // newReservation = initReservation(room, guest, checkInDate, checkOutDate, adultCount, childrenCount);
 
         //  Reservation newReservation{room, checkInDate, checkInDate, adultCount, childrenCount, guest};
-        Reservation newReservation{room, checkInDate, checkOutDate, adultCount, childrenCount, guest};
+        boost::uuids::uuid u = boost::uuids::random_generator()();
+        std::string rsvNumber = boost::uuids::to_string(u);
+
+        Reservation newReservation{room, checkInDate, checkOutDate, adultCount, childrenCount, guest, rsvNumber};
 
 
         if (!(newReservation.getReservationNumber().empty())) {
@@ -545,9 +566,14 @@ void ReservationManager::createReservation(Room &room, Guest &guest, int &numOfR
             }
             outFile.close();
 
-            //update and override Room file
-            //UPDATE ROOM
-            //  subUpdateRoom(room);
+            std::cout << "Reservation will be deleted if not Paid within 24 hours" << std::endl;
+            int select = ioManager.inputValidation(1, 2, UI::reservationPaymentOptionDisplay);
+            if (select == 1) {
+                PaymentManager m;
+                m.processPayment(newReservation);
+            } else if (select == 2) {
+                reservationMenu();
+            }
         } else
             std::cerr << "Sorry! Your Reservation could not be completed ! Try again later..."
                       << std::endl;
@@ -555,7 +581,12 @@ void ReservationManager::createReservation(Room &room, Guest &guest, int &numOfR
 }
 
 void ReservationManager::manageReservation() {
-
+    int selection = ioManager.inputValidation(1, 7, UI::reservationManagementDisplay);
+    switch (selection) {
+        case 1: {
+            break;
+        }
+    }
 }
 
 void ReservationManager::updateReservation(Reservation &reservation) {
@@ -587,8 +618,19 @@ void ReservationManager::updateReservation(Reservation &reservation) {
 
 }
 
-void ReservationManager::printReservations() const {
+void ReservationManager::printReservations() {
     UI::reservationTabularDisplay(reservationsObjSet);
+    std::cout << "[1;36mMAKE A SELECTION[0m" << std::endl;
+    std::cout << "1. Go Back to Previous Menu" << std::endl;
+    std::cout << "2. Go Back to Main Menu" << std::endl;
+    int selection = ioManager.inputValidationV2(1, 2);
+    if (selection == 1) {
+        std::cout << std::endl << std::endl;
+        reservationMenu();
+    } else if (selection == 2) {
+        std::cout << std::endl << std::endl;
+        OverallManager::mainMenu();
+    }
 }
 
 void ReservationManager::updateReservationCreditCard() {

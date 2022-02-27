@@ -13,6 +13,6 @@
 112|Vacant|Master|Yes|VIP|115.55|[]|
 113|Vacant|Master|Yes|VIP|115.55|[{"checkInDate":"20220404","checkOutDate":"20220505"}]|
 114|Vacant|Master|Yes|VIP|115.55|[]|
-115|Vacant|Master|Yes|VIP|115.55|[{"checkInDate":"20220606","checkOutDate":"20220707"}]|
-116|Vacant|Master|Yes|VIP|115.55|[{"checkInDate":"20221010","checkOutDate":"20221111"}]|
+115|Vacant|Master|Yes|VIP|115.55|[{"checkInDate":"20220606","checkOutDate":"20220707"},{"checkInDate":"20230303","checkOutDate":"20230401"}]|
+116|Vacant|Master|Yes|VIP|115.55|[{"checkInDate":"20221010","checkOutDate":"20221111"},{"checkInDate":"20220405","checkOutDate":"20220505"}]|
 117|Reserved|Master|Yes|VIP|115.55|[]|

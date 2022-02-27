@@ -63,8 +63,21 @@ public:
 
     //Display Rooms in tabular format
     static void reservationTabularDisplay(const std::set<Reservation> &reservationSet);
-    //Reservation Options
-//========================RESERVATION UI===================================================================
+
+    //ReservationPayment Option
+    static void reservationPaymentOptionDisplay();
+
+//========================END OF RESERVATION UI===========================================================
+
+
+
+//========================PAYMENT UI=======================================================================
+    //Payment Manager Menu
+    static void paymentManagerMenu();
+
+
+
+//========================END OF PAYMENT UI================================================================
 };
 
 

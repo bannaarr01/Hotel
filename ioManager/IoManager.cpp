@@ -77,14 +77,14 @@ Room IoManager::askInputAndCreateNewRoom() {
     std::string roomNumber{"106"};
     bool isWifiEnabled{false};
     int n{1};
-    Room::RoomAvailabilityStatus roomAvailabilityStatus = Room::RoomAvailabilityStatus(4);
-    Room::BedType bedType = Room::BedType(3);
+    auto roomAvailabilityStatus = Room::RoomAvailabilityStatus(4);
+    auto bedType = Room::BedType(3);
     std::shared_ptr<RoomType> rrr = std::make_shared<RoomTypeVip>(price);
 
     std::unique_ptr<Room> newRoom = std::make_unique<Room>(roomNumber, roomAvailabilityStatus, bedType, isWifiEnabled,
                                                            rrr);
 //    std::cout << *rm << std::endl;
-    return std::move(*newRoom);
+    return *newRoom;
 }
 
 Reservation IoManager::askInputToMakeReservation() {
@@ -121,7 +121,7 @@ std::string IoManager::validateDate(const std::string &title) {
             } else {
                 done = true;
                 validDateStr = userInputDate;
-                std::cout << "✅  ✅  ✅" << std::endl;
+                //  std::cout << "✅" << std::endl;
             }
         } catch (...) {
             std::cout << "\033[1;31mInvalid Date Entry. Follow the format given (YYYY-MM-DD) with valid Date[0m️"

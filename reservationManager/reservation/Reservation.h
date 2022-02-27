@@ -22,9 +22,10 @@ public:
     Reservation() = default;
 
     Reservation(Room &room, std::string checkInDate, std::string checkOutDate,
-                int adultCount, int childrenCount, Guest &guest, bool isCreditCardBilled = false,
-                bool hasPaid = false, ReservationStatus reservationStatus = Reservation::ReservationStatus::WAIT_LIST,
-                const std::string &reservationNumber = "None");
+                int adultCount, int childrenCount, Guest &guest, std::string reservationNumber = "None",
+                bool isCreditCardBilled = false,
+                bool hasPaid = false,
+                ReservationStatus reservationStatus = Reservation::ReservationStatus::WAIT_LIST);
 
 //    Reservation(std::vector<Room> &rooms, std::string checkInDate, std::string checkOutDate,
 //                int adultCount, int childrenCount, std::vector<Guest> &guests);
@@ -62,7 +63,7 @@ public:
     virtual ~Reservation() = default;
 
 private:
-    boost::uuids::uuid u = boost::uuids::random_generator()();
+//    boost::uuids::uuid u = boost::uuids::random_generator()();
     std::string reservationNumber;
     std::string checkInDate;
     std::string checkOutDate;
@@ -75,7 +76,6 @@ private:
 //    std::vector<Room> rooms;
     Guest guest;
     Room room;
-    std::function<void()> func;
 };
 
 

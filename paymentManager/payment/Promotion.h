@@ -4,6 +4,7 @@
 
 #include<string>
 
+//If Any
 class Promotion {
 public:
     const std::string getPromoName() const;

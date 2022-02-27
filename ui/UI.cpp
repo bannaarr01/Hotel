@@ -30,7 +30,7 @@ void UI::header(const int totalWidth, const std::string title, const std::string
 //========================MAIN MENU UI=====================================================================
 void UI::Launch() {
     const int totalWidth{35};
-    std::vector<std::string> listsToDisplay{"MANAGE GUEST", "RESERVATION", "ROOM MANAGEMENT", "CHECK-IN",
+    std::vector<std::string> listsToDisplay{"MANAGE GUEST", "MANAGE RESERVATION", "ROOM MANAGEMENT", "CHECK-IN",
                                             "CHECK-OUT", "\033[1;31mEXIT ➡️[0m️"};
     header(totalWidth, "MAIN MENU", "1-6", listsToDisplay);
 }
@@ -126,9 +126,10 @@ void UI::reservationMenuDisplay() {
     std::vector<std::string> listsToDisplay{"Make a New Reservation",
                                             "Show all Reservations",
                                             "Manage Existing Reservation",
+                                            "Manage Reservation Payment",
                                             "\033[1;36mMAIN MENU[0m️ ⬅",
                                             "\033[1;31mEXIT ➡️[0m️"};
-    header(totalWidth, "MANAGE RESERVATION", "1-5", listsToDisplay);
+    header(totalWidth, "MANAGE RESERVATION", "1-6", listsToDisplay);
 }
 
 void UI::reservationManagementDisplay() {
@@ -222,6 +223,24 @@ void UI::reservationTabularDisplay(const std::set<Reservation> &reservationSet) 
     std::cout << std::setfill(' ');
     std::cout << std::endl << std::endl;
 }
+
+void UI::reservationPaymentOptionDisplay() {
+    const int totalWidth{35};
+    std::vector<std::string> listsToDisplay{"YES", "PAY LATER"};
+    header(totalWidth, "PAY FOR THE RESERVATION NOW ?", "1-5", listsToDisplay);
+}
+
+void UI::paymentManagerMenu() {
+    const int totalWidth{35};
+    std::vector<std::string> listsToDisplay{"Process Payment",
+                                            "Update A Reservation",
+                                            "Delete Reservation",
+                                            "\033[1;36mRESERVATION MENU[0m️ ⬅",
+                                            "\033[1;36mMAIN MENU[0m️ ⬅",
+                                            "\033[1;31mEXIT ➡️[0m️"};
+    header(totalWidth, "MANAGE RESERVATION PAYMENT", "1-7", listsToDisplay);
+}
+
 
 //========================END OF RESERVATION UI============================================================
 

@@ -2,23 +2,15 @@
 #include "Reservation.h"
 
 Reservation::Reservation(Room &room, std::string checkInDate, std::string checkOutDate,
-                         int adultCount, int childrenCount, Guest &guest, bool isCreditCardBilled,
-                         bool hasPaid, ReservationStatus reservationStatus, const std::string &reservationNumber)
+                         int adultCount, int childrenCount, Guest &guest, std::string reservationNumber,
+                         bool isCreditCardBilled,
+                         bool hasPaid, ReservationStatus reservationStatus)
         : room{room}, checkInDate{checkInDate}, checkOutDate{checkOutDate}, adultCount{adultCount},
-          childrenCount{childrenCount}, guest{guest}, isCreditCardBilled{isCreditCardBilled},
-          hasPaid{hasPaid}, reservationStatus{reservationStatus}, reservationNumber{boost::uuids::to_string(u)} {
+          childrenCount{childrenCount}, guest{guest}, reservationNumber{reservationNumber},
+          isCreditCardBilled{isCreditCardBilled},
+          hasPaid{hasPaid}, reservationStatus{reservationStatus} {
     //reservationNumber = boost::uuids::to_string(u); //auto generate uuid for new reservation
 }
-
-
-
-//Reservation::Reservation(std::vector<Room> &rooms, std::string checkInDate, std::string checkOutDate,
-//                         int adultCount, int childrenCount, std::vector<Guest> &guests)
-//        : rooms{rooms}, checkInDate{checkInDate}, checkOutDate{checkOutDate}, adultCount{adultCount},
-//          childrenCount{childrenCount}, guests{guests} {
-//    reservationNumber = boost::uuids::to_string(u); //auto generate uuid for new reservation
-//    reservationStatus = Reservation::ReservationStatus::WAIT_LIST;
-//}
 
 
 //void Reservation::print(std::ostream &os) const {

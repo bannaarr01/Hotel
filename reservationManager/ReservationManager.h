@@ -36,6 +36,7 @@ private:
     std::set<Guest> guestObjSet;
 
 public:
+    ReservationManager() = default;
 
     void reservationMenu();
 
@@ -87,7 +88,7 @@ public:
 
     void pintExpiredReservations() const;
 
-    void printReservations() const;
+    void printReservations();
 
 
 };

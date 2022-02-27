@@ -90,8 +90,8 @@ public:
     }
 
     auto changeGuestCcDetails() {
-        return [this](std::string newHolderName, std::string newCcNumber, std::string newExpiryDate,
-                      std::string newCVV) {
+        return [this](std::string &newHolderName, std::string &newCcNumber, std::string &newExpiryDate,
+                      std::string &newCVV) {
             creditCard.setHolderName(newHolderName);
             creditCard.setCcNumber(newCcNumber);
             creditCard.setExpiryDate(newExpiryDate);
