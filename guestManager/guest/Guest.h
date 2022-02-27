@@ -82,7 +82,7 @@ public:
     }
 
     auto changeGuestDetails() {
-        return [this](std::string newAddress, std::string newCountry, std::string newContact) {
+        return [this](std::string &newAddress, std::string &newCountry, std::string &newContact) {
             address = newAddress;
             country = newCountry;
             contact = newContact;
@@ -100,7 +100,7 @@ public:
     }
 
     auto changeGuestIdDetails() {
-        return [this](std::string newIdNumber, IdDetails::IDType newIdType, std::string newExpiryDate) {
+        return [this](std::string &newIdNumber, IdDetails::IDType &newIdType, std::string &newExpiryDate) {
             id.setIdNumber(newIdNumber);
             id.setIdType(newIdType);
             id.setExpiryDate(newExpiryDate);

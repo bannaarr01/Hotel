@@ -5,7 +5,7 @@
 
 class RoomTypeSingle : public RoomType {
 private:
-    static constexpr const char *roomTypeName{"SINGLE"};
+    static constexpr const char *roomTypeName = "SINGLE";
 public:
     RoomTypeSingle() = default;
 

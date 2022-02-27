@@ -13,8 +13,8 @@ class UI {
 public:
 //=======================UI HEADER========================================================================
     //Header
-    static void header(const int totalWidth, const std::string title, const std::string range,
-                       std::vector<std::string> listToDisplay);
+    static void header(const int &totalWidth, const std::string &title, const std::string &range,
+                       std::vector<std::string> &listToDisplay);
 //========================END OF UI HEADER=================================================================
 
 

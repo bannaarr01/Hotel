@@ -14,7 +14,6 @@
 #include "../exception/InvalidEntryException.h"
 #include <boost/date_time/gregorian/gregorian.hpp>
 
-
 class IoManager {
 //All input and Output method will be here
 public:
@@ -26,6 +25,8 @@ public:
     Guest askInputToCreateNewGuest();
 
     Room askInputAndCreateNewRoom();
+
+    int guestCount(const int &max, const std::string &name);
 
     std::string validateDate(const std::string &title);
 

@@ -36,6 +36,22 @@ private:
     std::set<Guest> guestObjSet;
 
 public:
+    enum GuestCount {
+        VIP_ADULT_MAX = 4, VIP_CHILDREN_MAX = 2,
+        DELUXE_ADULT_MAX = 3, DELUXE_CHILDREN_MAX = 2,
+        DOUBLE_ADULT_MAX = 2, DOUBLE_CHILDREN_MAX = 2,
+        SINGLE_ADULT_MAX = 2, SINGLE_CHILDREN_MAX = 1
+    };
+    static constexpr const char *DEF_ADULT = "ADULTS";
+    static constexpr const char *DEF_CHILDREN = "CHILDREN";
+    static constexpr const char *DEF_VIP = "VIP";
+    static constexpr const char *DEF_DELUXE = "DELUXE";
+    static constexpr const char *DEF_DOUBLE = "DOUBLE";
+    static constexpr const char *DEF_SINGLE = "SINGLE";
+    static constexpr const char *DEF_STATUS_VACANT = "Vacant";
+    static constexpr const char *DEF_CHECK_IN_DATE = "checkInDate";
+    static constexpr const char *DEF_CHECK_OUT_DATE = "checkOutDate";
+
     ReservationManager() = default;
 
     void reservationMenu();

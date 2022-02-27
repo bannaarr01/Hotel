@@ -5,7 +5,8 @@
 
 class RoomTypeDeluxe : public RoomType {
 private:
-    static constexpr const char *roomTypeName{"DELUXE"};
+    static constexpr const char *roomTypeName = "DELUXE";
+
 public:
     RoomTypeDeluxe() = default;
 

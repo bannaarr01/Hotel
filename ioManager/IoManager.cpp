@@ -1,4 +1,5 @@
 #include "IoManager.h"
+#include "../reservationManager/ReservationManager.h"
 
 //Accept range of valid input and also accept a void function (UI) to display and return valid selection made
 int IoManager::inputValidation(const int &rangeFrom, const int &to, const std::function<void()> &func) {
@@ -53,8 +54,11 @@ int IoManager::inputValidationV2(const int &rangeFrom, const int &to) {
 }
 
 Guest IoManager::askInputToCreateNewGuest() {
-    std::string name{"Moe Curly"};
-    std::string idNumber{"D2569094"};
+    std::string name{"John Curly"};
+//    std::string idNumber{"D2569095"};
+    std::string idNumber{};
+    std::cout << "Enter ID Number (Passport / Driving License): ";
+    std::cin >> idNumber;
     std::string address{"301 Royal street"};
     std::string country{"London"};
     std::string nationality{"English"};
@@ -131,6 +135,38 @@ std::string IoManager::validateDate(const std::string &title) {
     return validDateStr;
 }
 
+int IoManager::guestCount(const int &max, const std::string &name) {
+    ReservationManager rm;
+    int validFrom{1};
+    int selection{};
+    std::string entry{};
+    bool done{false};
+    do {
+        std::cout << "\nEnter the TOTAL number of " << name << " for this reservation : ";
+        std::cin >> entry;
+        std::istringstream validator{entry};
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        if (validator >> selection && (selection >= validFrom && selection <= max))
+            done = true;
+        else {
+            std::cout << "\n\033[1;31m🚨 Sorry, This room type ONLY allow Minimum of " << validFrom << " and Max of "
+                      << max << " adults[0m️"
+                      << std::endl;
+
+
+            std::cout << "\n1. Adjust the number of " << name << "\n2. Check another suitable room type"
+                      << std::endl;
+            int options = inputValidationV2(1, 2);
+            if (options == 2) {
+                done = true;
+                rm.chooseAndDisplayRooms();
+            }
+        }
+
+    } while (!done);
+
+    return selection;
+}
 
 
 

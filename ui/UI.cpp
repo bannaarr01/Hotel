@@ -3,19 +3,20 @@
 //=======================UI HEADER========================================================================
 //Header - DRY [Don't repeat yourself]
 //Accept width of == displayed, title of the menu and list of menu to display
-void UI::header(const int totalWidth, const std::string title, const std::string range,
-                std::vector<std::string> listToDisplay) {
+void UI::header(const int &totalWidth, const std::string &title, const std::string &range,
+                std::vector<std::string> &listToDisplay) {
     std::cout << std::setw(totalWidth) << std::setfill('=') << "" << std::endl;
     std::cout << std::setfill(' ');
     //Centre title amidst == based on total width given
-    std::cout << std::setw((totalWidth - title.length()) / 2) << std::right << "" << "\033[1;36m" + title + "[0m️"
+    std::cout << std::setw(static_cast<int>((totalWidth - title.length()) / 2)) << std::right << ""
+              << "\033[1;36m" + title + "[0m️"
               << std::endl;
     std::cout << std::setw(totalWidth) << std::setfill('=') << "" << std::endl;
     std::cout << std::setfill(' ');
     //track number of list passed-in
     int count{};
     //Display the list passed-in and increment the count to be displayed in-front of each Menu list
-    for (const auto lst: listToDisplay) {
+    for (const auto &lst: listToDisplay) {
         std::cout << ++count << ". " << lst << "\n";
     }
     std::cout << std::setw(totalWidth) << std::setfill('=') << "" << std::endl;
@@ -155,7 +156,7 @@ void UI::reservationSubMenuDisplay() {
 
 void UI::existingGuestDisplay() {
     const int totalWidth{35};
-    std::vector<std::string> listsToDisplay{"YES - Existing Guest", "NO - New Guest",
+    std::vector<std::string> listsToDisplay{"YES : Existing Guest", "NO : New Guest",
                                             "\033[1;36mRESERVATION MENU[0m️ ⬅",
                                             "\033[1;36mMAIN MENU[0m️ ⬅",
                                             "\033[1;31mEXIT ➡️[0m️"};
