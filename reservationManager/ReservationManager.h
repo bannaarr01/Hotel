@@ -86,6 +86,9 @@ public:
 
     void manageReservation();
 
+    std::vector<Reservation>
+    findReservation(std::string &rsvId, std::unique_ptr<std::set<Reservation>> rsvObjSet = nullptr);
+
     void confirmReservationStatus();
 
     void changeReservationPaymentStatus();

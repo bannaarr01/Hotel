@@ -1,4 +1,4 @@
-100|Vacant|Master|Yes|VIP|115.55|[{"checkInDate":"20220303","checkOutDate":"20220404"},{"checkInDate":"20240303","checkOutDate":"20240404"},{"checkInDate":"20221010","checkOutDate":"20221111"},{"checkInDate":"20230101","checkOutDate":"20230202"}]|
+100|Vacant|Master|Yes|VIP|115.55|[{"checkInDate":"20220303","checkOutDate":"20220404"},{"checkInDate":"20240303","checkOutDate":"20240404"}]|
 101|Vacant|Double|Yes|DOUBLE|65.57|[]|
 102|Vacant|Double|No|DELUXE|101.35|[{"checkInDate":"20220228","checkOutDate":"20220303"}]|
 103|Vacant|Master|No|VIP|101.35|[]|
@@ -9,11 +9,11 @@
 108|Vacant|Master|Yes|DOUBLE|65.59|[]|
 109|Vacant|Master|Yes|DELUXE|98.39|[]|
 110|Vacant|Master|Yes|VIP|115.55|[]|
-111|Vacant|Master|Yes|VIP|115.55|[{"checkInDate":"20221010","checkOutDate":"20221111"},{"checkInDate":"20220226","checkOutDate":"20220328"}]|
+111|Vacant|Master|Yes|VIP|115.55|[]|
 112|Vacant|Master|Yes|VIP|115.55|[]|
 113|Vacant|Master|Yes|VIP|115.55|[{"checkInDate":"20220228","checkOutDate":"20220301"}]|
 114|Vacant|Master|Yes|VIP|115.55|[]|
-115|Vacant|Master|Yes|VIP|115.55|[{"checkInDate":"20220606","checkOutDate":"20220707"},{"checkInDate":"20230303","checkOutDate":"20230401"}]|
+115|Vacant|Master|Yes|VIP|115.55|[{"checkInDate":"20220606","checkOutDate":"20220707"}]|
 116|Vacant|Master|Yes|VIP|115.55|[{"checkInDate":"20221010","checkOutDate":"20221111"},{"checkInDate":"20220405","checkOutDate":"20220505"}]|
 118|Vacant|Master|Yes|SINGLE|115.55|[]|
 119|Vacant|Master|Yes|DOUBLE|115.55|[]|

@@ -633,6 +633,32 @@ void ReservationManager::manageReservation() {
     }
 }
 
+std::vector<Reservation>
+ReservationManager::findReservation(std::string &rsvId, std::unique_ptr<std::set<Reservation>> rsvObjSet) {
+    if (rsvObjSet == nullptr)
+        rsvObjSet = std::move(std::make_unique<std::set<Reservation>>(reservationsObjSet));
+
+    auto reservationsObjSt = *rsvObjSet;
+    std::vector<Reservation> resultRsv;
+    std::copy_if(reservationsObjSt.begin(), reservationsObjSt.end(), std::back_inserter(resultRsv),
+                 [&](const Reservation &rsv) {
+                     return (rsv.getReservationNumber() == rsvId);
+                 });
+    return resultRsv;
+}
+
+
+//std::vector<Room> ReservationManager::findAvailableRoom(std::string &roomType, std::string &roomAvailability) {
+//    std::vector<Room> resultRm;
+//    //If found, copy the obj and insert into result vector
+//    std::copy_if(roomsObjVec.begin(), roomsObjVec.end(), std::back_inserter(resultRm),
+//                 [&](const Room &room) {
+//                     return (room.getRoomType()->getRoomTypeName() == roomType &&
+//                             room.roomAvailabilityStatusToString(room.getRoomAvailabilityStatus()) == roomAvailability);
+//                 });
+//    return resultRm;
+//}
+
 void ReservationManager::updateReservation(Reservation &reservation) {
     try {
         std::ofstream outFile{fileName, std::ios::trunc};
@@ -700,6 +726,8 @@ void ReservationManager::confirmReservationStatus() {
 void ReservationManager::changeReservationPaymentStatus() {
 
 }
+
+
 
 
 

@@ -75,22 +75,20 @@ void PaymentManager::processPayment(Reservation &reservation) {
 }
 
 void PaymentManager::getReservationDetails() {
-    std::vector<Reservation> resultRsv;
+    ReservationManager rm;
     Reservation reservation;
     std::cout << "Enter Reservation ID: ";
     std::string revId;
     std::cin >> revId;
 
-    std::copy_if(reservationsObjSet.begin(), reservationsObjSet.end(), std::back_inserter(resultRsv),
-                 [&revId](const Reservation &rsv) {
-                     return (rsv.getReservationNumber() == revId);
-                 });
+    auto rsvObjSet = std::make_unique<std::set<Reservation>>(reservationsObjSet);
+    auto resultRsv = rm.findReservation(revId, std::move(rsvObjSet));
 
     if (!std::empty(resultRsv)) {
         auto rRsv = resultRsv.at(0);
         reservation = rRsv;
         std::cout << "🟢 Reservation Record Found" << std::endl;
-        // std::cout << reservation << std::endl;
+        // pass control to process payment of the found reservation
         processPayment(reservation);
     } else {
         std::cout << "\n\033[1;31m🔴 Reservation Record NOT Found[0m" << std::endl;
@@ -103,7 +101,6 @@ void PaymentManager::getReservationDetails() {
         else if (secondSelect == 2)
             paymentMenu();
     }
-
 
 }
 
