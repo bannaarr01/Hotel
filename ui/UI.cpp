@@ -203,7 +203,10 @@ void UI::reservationTabularDisplay(const std::set<Reservation> &reservationSet) 
                   << std::setw(field3_width) << std::left << reservation.getRoom().getRoomType()->getRoomTypeName()
                   << std::setw(field4_width) << std::left << reservation.getGuest().getId().getIdNumber()
                   << std::setw(field5_width) << std::left
-                  << reservation.reservationStatusToString(reservation.getReservationStatus())
+                  << (reservation.reservationStatusToString(reservation.getReservationStatus()) == "Confirmed" ?
+                      "\033[1;32m" + reservation.reservationStatusToString(reservation.getReservationStatus()) + "[0m"
+                                                                                                               :
+                      "\033[1;33m" + reservation.reservationStatusToString(reservation.getReservationStatus()) + "[0m")
                   << std::endl;
         std::cout << std::setw(field6_width) << std::left << "\033[1;36mCheck-In Date: [0m"
                   // << std::setw(field8_width) << std::left
@@ -215,8 +218,8 @@ void UI::reservationTabularDisplay(const std::set<Reservation> &reservationSet) 
         std::cout << std::setw(field6_width) << std::left << "\033[1;32mCheck-Out Date: [0m"
                   << from_undelimited_string(reservation.getCheckOutDate())
                   << std::setw(field8_width) << std::right << "\033[1;36mPaid ?[0m"
-                  << std::setw(field9_width) << std::right
-                  << (reservation.getHasPaid() == 0 ? "\033[1;31mNOT YET[0m" : "\033[1;32mPAID ✅[0m")
+                  << std::setw(field9_width)
+                  << (reservation.getHasPaid() == 0 ? "\033[1;31mNOT YET[0m" : "\033[1;32m     PAID ✔︎[0m")
                   << std::endl << std::endl;
     }//For Each Reservation
 

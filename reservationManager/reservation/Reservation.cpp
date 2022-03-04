@@ -64,8 +64,7 @@ void Reservation::print(std::ostream &os) const {
        << room.bedTypeToString(room.getBedType()) << "," << ((room.getWifiEnabled() == 0) ? "No" : "Yes") << ","
        << room.getRoomType()->getRoomTypeName() << "," << room.getRoomType()->getPrice() << ","
        << checkInDate << "," << checkOutDate << "," << reservationStatusToString(reservationStatus)
-       << "," << adultCount << "," << childrenCount << "," << guest << "," << isCreditCardBilled << "," << hasPaid
-       << std::endl;
+       << "," << adultCount << "," << childrenCount << "," << guest << "," << isCreditCardBilled << "," << hasPaid;
 }
 
 std::string Reservation::getReservationNumber() const {
@@ -119,6 +118,18 @@ bool Reservation::getHasPaid() const {
     return hasPaid;
 }
 
+void Reservation::setHasPaid(bool hasPaid) {
+    this->hasPaid = hasPaid;
+}
+
+bool Reservation::getIsCreditCardBilled() const {
+    return isCreditCardBilled;
+}
+
+void Reservation::setIsCreditCardBilled(bool isCreditCardBilled) {
+    this->isCreditCardBilled = isCreditCardBilled;
+}
+
 int Reservation::getAdultCount() const {
     return adultCount;
 }
@@ -126,6 +137,14 @@ int Reservation::getAdultCount() const {
 int Reservation::getChildrenCount() const {
     return childrenCount;
 }
+
+void Reservation::setReservationStatus(Reservation::ReservationStatus reservationStatus) {
+    this->reservationStatus = reservationStatus;
+}
+
+
+
+
 
 
 

@@ -25,7 +25,7 @@ class ReservationManager {
 private:
     IoManager ioManager;
     //UI ui;
-    rsd::ReservedDate rsvDates;
+    // rsd::ReservedDate rsvDates;
     std::string fileName{"../data/reservations.csv"};
     std::string fileName2{"../data/rooms.newformat"};
     std::vector<Reservation> reservations;
@@ -65,10 +65,6 @@ public:
 
     Room checkRoom(std::string &&roomType, std::string &&roomAvailability);
 
-
-//    Reservation initReservation(Room &room, Guest &guest, std::string &checkInDate, std::string &checkOutDate,
-//                                int &adultCount, int &childrenCount);
-
     void subUpdateRoom(Room &room, std::string &checkInDate, std::string &checkOutDate);
 
     Guest existingGuest();
@@ -76,9 +72,9 @@ public:
     bool checkOverlap(Room &room, std::string &checkInDate, std::string &checkOutDate);
 
     std::set<Reservation>
-    getGuestReservation(Guest &guest, std::set<Reservation> &reservationsObjSt);
+    getGuestReservation(Guest &guest, std::unique_ptr<std::set<Reservation>> rsvObjSet = nullptr);
 
-    bool copyCsvToReservationsObjSet(std::set<Reservation> &reservationsObjSt);
+    bool copyCsvToReservationsObjSet(std::set<Reservation> *rsvObjSet = nullptr);
 
     void createReservation(Room &room, Guest &guest, int &numOfRooms, std::string &checkInDate,
                            std::string &checkOutDate,

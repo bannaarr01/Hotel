@@ -2,7 +2,8 @@
 
 void PaymentManager::paymentMenu() {
     ReservationManager rm;
-    if (!rm.copyCsvToReservationsObjSet(reservationsObjSet)) {
+    // auto rsvObjSet = &reservationsObjSet);
+    if (!rm.copyCsvToReservationsObjSet(&reservationsObjSet)) {
         std::cout << "\033[1;31m🚨 An error has occurred...Please Try again later.[0m️" << std::endl;
         OverallManager::mainMenu();
     }
@@ -47,7 +48,7 @@ void PaymentManager::paymentMenu() {
 void PaymentManager::processPayment(Reservation &reservation) {
     reservation.getCheckOutDate();
     reservation.getCheckInDate();
-//Get number of days, Pay, n set status to HASPAID n UPLOAD BACK TO DISK
+    //Get number of days, Pay, n set status to HAS_PAID n UPLOAD BACK TO DISK
     std::cout << "\n\033[1;36mPROCEED PAYMENT WITH THIS CREDIT CARD DETAILS ? [0m️" << std::endl;
     auto cc = reservation.getGuest().getCreditCard();
     std::cout << "\nCC Holder's Name: " << cc.getHolderName() << std::endl;
@@ -61,6 +62,38 @@ void PaymentManager::processPayment(Reservation &reservation) {
     if (select == 1) {
         //Success for now. . .
         //Enter cvv n exp date to complete
+        try {
+            std::ofstream outFile{fileName, std::ios::trunc};
+            std::string line{};
+            auto oldRsDates = reservation;
+            auto iterator = reservationsObjSet.begin();
+            while (iterator != reservationsObjSet.end()) {
+                if (*iterator == reservation) {
+                    reservationsObjSet.erase(iterator);
+                    reservation.setHasPaid(true);
+                    auto confirmedStatus = Reservation::ReservationStatus(2);
+                    reservation.setReservationStatus(confirmedStatus);
+
+                    reservationsObjSet.emplace(reservation);
+                    // std::sort(reservationsObjSet.begin(), reservationsObjSet.end());
+                    if (!outFile) {
+                        throw ErrorWritingToFileException{};
+                    }
+                    for (const auto &elem: reservationsObjSet)
+                        outFile << elem << std::endl;
+                    outFile.close();
+                    iterator = reservationsObjSet.end();
+                } else {
+                    iterator++; //only increment the iterator if...
+                }
+
+            }
+        } catch (ErrorWritingToFileException &ex) {
+            // std::cout << ex.what() << std::endl;
+
+        }
+        std::set<Reservation> toDisplay{reservation};
+        UI::reservationTabularDisplay(toDisplay);
         std::cout << "\033[1;32mYour Reservation has now been CONFIRMED ✅[0m" << std::endl;
     }
     if (select == 2) {
@@ -88,6 +121,8 @@ void PaymentManager::getReservationDetails() {
         auto rRsv = resultRsv.at(0);
         reservation = rRsv;
         std::cout << "🟢 Reservation Record Found" << std::endl;
+        //std::cout << resultRsv.at(0).getRoom() << std::endl;
+
         // pass control to process payment of the found reservation
         processPayment(reservation);
     } else {

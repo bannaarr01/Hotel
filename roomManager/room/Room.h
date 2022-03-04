@@ -103,40 +103,6 @@ public:
         return j.dump(4);
     }
 
-//    auto toCsv() {
-//
-//        return [this]() {
-//            nlohmann::json j;
-//            Room r;
-//            std::cout << r.roomNumber = roomNumber << ","
-//               << r.roomAvailabilityStatus = roomAvailabilityStatusToString(roomAvailabilityStatus)
-//               << "," << bedTypeToString(bedType) << "," << ((isWifiEnabled == 0) ? "No" : "Yes")
-//               << "," << roomTypePtr->getRoomTypeName() << "," << roomTypePtr->getPrice() << ",";
-//            for (auto &rsv: reservedDates) {
-//                j["checkInDate"] = rsv.checkInDate;
-//                j["checkOutDate"] = rsv.checkOutDate;
-//            }
-//            os << ",";
-//    return
-//
-//        };
-//
-//    }
-
-//    template<typename T>
-//    std::map<std::string, typename T::mapped_type> to_string_keyed_map(T const &input) const;
-//=========
-// Move variant
-//    template <typename T>
-//    std::map<std::string, typename T::mapped_type> to_string_keyed_map(T && input) {
-//        std::map<std::string, typename T::mapped_type> output;
-//
-//        for (auto & pair : input) {
-//            output.emplace(std::to_string(pair.first), std::move(pair.second));
-//        }
-//
-//        return output;
-//    }
 
     static void printJsonDate(const std::map<std::string, std::string> &rv);
 

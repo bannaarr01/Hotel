@@ -9,6 +9,7 @@
 class PaymentManager {
 private:
     IoManager ioManager;
+    static constexpr const char *fileName = "../data/reservations.csv";
     std::set<Reservation> reservationsObjSet;
 public:
     void paymentMenu();

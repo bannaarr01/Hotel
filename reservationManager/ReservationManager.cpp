@@ -1,33 +1,10 @@
 #include "ReservationManager.h"
 
-//Reservation
-//ReservationManager::initReservation(Room &room, Guest &guest, std::string &checkInDate, std::string &checkOutDate,
-//                                    int &adultCount, int &childrenCount) {
-////    auto newReservation =ioManager.iskInputToMakeReservation();
-//    Reservation newReservation{room, checkInDate, checkInDate, adultCount, childrenCount, guest};
-//
-//    std::ofstream outFile{fileName, std::ios::app};
-//    std::string line{};
-//    try {
-//        if (!outFile) {
-//            throw ErrorWritingToFileException{};
-//        }
-//        outFile << newReservation;
-//    } catch (const ErrorWritingToFileException &ex) {
-//        std::cout << ex.what() << std::endl;
-//    }
-//
-//    outFile.close();
-//
-//    return newReservation;
-//}
-
-
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "misc-no-recursion"
 
 void ReservationManager::reservationMenu() {
-    if (!copyCsvToReservationsObjSet(reservationsObjSet)) {
+    if (!copyCsvToReservationsObjSet()) {
         std::cout << "\033[1;31m🚨 An error has occurred...Please Try again later.[0m️" << std::endl;
         OverallManager::mainMenu();
     }
@@ -242,7 +219,7 @@ void ReservationManager::chooseAndDisplayRooms() {
             }
 
             std::cout << "\nAdd More Reservation ? " << std::endl;
-            std::cout << "1. YES\n2. NO";
+            std::cout << "1. YES\n2. NO" << std::endl;
             int addMore = ioManager.inputValidationV2(1, 2);
             if (addMore == 2) {
                 done = true;
@@ -280,13 +257,13 @@ Room ReservationManager::checkRoom(std::string &&roomType, std::string &&roomAva
             UI::tabularDisplay(result);
 
             //Set the initial range of room number to select to the first available room no display
-            int rangeFrom = std::stod(result.at(0).getRoomNumber());
+            double rangeFrom = std::stod(result.at(0).getRoomNumber());
             //Set the range to last available room no i.e, if 3 rooms is available with room no 100,200,300
             //then available input the user should input should only be valid btw 100-300
-            int to = std::stod(result.at(result.size() - 1).getRoomNumber());
+            double to = std::stod(result.at(result.size() - 1).getRoomNumber());
 
             //inputValidationV2 accepts the range of available room no
-            int selectRoom = ioManager.inputValidationV2(rangeFrom, to);
+            int selectRoom = ioManager.inputValidationV2(static_cast<int>(rangeFrom), static_cast<int>(to));
             //convert d integer to string
             std::string ss = std::to_string(selectRoom);
 
@@ -457,7 +434,7 @@ Guest ReservationManager::existingGuest() {
     return guest;
 }
 
-bool ReservationManager::copyCsvToReservationsObjSet(std::set<Reservation> &reservationsObjSt) {
+bool ReservationManager::copyCsvToReservationsObjSet(std::set<Reservation> *rsvObjSet) {
     std::ifstream inFile{fileName};
     std::string line{};
     std::string temp{};
@@ -530,16 +507,23 @@ bool ReservationManager::copyCsvToReservationsObjSet(std::set<Reservation> &rese
         Reservation obtainedReservation{*obtainedRoom, checkInDate, checkOutDate, static_cast<int>(adultCount),
                                         static_cast<int>(childrenCount), *guest, reservationNumber,
                                         isCreditCardBilled, hasPaid, reserveStatus};
+        if (rsvObjSet == nullptr)
+            rsvObjSet = &reservationsObjSet;
+
         //Store each of the reservation in reservationsObjSet
-        reservationsObjSt.emplace(obtainedReservation);
+        rsvObjSet->emplace(obtainedReservation);
     }
 
     return true;
 }
 
 std::set<Reservation>
-ReservationManager::getGuestReservation(Guest &guest, std::set<Reservation> &reservationsObjSt) {
-    std::set<Reservation> res;
+ReservationManager::getGuestReservation(Guest &guest, std::unique_ptr<std::set<Reservation>> rsvObjSet) {
+    std::set<Reservation> res; //using set here, we want to deal with one piece of res at once
+    if (rsvObjSet == nullptr)
+        rsvObjSet = std::move(std::make_unique<std::set<Reservation>>(reservationsObjSet));
+
+    auto reservationsObjSt = *rsvObjSet;
 
     std::copy_if(reservationsObjSt.begin(), reservationsObjSt.end(), std::inserter(res, res.end()),
                  [&](const Reservation &r) {
@@ -564,7 +548,7 @@ void ReservationManager::createReservation(Room &room, Guest &guest, int &numOfR
         //
         //Even though err was made with selection of Exist guest or Not, this checking will still capture
         if (!(guest.getId().getIdNumber()).empty()) {
-            auto rs = getGuestReservation(guest, reservationsObjSet);
+            auto rs = getGuestReservation(guest);
             if (!std::empty(rs)) {
                 for (const auto &r: rs) {
                     //If checking date yyyy-mm-dd minus today's date is > 1, increment d room number
@@ -602,8 +586,11 @@ void ReservationManager::createReservation(Room &room, Guest &guest, int &numOfR
                 //Update the reservation Set, In case of further reservation while new CopyFromCsv Not Updated Yet
                 reservationsObjSet.emplace(newReservation);
                 std::cout << "\n🟢 Reservation Created Successfully ✅" << std::endl;
-                std::cout << "Your Reservation Reference / ID: " << newReservation.getReservationNumber() << std::endl
-                          << std::endl;
+//                std::cout << "Your Reservation Reference / ID: " << newReservation.getReservationNumber() << std::endl
+//                          << std::endl;
+                //TO DISPLAY RESERVATION DETAILS
+                std::set<Reservation> toDisplay{newReservation};
+                UI::reservationTabularDisplay(toDisplay);
                 outFile << newReservation;
             } catch (const ErrorWritingToFileException &ex) {
                 std::cout << ex.what() << std::endl;
@@ -614,7 +601,7 @@ void ReservationManager::createReservation(Room &room, Guest &guest, int &numOfR
             int select = ioManager.inputValidation(1, 2, UI::reservationPaymentOptionDisplay);
             if (select == 1) {
                 PaymentManager m;
-                m.processPayment(newReservation);
+                m.paymentMenu();
             } else if (select == 2) {
                 reservationMenu();
             }
@@ -688,20 +675,6 @@ void ReservationManager::updateReservation(Reservation &reservation) {
 
 }
 
-void ReservationManager::printReservations() {
-    UI::reservationTabularDisplay(reservationsObjSet);
-    std::cout << "[1;36mMAKE A SELECTION[0m" << std::endl;
-    std::cout << "1. Go Back to Previous Menu" << std::endl;
-    std::cout << "2. Go Back to Main Menu" << std::endl;
-    int selection = ioManager.inputValidationV2(1, 2);
-    if (selection == 1) {
-        std::cout << std::endl << std::endl;
-        reservationMenu();
-    } else if (selection == 2) {
-        std::cout << std::endl << std::endl;
-        OverallManager::mainMenu();
-    }
-}
 
 void ReservationManager::updateReservationCreditCard() {
 
@@ -727,6 +700,20 @@ void ReservationManager::changeReservationPaymentStatus() {
 
 }
 
+void ReservationManager::printReservations() {
+    UI::reservationTabularDisplay(reservationsObjSet);
+    std::cout << "[1;36mMAKE A SELECTION[0m" << std::endl;
+    std::cout << "1. Go Back to Previous Menu" << std::endl;
+    std::cout << "2. Go Back to Main Menu" << std::endl;
+    int selection = ioManager.inputValidationV2(1, 2);
+    if (selection == 1) {
+        std::cout << std::endl << std::endl;
+        reservationMenu();
+    } else if (selection == 2) {
+        std::cout << std::endl << std::endl;
+        OverallManager::mainMenu();
+    }
+}
 
 
 

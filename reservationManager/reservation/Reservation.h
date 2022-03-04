@@ -44,11 +44,19 @@ public:
 
     ReservationStatus getReservationStatus() const;
 
+    void setReservationStatus(Reservation::ReservationStatus reservationStatus);
+
     void addRoom(Room &room);
 
     std::string reservationStatusToString(Reservation::ReservationStatus reservationStatus) const;
 
     bool getHasPaid() const;
+
+    void setHasPaid(bool hasPaid);
+
+    bool getIsCreditCardBilled() const;
+
+    void setIsCreditCardBilled(bool isCreditCardBilled);
 
     int getChildrenCount() const;
 

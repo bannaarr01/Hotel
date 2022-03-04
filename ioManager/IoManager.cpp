@@ -150,7 +150,7 @@ int IoManager::guestCount(const int &max, const std::string &name) {
             done = true;
         else {
             std::cout << "\n\033[1;31m🚨 Sorry, This room type ONLY allow Minimum of " << validFrom << " and Max of "
-                      << max << " adults[0m️"
+                      << max << " " << name << "[0m️"
                       << std::endl;
 
 
