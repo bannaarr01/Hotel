@@ -61,8 +61,11 @@ public:
     //Manage Existing Reservation
     static void reservationManagementDisplay();
 
-    //Display Rooms in tabular format
+    //Display Reservation in tabular format
     static void reservationTabularDisplay(const std::set<Reservation> &reservationSet);
+    //Accept Set Or Vector Reservation Container
+    //template<typename SetOrVector, typename T = typename SetOrVector::value_type>
+
 
     //ReservationPayment Option
     static void reservationPaymentOptionDisplay();

@@ -65,14 +65,21 @@ public:
 
     Room checkRoom(std::string &&roomType, std::string &&roomAvailability);
 
+    //Update Room with reservation dates
     void subUpdateRoom(Room &room, std::string &checkInDate, std::string &checkOutDate);
 
+    //check if the guest exist
     Guest existingGuest();
 
+    //check if the selected date overlap with existing reservation date of the chosen Room
     bool checkOverlap(Room &room, std::string &checkInDate, std::string &checkOutDate);
 
+    //Get the reservation(s) of a specific guest {used to search}
     std::set<Reservation>
     getGuestReservation(Guest &guest, std::unique_ptr<std::set<Reservation>> rsvObjSet = nullptr);
+
+    //display the reservation(s) of a specific guest
+    void findAGuestReservation();
 
     bool copyCsvToReservationsObjSet(std::set<Reservation> *rsvObjSet = nullptr);
 
@@ -90,7 +97,6 @@ public:
     void changeReservationPaymentStatus();
 
     void updateReservation(Reservation &reservation);
-
 
     void updateReservationCreditCard();
 

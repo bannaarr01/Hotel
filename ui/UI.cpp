@@ -163,6 +163,7 @@ void UI::existingGuestDisplay() {
     header(totalWidth, "EXISTING GUEST ?", "1-5", listsToDisplay);
 }
 
+
 void UI::reservationTabularDisplay(const std::set<Reservation> &reservationSet) {
     using namespace boost::gregorian;       //To Display Date in date format
     const int total_width{80};             //Total width of ruler
@@ -244,6 +245,10 @@ void UI::paymentManagerMenu() {
                                             "\033[1;31mEXIT ➡️[0m️"};
     header(totalWidth, "MANAGE RESERVATION PAYMENT", "1-7", listsToDisplay);
 }
+
+
+
+
 
 
 //========================END OF RESERVATION UI============================================================

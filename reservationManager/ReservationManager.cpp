@@ -126,11 +126,11 @@ void ReservationManager::chooseAndDisplayRooms() {
             int selection = ioManager.inputValidation(1, 7, UI::reservationSubMenuDisplay);
             switch (selection) {
                 case 1: {
-                    //since checkRoom func is returning a room, it's then assign to room directly
+                    //since checkRoom func is returning a room, it's then assign to room obj directly
                     room = checkRoom(DEF_VIP, DEF_STATUS_VACANT);
                     std::cout << "\033[1;36mENTER DATE BELOW TO CHECK ROOM #" << room.getRoomNumber()
                               << " AVAILABILITY[0m \n" << std::endl;
-                    // Transfer ⇢ control to check dates of the room passed in
+                    // Transfer ⇢ control to check dates of the room passed-in
                     auto checkedRoomDates = checkRoomDates(room);
                     //The selected cIn and cOut date returned
                     std::string checkInDate = checkedRoomDates[DEF_CHECK_IN_DATE];
@@ -138,12 +138,12 @@ void ReservationManager::chooseAndDisplayRooms() {
                     //check number of guest for this room
                     int adultCount = ioManager.guestCount(GuestCount::VIP_ADULT_MAX, DEF_ADULT);
                     int childrenCount = ioManager.guestCount(GuestCount::VIP_CHILDREN_MAX, DEF_CHILDREN);
-                    //Check Guest if Exists or register new guest
+                    //Check Guest if Exists or Proceed to register new Guest
                     guest = existingGuest();
-                    //create reservation
+                    //create reservation, with the Room selected, Date, guest counts and increment Reservation no of Rooms
                     createReservation(room, guest, numOfRooms, checkInDate, checkOutDate, adultCount, childrenCount,
                                       done);
-                    //Add cIn and cOut dates to update this room
+                    //Add checkIn and checkOut dates to update this room respectively
                     subUpdateRoom(room, checkInDate, checkOutDate);
 
                     break;//end of case 1 of selection
@@ -203,7 +203,6 @@ void ReservationManager::chooseAndDisplayRooms() {
                 case 5: {
                     std::cout << std::endl;
                     reservationMenu();
-                    //checkOverlap();
                     break;
                 }
                 case 6: {
@@ -213,8 +212,10 @@ void ReservationManager::chooseAndDisplayRooms() {
                 }
                 case 7: {
                     std::cout << std::endl;
-                    std::cout << "\033[1;31mQuitting. . .[0m️";
-                    break;
+                    std::cout << "\033[1;31mQuitting. . .[0m️" << std::endl;
+                    // break;
+                    exit(0);
+
                 }
             }
 
@@ -382,22 +383,25 @@ Guest ReservationManager::existingGuest() {
                         auto dGuest = resultGs.at(0);
                         guest = dGuest;
                         std::cout << "🟢 Guest Record Found" << std::endl;
+                        done = true;
                         //   std::cout << result << std::endl;
-                    } else
+                    } else {
                         std::cout
                                 << "\n\033[1;31m🔴 Record NOT Found.💥[0m" << std::endl;
 
-                    std::cout << "\n\033[1;36mSEARCH AGAIN ? :[0m" << std::endl;
-                    std::cout << "1. YES : Search Again\n2. INPUT New Guest Details\n3. GO Back to Previous Menu"
-                              << std::endl;
-                    int options = ioManager.inputValidationV2(1, 2);
-                    if (options == 2) {
-                        done = true;
-                        //The create reservation function checks n create new Guest when this return null
-                    }
-                    if (options == 3) {
-                        done = true;
-                        reservationMenu();
+                        std::cout << "\n\033[1;36mSEARCH AGAIN ? :[0m" << std::endl;
+                        std::cout << "1. YES : Search Again\n2. INPUT New Guest Details\n3. GO Back to Reservation Menu"
+                                  << std::endl;
+                        int options = ioManager.inputValidationV2(1, 3);
+                        if (options == 2) {
+                            done = true;
+                            //The create reservation function checks n create new Guest when this return null
+                        }
+                        if (options == 3) {
+                            done = true;
+                            reservationMenu();
+                        }
+
                     }
                 } while (!done);
 
@@ -519,7 +523,7 @@ bool ReservationManager::copyCsvToReservationsObjSet(std::set<Reservation> *rsvO
 
 std::set<Reservation>
 ReservationManager::getGuestReservation(Guest &guest, std::unique_ptr<std::set<Reservation>> rsvObjSet) {
-    std::set<Reservation> res; //using set here, we want to deal with one piece of res at once
+    std::set<Reservation> res;
     if (rsvObjSet == nullptr)
         rsvObjSet = std::move(std::make_unique<std::set<Reservation>>(reservationsObjSet));
 
@@ -530,6 +534,37 @@ ReservationManager::getGuestReservation(Guest &guest, std::unique_ptr<std::set<R
                      return (r.getGuest() == guest);//this compare d guest ID as defined in guest class with overload==
                  });
     return res;
+}
+
+void ReservationManager::findAGuestReservation() {
+    std::vector<Guest> resultGs;
+    std::string searchTerm{};
+    std::cout << "Enter Guest Passport / Driving License: ";
+    std::cin >> searchTerm;
+    std::transform(searchTerm.begin(), searchTerm.end(), searchTerm.begin(), ::toupper);
+    GuestManager gm;
+    if (gm.copyCSVtoGuestObjSet(guestObjSet)) {
+        std::copy_if(guestObjSet.begin(), guestObjSet.end(), std::back_inserter(resultGs),
+                     [searchTerm](const Guest &g) {
+                         return (g.getId().getIdNumber() == searchTerm);
+                     });
+
+    }
+    std::vector<Reservation> res;
+    auto guest = resultGs.at(0);
+
+//    if (rsvObjSet == nullptr)
+//        rsvObjSet = std::move(std::make_unique<std::set<Reservation>>(reservationsObjSet));
+//
+//    auto reservationsObjSt = *rsvObjSet;
+
+    std::copy_if(reservationsObjSet.begin(), reservationsObjSet.end(), std::back_inserter(res),
+                 [&](const Reservation &r) {
+                     return (r.getGuest() == guest);//this compare d guest ID as defined in guest class with overload==
+                 });
+
+    // UI::reservationTabularDisplay(res);
+
 }
 
 void ReservationManager::createReservation(Room &room, Guest &guest, int &numOfRooms, std::string &checkInDate,
@@ -548,11 +583,12 @@ void ReservationManager::createReservation(Room &room, Guest &guest, int &numOfR
         //
         //Even though err was made with selection of Exist guest or Not, this checking will still capture
         if (!(guest.getId().getIdNumber()).empty()) {
+            //Get non-duplicates reservation of this precise guest
             auto rs = getGuestReservation(guest);
             if (!std::empty(rs)) {
                 for (const auto &r: rs) {
-                    //If checking date yyyy-mm-dd minus today's date is > 1, increment d room number
-                    if (differenceDatesInDays(r.getCheckInDate()) >= 1) {
+                    //Checking dates of reservation if EXIST Active or Has not been Checked-Out Reservations to increment d room number
+                    if (differenceDatesInDays(r.getCheckOutDate()) >= 1) {
                         numOfRooms += 1;
                     }
                 }
@@ -586,8 +622,8 @@ void ReservationManager::createReservation(Room &room, Guest &guest, int &numOfR
                 //Update the reservation Set, In case of further reservation while new CopyFromCsv Not Updated Yet
                 reservationsObjSet.emplace(newReservation);
                 std::cout << "\n🟢 Reservation Created Successfully ✅" << std::endl;
-//                std::cout << "Your Reservation Reference / ID: " << newReservation.getReservationNumber() << std::endl
-//                          << std::endl;
+                std::cout << "RESERVATION DETAILS" << std::endl
+                          << std::endl;
                 //TO DISPLAY RESERVATION DETAILS
                 std::set<Reservation> toDisplay{newReservation};
                 UI::reservationTabularDisplay(toDisplay);
@@ -597,7 +633,8 @@ void ReservationManager::createReservation(Room &room, Guest &guest, int &numOfR
             }
             outFile.close();
 
-            std::cout << "\033[1;33mReservation will be deleted if not Paid within 24 hours[0m\n" << std::endl;
+            std::cout << "NOTE:👉 " << "\033[1;33mReservation will be deleted if not Paid within 24 hours[0m\n"
+                      << std::endl;
             int select = ioManager.inputValidation(1, 2, UI::reservationPaymentOptionDisplay);
             if (select == 1) {
                 PaymentManager m;
@@ -714,6 +751,8 @@ void ReservationManager::printReservations() {
         OverallManager::mainMenu();
     }
 }
+
+
 
 
 

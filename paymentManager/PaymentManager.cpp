@@ -93,7 +93,8 @@ void PaymentManager::processPayment(Reservation &reservation) {
 
         }
         std::set<Reservation> toDisplay{reservation};
-        UI::reservationTabularDisplay(toDisplay);
+        UI ui;
+        ui.reservationTabularDisplay(toDisplay);
         std::cout << "\033[1;32mYour Reservation has now been CONFIRMED ✅[0m" << std::endl;
     }
     if (select == 2) {

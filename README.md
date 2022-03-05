@@ -1,6 +1,6 @@
 # Hotel Reservation & Payment System Using {C++17} 🏨
 
-## CLI application with data persistence
+## CLI application with data persistence guranteed
 
 #### *- - - Designed for hotel management - - -*
 
