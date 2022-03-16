@@ -1,7 +1,7 @@
 100|Vacant|Master|Yes|VIP|115.55|[{"checkInDate":"20220303","checkOutDate":"20220404"}]|
 101|Vacant|Double|Yes|DOUBLE|65.57|[]|
 102|Vacant|Double|No|DELUXE|101.35|[]|
-103|Vacant|Master|No|VIP|101.35|[]|
+103|Vacant|Master|No|VIP|101.35|[{"checkInDate":"20220316","checkOutDate":"20220325"}]|
 104|Vacant|Master|No|VIP|95.35|[{"checkInDate":"20220305","checkOutDate":"20220310"}]|
 105|Vacant|Master|No|VIP|101.35|[]|
 106|Under Maintenance|Master|No|VIP|95.57|[]|
