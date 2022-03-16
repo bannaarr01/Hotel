@@ -20,7 +20,7 @@
 
 <img src="assets/selectRoomType.png" width="300"/>
 
-<img src="assets/rooms.png" width="500"/>
+<img src="assets/rooms.png" width="750"/>
 
 ## *DATE VALIDATION SCREENSHOT*
 
@@ -32,10 +32,10 @@
 
 ## *PAYMENT AND RESERVATION CONFIRMATION*
 
-<img src="assets/mask.png" width="300"/>
+<img src="assets/mask.png" width="750"/>
 
 
-<img src="assets/rsvConfirmed.png" width="450"/>
+<img src="assets/rsvConfirmed.png" width="750"/>
 
 ## *ALL RESERVATIONS WITH STATUS*
 
