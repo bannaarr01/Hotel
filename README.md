@@ -43,7 +43,7 @@
 
 ## *ALL RESERVATIONS WITH STATUS*
 
-<img src="assets/rsvs.png" width="750"/>
+<img src="assets/reservations.png" width="750"/>
 
 
 
