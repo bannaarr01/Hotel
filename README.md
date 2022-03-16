@@ -37,9 +37,13 @@
 
 <img src="assets/rsvConfirmed.png" width="750"/>
 
+## *MANAGING DATE CLASH USING INTERVAL TREE DS*
+
+<img src="assets/dateValidationTwo.png" width="750"/>
+
 ## *ALL RESERVATIONS WITH STATUS*
 
-<img src="assets/reservations.png" width="750"/>
+<img src="assets/rsvs.png" width="750"/>
 
 
 
